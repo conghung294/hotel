@@ -1,0 +1,49 @@
+.header {
+    top: 0;
+    left: 0 ;
+    right: 0;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #3d6b99;
+    
+    .logo {
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+  
+    .header-right {
+      display: flex;
+      align-items: center;
+  
+      
+  
+      .booking-btn {
+        background-color: #ff8127;
+        color: #ffffff;
+        border: none;
+        transition: background-color 0.3s ease-in-out;
+  
+        &:hover {
+          background-color: #ffa95d;
+          color: #fff;
+        }
+      }
+  
+      .login-btn {
+        background-color: #1890ff;
+        border-color: #1890ff;
+        transition: background-color 0.3s ease-in-out;
+  
+        &:hover {
+          background-color: #40a9ff;
+          border-color: #40a9ff;
+        }
+      }
+    }
+  }
+  
