@@ -45,8 +45,6 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking }) => {
     getRoomAvailable();
   }, [choiceBooking?.typeroomId, choiceBooking?.timeCome, choiceBooking?.timeGo]);
 
-  console.log(choiceBooking);
-
   return (
     <Modal
       title={'Xác nhận đặt phòng'}

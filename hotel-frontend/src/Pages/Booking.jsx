@@ -40,8 +40,13 @@ const Booking = () => {
   );
 
   const handleSubmit = async () => {
+    if (!user) {
+      toast.error('Vui lòng đăng nhập để thực hiện chức năng đặt phòng!');
+      return;
+    }
+
     const dataBooking = {
-      userId: user.id,
+      userId: user?.id,
       typeroomId: choiceRoom.id,
       timeCome: dates[0],
       timeGo: dates[1],

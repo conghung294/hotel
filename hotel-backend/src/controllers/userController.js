@@ -22,24 +22,13 @@ let handleLogin = async (req, res) => {
 
 let handleGetAllUsers = async (req, res) => {
   try {
-    if (req.query.page && req.query.limit) {
-      let page = req.query.page;
-      let limit = req.query.limit;
-      let data = await userService.getUserWithPagination(+page, +limit);
-      return res.status(200).json({
-        EM: data.EM,
-        EC: data.EC,
-        DT: data.DT,
-      });
-    } else {
-      let id = req.query.id;
-      let users = await userService.getAllUsers(id);
-      return res.status(200).json({
-        errCode: 0,
-        errMessage: 'OK',
-        users,
-      });
-    }
+    let id = req.query.id;
+    let users = await userService.getAllUsers(id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: users,
+    });
   } catch (e) {
     return res.status(500).json({
       EM: 'error from sever',

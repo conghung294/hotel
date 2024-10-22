@@ -60,53 +60,6 @@ let checkUserEmail = (useremail) => {
   });
 };
 
-const getUserWithPagination = async (page, limit) => {
-  try {
-    let offset = (page - 1) * limit;
-
-    let { count, rows } = await db.User.findAndCountAll({
-      offset: offset,
-      limit: limit,
-      attributes: [
-        'id',
-        'firstName',
-        'lastName',
-        'email',
-        'address',
-        'phoneNumber',
-        'gender',
-        'image',
-        'positionId',
-      ],
-      include: [
-        {
-          model: db.Allcode,
-          as: 'roleData',
-          // attributes: ['name', 'description', 'id'],
-        },
-      ],
-      order: [['id', 'DESC']],
-      raw: true,
-      nest: true,
-    });
-
-    let totalPages = Math.ceil(count / limit);
-    let data = {
-      totalRows: count,
-      totalPages: totalPages,
-      users: rows,
-    };
-
-    return {
-      EM: 'Get data successfully',
-      EC: 0,
-      DT: data,
-    };
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 let getAllUsers = async (userId) => {
   try {
     let users = '';
@@ -213,14 +166,11 @@ let updateUserData = async (data) => {
       raw: false,
     });
     if (user) {
-      user.firstName = data.firstName;
-      user.lastName = data.lastName;
+      user.name = data.firstName;
       user.address = data.address;
       user.roleId = data.roleId;
-      user.positionId = data.positionId;
       user.gender = data.gender;
       user.phoneNumber = data.phoneNumber;
-      user.image = data.avatar;
 
       await user.save();
       return {
@@ -244,5 +194,4 @@ module.exports = {
   createNewUser,
   deleteUser,
   updateUserData,
-  getUserWithPagination,
 };

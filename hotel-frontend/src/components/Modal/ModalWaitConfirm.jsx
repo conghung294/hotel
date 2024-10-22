@@ -3,7 +3,7 @@ import { Modal, Popconfirm, Space, Table } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { MdOutlineEdit } from 'react-icons/md';
+
 import { VscQuestion } from 'react-icons/vsc';
 import { deleteBookingService, getBookingByStatusService } from '../../service/bookingService';
 import { formatCurrency } from '../../utils/CommonUtils';
@@ -22,6 +22,11 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
   const handleOpenModalConfirmBooking = (booking) => {
     setChoiceBooking(booking);
     setOpenModalConfirm(true);
+  };
+
+  const deleteBooking = async (id) => {
+    await deleteBookingService(id);
+    getBookingWaitConfirm();
   };
 
   const columns = [
@@ -43,8 +48,8 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       align: 'center',
       render: (_, record) => (
         <div>
-          <div>{record.bookingData.name}</div>
-          <div>{record.bookingData.phoneNumber}</div>
+          <div>{record?.bookingData?.name}</div>
+          <div>{record?.bookingData?.phoneNumber}</div>
         </div>
       ),
     },
@@ -84,7 +89,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       render: (_, record) => (
         <div>
           {record?.services?.map((item) => {
-            return <div key={item.id}>-{item.name}</div>;
+            return <div key={item?.id}>-{item?.name}</div>;
           })}
         </div>
       ),
@@ -108,7 +113,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
             onClick={() => handleOpenModalConfirmBooking(record)}
             className="cursor-pointer"
           />
-          <MdOutlineEdit className="cursor-pointer" />
+          {/* <MdOutlineEdit className="cursor-pointer" /> */}
           <Popconfirm
             title="Xóa đơn đặt phòng"
             description={`Bạn có chắc chắn muốn xóa đơn đặt phòng này?`}
@@ -118,7 +123,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
                 <VscQuestion size={20} style={{ color: 'red' }} />
               </div>
             }
-            onConfirm={() => deleteBookingService(record.id)}
+            onConfirm={() => deleteBooking(record.id)}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -158,7 +163,12 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
         footer={null}
         className="!w-[90%]"
       >
-        <Table columns={columns} dataSource={bookingConfirm} bordered />
+        <Table
+          columns={columns}
+          dataSource={bookingConfirm}
+          bordered
+          pagination={{ pageSize: 5 }}
+        />
       </Modal>
 
       <ModalConfirmBooking

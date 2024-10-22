@@ -24,7 +24,12 @@ const Login = () => {
     const res = await handleLoginApi(data.email, data.password);
     if (res.errCode === 0) {
       setUser(res.user);
-      navigate('/');
+
+      if (res.user.roleId === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
       toast.success('Đăng nhập thành công!');
     } else {
       toast.error('Đăng nhập thất bại!');
@@ -57,7 +62,8 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Vui lòng nhập email!',
+                type: 'email',
+                message: 'Vui lòng nhập đúng định dạng email!',
               },
             ]}
           >

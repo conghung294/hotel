@@ -1,16 +1,18 @@
 import { Button, Form, Input, Select } from 'antd';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { createNewUserService } from '../service/userService';
 import './Home.scss';
 
 const Register = () => {
+  const nagivate = useNavigate();
   const { Option } = Select;
 
   const onFinish = async (values) => {
     let res = await createNewUserService(values);
     if (res.errCode === 0) {
+      nagivate('/login');
       toast.success('Đăng ký thành công!');
     } else {
       toast.error(res.errMessage);
@@ -50,7 +52,8 @@ const Register = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your email!',
+                type: 'email',
+                message: 'Vui lòng nhập đúng định dạng email!',
               },
             ]}
           >
@@ -63,7 +66,7 @@ const Register = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your password!',
+                message: 'Vui lòng nhập mật khẩu!',
               },
             ]}
           >
