@@ -37,8 +37,8 @@ let sendSimpleEmail = async (data) => {
     secure: true,
     auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: 'conghung294@gmail.com',
-      pass: 'kgpo zhco oivd idky',
+      user: process.env.EMAIL_NAME,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
@@ -46,7 +46,7 @@ let sendSimpleEmail = async (data) => {
 
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: '"Công Hùng" <conghung294@gmail.com>', // sender address
+    from: '"HotelManager" <hotel@gmail.com>', // sender address
     to: data?.bookingData?.email, // list of receivers
     subject: 'Thông tin đặt phòng', // Subject line
     // text: 'Hello world?', // plain text body
