@@ -22,10 +22,10 @@ const Login = () => {
 
   const onFinish = async (data) => {
     const res = await handleLoginApi(data.email, data.password);
-    if (res.errCode === 0) {
+    if (res?.errCode === 0) {
       setUser(res.user);
 
-      if (res.user.roleId === 'ADMIN') {
+      if (res?.user?.roleId === 'ADMIN') {
         navigate('/admin');
       } else {
         navigate('/');

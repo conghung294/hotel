@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Button, Popconfirm, Space, Table } from 'antd';
+import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { toast } from 'react-toastify';
 import { FiPlus } from 'react-icons/fi';
 import { VscQuestion } from 'react-icons/vsc';
 
-import { deleteRoomtypeService, getRoomtypeService } from '../../service/roomtypeService';
+import {
+  deleteRoomtypeService,
+  getRoomtypeService,
+  searchRoomtypeService,
+} from '../../service/roomtypeService';
 import ModalRoomtype from '../../components/Modal/ModalRoomtype';
 import { formatCurrency } from '../../utils/CommonUtils';
 
 const ManageTyperoom = () => {
+  const { Search } = Input;
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [action, setAction] = useState('CREATE');
@@ -21,6 +26,7 @@ const ManageTyperoom = () => {
       key: 'stt',
       width: '5%',
       align: 'center',
+      render: (text, record, index) => index + 1,
     },
     {
       title: 'Hạng phòng',
@@ -36,7 +42,7 @@ const ManageTyperoom = () => {
       align: 'center',
       render: (_, record) => (
         <div className="w-[240px] h-[160px] rounded-lg overflow-hidden flex justify-center">
-          <img src={record.image} alt="Room" className="w-full h-full object-cover" />
+          <img src={record?.image} alt="Ảnh hạng phòng" className="w-full h-full object-cover" />
         </div>
       ),
     },
@@ -59,7 +65,7 @@ const ManageTyperoom = () => {
       key: 'price',
       width: '10%',
       align: 'center',
-      render: (_, record) => <div>{formatCurrency(record.price)}</div>,
+      render: (_, record) => <div>{formatCurrency(record?.price)}</div>,
     },
 
     {
@@ -81,7 +87,7 @@ const ManageTyperoom = () => {
                 <VscQuestion size={20} style={{ color: 'red' }} />
               </div>
             }
-            onConfirm={() => deleteRoomtype(record.id)}
+            onConfirm={() => deleteRoomtype(record?.id)}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -96,21 +102,24 @@ const ManageTyperoom = () => {
 
   const deleteRoomtype = async (id) => {
     const res = await deleteRoomtypeService(id);
-    if (res.errCode === 0) {
+    if (res?.errCode === 0) {
       toast.success('Xóa thành công!');
       getRoomtype();
     } else {
-      toast.error(res.message);
+      toast.error(res?.message);
     }
   };
 
   const getRoomtype = async () => {
     const res = await getRoomtypeService('ALL');
-    const dataWithKeys = res.data.map((item, index) => ({ ...item, key: item.id, stt: index + 1 }));
-    if (res.errCode === 0) {
+    const dataWithKeys = res.data.map((item) => ({
+      ...item,
+      key: item?.id,
+    }));
+    if (res?.errCode === 0) {
       setData(dataWithKeys);
     } else {
-      toast.error(res.message);
+      toast.error(res?.message);
     }
   };
 
@@ -126,6 +135,15 @@ const ManageTyperoom = () => {
     setModalOpen(true);
   };
 
+  const onSearch = async (value) => {
+    const res = await searchRoomtypeService(value);
+    const dataWithKeys = res.data.map((item) => ({
+      ...item,
+      key: item?.id,
+    }));
+    setData(dataWithKeys);
+  };
+
   useEffect(() => {
     getRoomtype();
   }, []);
@@ -133,9 +151,18 @@ const ManageTyperoom = () => {
   return (
     <>
       <div className="pt-10 px-20">
-        <Button type="primary" onClick={() => handleAddRoomtype()}>
-          <FiPlus /> Thêm mới
-        </Button>
+        <Space>
+          <Button type="primary" onClick={() => handleAddRoomtype()}>
+            <FiPlus /> Thêm mới
+          </Button>
+          <Search
+            placeholder="Nhập hạng phòng cần tìm kiếm!"
+            allowClear
+            onSearch={onSearch}
+            style={{ width: 300 }}
+          />
+        </Space>
+
         <div className="mt-5">
           <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
         </div>

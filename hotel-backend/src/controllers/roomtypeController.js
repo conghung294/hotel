@@ -60,10 +60,29 @@ let handleGetRoomtypeAvailable = async (req, res) => {
   }
 };
 
+let searchRoomtypeByName = async (req, res) => {
+  try {
+    let name = req.query.name;
+    let roomtypes = await roomtypeService.searchRoomtypeByName(name);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: roomtypes,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: 'error from sever',
+      EC: '-1',
+      DT: '',
+    });
+  }
+};
+
 module.exports = {
   handleCreateRoomtype,
   handleGetRoomtype,
   handleEditRoomtype,
   handleDeleteRoomtype,
   handleGetRoomtypeAvailable,
+  searchRoomtypeByName,
 };

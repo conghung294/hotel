@@ -177,6 +177,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
         setModalOpen={setOpenModalConfirm}
         maskClosable={false}
         choiceBooking={choiceBooking}
+        getBookingWaitConfirm={getBookingWaitConfirm}
       />
     </>
   );

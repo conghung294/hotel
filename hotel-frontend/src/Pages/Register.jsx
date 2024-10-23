@@ -11,11 +11,11 @@ const Register = () => {
 
   const onFinish = async (values) => {
     let res = await createNewUserService(values);
-    if (res.errCode === 0) {
+    if (res?.errCode === 0) {
       nagivate('/login');
       toast.success('Đăng ký thành công!');
     } else {
-      toast.error(res.errMessage);
+      toast.error(res?.errMessage);
     }
   };
   const onFinishFailed = (errorInfo) => {

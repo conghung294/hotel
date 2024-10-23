@@ -41,7 +41,7 @@ const ModalInfo = ({ modalOpen, setModalOpen }) => {
       onOk={form.submit}
       onCancel={() => setModalOpen(false)}
       maskClosable={false}
-      className="!w-[50%]"
+      className="!w-[40%]"
       okText="Lưu thông tin"
       cancelText="Hủy bỏ"
     >

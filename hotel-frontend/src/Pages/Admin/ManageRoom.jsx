@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Button, Popconfirm, Space, Table } from 'antd';
+import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { toast } from 'react-toastify';
 import { FiPlus } from 'react-icons/fi';
 import { VscQuestion } from 'react-icons/vsc';
 
-import { deleteRoomService, getRoomService } from '../../service/roomService';
+import { deleteRoomService, getRoomService, searchRoomService } from '../../service/roomService';
 import ModalRoom from '../../components/Modal/ModalRoom';
 import { formatCurrency } from '../../utils/CommonUtils';
 
 const ManageRoom = () => {
+  const { Search } = Input;
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [action, setAction] = useState('CREATE');
@@ -21,6 +22,7 @@ const ManageRoom = () => {
       key: 'stt',
       width: '5%',
       align: 'center',
+      render: (text, record, index) => index + 1, // Hiển thị số thứ tự
     },
     {
       title: 'Tên phòng',
@@ -49,7 +51,7 @@ const ManageRoom = () => {
       key: 'price',
       width: '20%',
       align: 'center',
-      render: (_, record) => <div>{formatCurrency(record.roomtypeData.price)}</div>,
+      render: (_, record) => <div>{formatCurrency(record?.roomtypeData?.price)}</div>,
     },
 
     {
@@ -64,14 +66,14 @@ const ManageRoom = () => {
           </Button>
           <Popconfirm
             title="Xóa phòng"
-            description={`Bạn có chắc chắn muốn xóa ${record.name}?`}
+            description={`Bạn có chắc chắn muốn xóa ${record?.name}?`}
             placement="topRight"
             icon={
               <div className="mt-[2px] pr-1">
                 <VscQuestion size={20} style={{ color: 'red' }} />
               </div>
             }
-            onConfirm={() => deleteRoom(record.id)}
+            onConfirm={() => deleteRoom(record?.id)}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -86,25 +88,24 @@ const ManageRoom = () => {
 
   const deleteRoom = async (id) => {
     const res = await deleteRoomService(id);
-    if (res.errCode === 0) {
+    if (res?.errCode === 0) {
       toast.success('Xóa thành công!');
       getRoom();
     } else {
-      toast.error(res.message);
+      toast.error(res?.message);
     }
   };
 
   const getRoom = async () => {
     const res = await getRoomService('ALL');
-    const dataWithKeys = res.data?.map((item, index) => ({
+    const dataWithKeys = res?.data?.map((item) => ({
       ...item,
-      key: item.id,
-      stt: index + 1,
+      key: item?.id,
     }));
     if (res.errCode === 0) {
       setData(dataWithKeys);
     } else {
-      toast.error(res.message);
+      toast.error(res?.message);
     }
   };
 
@@ -120,6 +121,15 @@ const ManageRoom = () => {
     setModalOpen(true);
   };
 
+  const onSearch = async (value) => {
+    const res = await searchRoomService(value);
+    const dataWithKeys = res?.data?.map((item) => ({
+      ...item,
+      key: item?.id,
+    }));
+    setData(dataWithKeys);
+  };
+
   useEffect(() => {
     getRoom();
   }, []);
@@ -127,9 +137,18 @@ const ManageRoom = () => {
   return (
     <>
       <div className="pt-10 px-20">
-        <Button type="primary" onClick={() => handleAddRoom()}>
-          <FiPlus /> Thêm mới
-        </Button>
+        <Space>
+          <Button type="primary" onClick={() => handleAddRoom()}>
+            <FiPlus /> Thêm mới
+          </Button>
+          <Search
+            placeholder="Nhập phòng cần tìm kiếm!"
+            allowClear
+            onSearch={onSearch}
+            style={{ width: 300 }}
+          />
+        </Space>
+
         <div className="mt-5">
           <Table columns={columns} dataSource={data} bordered />
         </div>

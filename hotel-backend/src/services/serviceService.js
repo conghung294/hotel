@@ -1,4 +1,5 @@
 import db from '../models/index';
+import { Op } from 'sequelize';
 
 let createNewService = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -102,9 +103,38 @@ let deleteService = async (id) => {
   }
 };
 
+const searchServiceByName = async (name) => {
+  try {
+    console.log(name);
+
+    const services = await db.Service.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`, // tìm kiếm theo tên phòng (không phân biệt chữ hoa/chữ thường)
+        },
+      },
+    });
+
+    console.log(services);
+
+    if (services && services.length > 0) {
+      services.forEach((item) => {
+        if (item?.image) {
+          item.image = Buffer.from(item.image, 'base64').toString('binary');
+        }
+      });
+    }
+
+    return services;
+  } catch (error) {
+    res.status(500).json({ error: 'Lỗi khi tìm kiếm dịch vụ.' });
+  }
+};
+
 module.exports = {
   createNewService,
   getService,
   updateService,
   deleteService,
+  searchServiceByName,
 };

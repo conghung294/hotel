@@ -26,10 +26,15 @@ const getRoomServiceAvailable = (typeId, timeCome, timeGo) => {
   );
 };
 
+const searchRoomService = (name) => {
+  return axios.get(`/api/search-room?name=${name}`);
+};
+
 export {
   createNewRoomService,
   getRoomService,
   editRoomService,
   deleteRoomService,
   getRoomServiceAvailable,
+  searchRoomService,
 };

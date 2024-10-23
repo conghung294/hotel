@@ -31,11 +31,11 @@ const Booking = () => {
 
   const getService = async () => {
     const res = await getServiceService('ALL');
-    setServices(res.data);
+    setServices(res?.data);
   };
 
   const totalServicePrice = choiceServices.reduce(
-    (total, service) => total + Number(service.price),
+    (total, service) => total + Number(service?.price),
     0
   );
 
@@ -47,15 +47,15 @@ const Booking = () => {
 
     const dataBooking = {
       userId: user?.id,
-      typeroomId: choiceRoom.id,
+      typeroomId: choiceRoom?.id,
       timeCome: dates[0],
       timeGo: dates[1],
-      price: choiceRoom.price * time + totalServicePrice,
+      price: choiceRoom?.price * time + totalServicePrice,
       status: '0',
       services: choiceServices,
     };
     const res = await createNewBookingService(dataBooking);
-    if (res.errCode === 0) {
+    if (res?.errCode === 0) {
       socket.emit('booking', dataBooking);
       setChoiceRoom(null);
       setChoiceServices([]);
@@ -63,7 +63,7 @@ const Booking = () => {
       setDates(null);
       toast.success('Đặt phòng thành công. Chúng tôi sẽ sớm gửi xác nhận đến email của bạn!');
     } else {
-      toast.error(res.errMessage);
+      toast.error(res?.errMessage);
     }
   };
 
@@ -92,10 +92,10 @@ const Booking = () => {
             <hr className="my-3" />
             <div className="mt-3 font-bold">Thông tin phòng</div>
             <div className="flex justify-between mt-3">
-              <span>Tên phòng:</span> {choiceRoom.name}
+              <span>Tên phòng:</span> {choiceRoom?.name}
             </div>
             <div className="flex justify-between mt-3">
-              <span>Giá phòng:</span> {formatCurrency(choiceRoom.price)}
+              <span>Giá phòng:</span> {formatCurrency(choiceRoom?.price)}
             </div>
             <div className="flex justify-between mt-3">
               <span>Thời gian ở:</span> {time} ngày
@@ -110,7 +110,7 @@ const Booking = () => {
                     <div key={item.id}>
                       <div className="flex justify-between mt-3">
                         <div>{item.name}</div>
-                        <div>{formatCurrency(item.price)}</div>
+                        <div>{formatCurrency(item?.price)}</div>
                       </div>
                     </div>
                   );
@@ -121,7 +121,7 @@ const Booking = () => {
             <div className="flex justify-between mt-4">
               <span>Tổng tiền phòng:</span>
               <span className="text-blue-600 font-bold">
-                {formatCurrency(choiceRoom.price * time + totalServicePrice)}
+                {formatCurrency(choiceRoom?.price * time + totalServicePrice)}
               </span>
             </div>
             <Button
@@ -147,14 +147,14 @@ const Booking = () => {
           {roomtype?.length > 0 &&
             roomtype.map((item) => {
               return (
-                <div className="my-4 w-full" key={item.id}>
+                <div className="my-4 w-full" key={item?.id}>
                   <Room
                     room={item}
-                    image={item.image}
-                    price={item.price}
-                    name={item.name}
-                    description={item.description}
-                    quantity={item.count}
+                    image={item?.image}
+                    price={item?.price}
+                    name={item?.name}
+                    description={item?.description}
+                    quantity={item?.count}
                     setChoiceRoom={setChoiceRoom}
                   />
                 </div>

@@ -24,10 +24,15 @@ const getRoomtypeAvailableService = (timeCome, timeGo) => {
   return axios.get(`/api/get-all-roomtype-available?timeCome=${timeCome}&timeGo=${timeGo}`);
 };
 
+const searchRoomtypeService = (name) => {
+  return axios.get(`/api/search-roomtype?name=${name}`);
+};
+
 export {
   createNewRoomtypeService,
   getRoomtypeService,
   editRoomtypeService,
   deleteRoomtypeService,
   getRoomtypeAvailableService,
+  searchRoomtypeService,
 };

@@ -7,7 +7,7 @@ import { getRoomServiceAvailable } from '../../service/roomService';
 import { editBookingService } from '../../service/bookingService';
 import { toast } from 'react-toastify';
 
-const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking }) => {
+const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookingWaitConfirm }) => {
   const { Option } = Select;
   const [rooms, setRooms] = useState();
   const [form] = Form.useForm();
@@ -20,6 +20,8 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking }) => {
       data: choiceBooking,
     });
     if (res.errCode === 0) {
+      setModalOpen(false);
+      getBookingWaitConfirm();
       toast.success('Xác nhận đặt phòng thành công!');
     } else {
       toast.error(res.errMessage);
@@ -109,8 +111,8 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking }) => {
             <div>
               {choiceBooking?.services?.map((item) => {
                 return (
-                  <div key={item.id} className="mt-2">{`-${item.name} ( ${formatCurrency(
-                    item.price
+                  <div key={item?.id} className="mt-2">{`-${item?.name} ( ${formatCurrency(
+                    item?.price
                   )} )`}</div>
                 );
               })}
@@ -137,8 +139,8 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking }) => {
           <Select placeholder="Chọn ">
             {rooms?.map((room) => {
               return (
-                <Option value={room.id} key={room.id}>
-                  {room.name}
+                <Option value={room?.id} key={room?.id}>
+                  {room?.name}
                 </Option>
               );
             })}

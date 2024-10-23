@@ -21,17 +21,20 @@ let initWebRoutes = (app) => {
   router.get('/api/get-all-roomtype-available', roomtypeController.handleGetRoomtypeAvailable);
   router.put('/api/edit-roomtype', roomtypeController.handleEditRoomtype);
   router.delete('/api/delete-roomtype', roomtypeController.handleDeleteRoomtype);
+  router.get('/api/search-roomtype', roomtypeController.searchRoomtypeByName);
 
   router.post('/api/create-new-room', roomController.handleCreateRoom);
   router.get('/api/get-all-room', roomController.handleGetRoom);
   router.put('/api/edit-room', roomController.handleEditRoom);
   router.delete('/api/delete-room', roomController.handleDeleteRoom);
   router.get('/api/get-all-room-available', roomController.handleGetRoomAvailable);
+  router.get('/api/search-room', roomController.searchRoomByName);
 
   router.post('/api/create-new-service', serviceController.handleCreateService);
   router.get('/api/get-all-service', serviceController.handleGetService);
   router.put('/api/edit-service', serviceController.handleEditService);
   router.delete('/api/delete-service', serviceController.handleDeleteService);
+  router.get('/api/search-service', serviceController.searchServiceByName);
 
   router.post('/api/create-new-booking', bookingController.handleCreateBooking);
   router.get('/api/get-all-booking', bookingController.handleGetBooking);

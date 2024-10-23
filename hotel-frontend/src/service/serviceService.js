@@ -20,4 +20,14 @@ const deleteServiceService = (id) => {
   });
 };
 
-export { createNewServiceService, getServiceService, editServiceService, deleteServiceService };
+const searchServiceService = (name) => {
+  return axios.get(`/api/search-service?name=${name}`);
+};
+
+export {
+  createNewServiceService,
+  getServiceService,
+  editServiceService,
+  deleteServiceService,
+  searchServiceService,
+};

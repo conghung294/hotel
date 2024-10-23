@@ -179,10 +179,35 @@ let getRoomtypeAvailable = async (timeCome, timeGo) => {
   }
 };
 
+const searchRoomtypeByName = async (name) => {
+  try {
+    const roomtypes = await db.Roomtype.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`, // tìm kiếm theo tên phòng (không phân biệt chữ hoa/chữ thường)
+        },
+      },
+    });
+
+    if (roomtypes && roomtypes.length > 0) {
+      roomtypes.forEach((item) => {
+        if (item.image) {
+          item.image = Buffer.from(item.image, 'base64').toString('binary');
+        }
+      });
+    }
+
+    return roomtypes;
+  } catch (error) {
+    res.status(500).json({ error: 'Lỗi khi tìm kiếm hạng phòng.' });
+  }
+};
+
 module.exports = {
   createNewRoomtype,
   getRoomtype,
   updateRoomtype,
   deleteRoomtype,
   getRoomtypeAvailable,
+  searchRoomtypeByName,
 };
