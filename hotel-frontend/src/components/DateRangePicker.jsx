@@ -9,7 +9,7 @@ import { getRoomtypeAvailableService } from '../service/roomtypeService';
 
 const { RangePicker } = DatePicker;
 
-const DateRangePicker = ({ setRoomtype, setTime, dates, setDates }) => {
+const DateRangePicker = ({ setRoomtype, setTime, dates, setDates, setIsChoice }) => {
   // Hàm để vô hiệu hóa các ngày trước ngày hiện tại
   const disabledDate = (current) => {
     return current && current < dayjs().startOf('day');
@@ -17,7 +17,9 @@ const DateRangePicker = ({ setRoomtype, setTime, dates, setDates }) => {
 
   const handleApply = async () => {
     if (dates && dates[0] && dates[1]) {
+      setIsChoice(true);
       const [start, end] = dates;
+
       const roomtype = await getRoomtypeAvailableService(start, end);
       setRoomtype(roomtype.data);
       setTime(dayjs(dates[1]).diff(dayjs(dates[0]), 'day'));
@@ -30,12 +32,12 @@ const DateRangePicker = ({ setRoomtype, setTime, dates, setDates }) => {
   };
 
   return (
-    <div style={{ maxWidth: '500px' }}>
+    <div style={{ maxWidth: '800px' }}>
       <RangePicker
         value={dates}
         onChange={(newDates) => setDates(newDates)}
         format="DD/MM/YYYY"
-        style={{ width: '100%' }}
+        style={{ width: '100%', height: '60px' }}
         placeholder={['Chọn ngày đến', 'Chọn ngày đi']}
         defaultValue={[dayjs(), dayjs().add(1, 'day')]}
         disabledDate={disabledDate} // Vô hiệu hóa những ngày trước hiện tại

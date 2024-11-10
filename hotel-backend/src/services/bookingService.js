@@ -1,3 +1,4 @@
+import { where } from 'sequelize';
 import db from '../models/index';
 import emailService from '../services/emailService';
 
@@ -62,6 +63,10 @@ let getBookingByStatus = async (status) => {
         {
           model: db.Roomtype,
           as: 'typeData',
+        },
+        {
+          model: db.Room,
+          as: 'roomData',
         },
         {
           model: db.Service,
@@ -136,10 +141,48 @@ let deleteBooking = async (id) => {
   }
 };
 
+let getBookingSchedule = async () => {
+  try {
+    // Fetch rooms with their bookings
+    const rooms = await db.Room.findAll({
+      include: [
+        {
+          model: db.Booking,
+          // where: { status: '1' },
+          as: 'roomData',
+          attributes: ['timeCome', 'timeGo'],
+          include: [
+            {
+              model: db.User,
+              as: 'bookingData',
+              attributes: ['name', 'email'], // Only fetch name and email from User
+            },
+          ],
+        },
+      ],
+    });
+
+    // Format the data
+    const result = rooms?.map((room) => ({
+      id: room?.name,
+      bookings: room?.roomData?.map((booking) => ({
+        timeCome: booking?.timeCome,
+        timeGo: booking?.timeGo,
+        name: booking?.bookingData?.name || booking?.bookingData?.email,
+      })),
+    }));
+
+    return result;
+  } catch (error) {
+    console.error('Error fetching room bookings:', error);
+  }
+};
+
 module.exports = {
   createNewBooking,
   getBooking,
   updateBooking,
   deleteBooking,
   getBookingByStatus,
+  getBookingSchedule,
 };

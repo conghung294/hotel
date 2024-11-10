@@ -42,10 +42,16 @@ const HeaderHome = () => {
 
   return (
     <>
-      <Header className="header z-10">
-        <Link className="logo" to={'/'}>
+      <Header className="header z-20">
+        <Link className="logo !text-[#4bff70]" to={'/'}>
           HotelBooking
         </Link>
+
+        <div className="w-full px-[40px] text-white flex gap-8 items-center">
+          <a href="/room-type">HẠNG PHÒNG</a>
+          <a href="/entertainment">GIẢI TRÍ</a>
+          <a href="/cuisine">ẨM THỰC</a>
+        </div>
 
         <div className="header-right flex gap-4 items-center">
           {/* <Link to="/room-types" className="text-white">

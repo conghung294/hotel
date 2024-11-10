@@ -74,6 +74,34 @@ let getAllCode = async (req, res) => {
   }
 };
 
+let handleForgotPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+    let data = await userService.handleForgotPassword(email);
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Error from server',
+    });
+  }
+};
+
+let handleResetPassword = async (req, res) => {
+  const { newPassword, token } = req.body;
+  try {
+    let data = await userService.handleResetPassword({ token, newPassword });
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Error from server',
+    });
+  }
+};
+
 module.exports = {
   handleLogin,
   handleGetAllUsers,
@@ -81,4 +109,6 @@ module.exports = {
   handleEditUser,
   handleDeleteUser,
   getAllCode,
+  handleForgotPassword,
+  handleResetPassword,
 };

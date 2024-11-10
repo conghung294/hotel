@@ -98,6 +98,12 @@ const Login = () => {
               Đăng ký tài khoản
             </Link>
           </div>
+
+          <div className="mt-4 flex justify-center">
+            <Link to={'/forgot-password'} className="text-blue-600 underline ml-2">
+              Quên mật khẩu
+            </Link>
+          </div>
         </Form>
       </div>
     </div>

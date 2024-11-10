@@ -30,6 +30,13 @@ let getBodyHTMLEmail = (data) => {
   return result;
 };
 
+let getBodyHTMLEmailForgotPassword = ({ token }) => {
+  const resetLink = `http://localhost:5173/reset-password/${token}`;
+  return `
+  <div>Bạn đã yêu cầu đặt lại mật khẩu. Nhấn vào link sau để đặt lại: <a href=${resetLink}>Đặt lại mật khẩu!</a> </div>
+  `;
+};
+
 let sendSimpleEmail = async (data) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -39,6 +46,9 @@ let sendSimpleEmail = async (data) => {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
       user: process.env.EMAIL_NAME,
       pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false,
     },
   });
 
@@ -54,6 +64,34 @@ let sendSimpleEmail = async (data) => {
   });
 };
 
+let sendForgotPasswordEmail = async (data) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.EMAIL_NAME,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // async..await is not allowed in global scope, must use a wrapper
+
+  // send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: '"HotelManager" <hotel@gmail.com>', // sender address
+    to: data?.email, // list of receivers
+    subject: 'Đặt lại mật khẩu', // Subject line
+    // text: 'Hello world?', // plain text body
+    html: getBodyHTMLEmailForgotPassword(data),
+  });
+};
+
 module.exports = {
   sendSimpleEmail,
+  sendForgotPasswordEmail,
 };

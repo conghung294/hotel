@@ -15,6 +15,8 @@ let initWebRoutes = (app) => {
   router.post('/api/create-new-user', userController.handleCreateNewUser);
   router.put('/api/edit-user', userController.handleEditUser);
   router.delete('/api/delete-user', userController.handleDeleteUser);
+  router.post('/api/forgot-password', userController.handleForgotPassword);
+  router.post('/api/reset-password', userController.handleResetPassword);
 
   router.post('/api/create-new-roomtype', roomtypeController.handleCreateRoomtype);
   router.get('/api/get-all-roomtype', roomtypeController.handleGetRoomtype);
@@ -39,6 +41,7 @@ let initWebRoutes = (app) => {
   router.post('/api/create-new-booking', bookingController.handleCreateBooking);
   router.get('/api/get-all-booking', bookingController.handleGetBooking);
   router.get('/api/get-all-booking-by-status', bookingController.handleGetBookingByStatus);
+  router.get('/api/get-booking-schedule', bookingController.handleGetBookingSchedule);
   router.put('/api/edit-booking', bookingController.handleEditBooking);
   router.delete('/api/delete-booking', bookingController.handleDeleteBooking);
 

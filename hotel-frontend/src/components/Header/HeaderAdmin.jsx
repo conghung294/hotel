@@ -95,6 +95,13 @@ const HeaderAdmin = () => {
             >
               <Link to="/admin/manageService">Quản lý dịch vụ</Link>
             </li>
+
+            <li
+              onClick={() => handleTabClick('booking')}
+              className={activeTab === 'booking' ? 'active' : ''}
+            >
+              <Link to="/admin/booking">Lịch đặt phòng</Link>
+            </li>
           </div>
 
           <div className="flex items-center gap-10 ">

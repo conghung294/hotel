@@ -1,5 +1,8 @@
-import db from '../models/index';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import { Op } from 'sequelize';
+import db from '../models/index';
+import { sendForgotPasswordEmail } from './emailService';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -188,10 +191,74 @@ let updateUserData = async (data) => {
   }
 };
 
+const handleForgotPassword = async (email) => {
+  try {
+    // Kiểm tra email người dùng
+    const user = await db.User.findOne({ where: { email } });
+    if (!user) {
+      return {
+        errCode: 1,
+        errMessage: 'Email không tồn tại',
+      };
+    }
+
+    // Tạo token đặt lại mật khẩu
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenExpiry = Date.now() + 3600000; // Token có hiệu lực trong 1 giờ
+
+    // Lưu token và thời gian hết hạn vào cơ sở dữ liệu
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = tokenExpiry;
+    await user.save();
+
+    await sendForgotPasswordEmail({ token, email });
+    return {
+      errCode: 0,
+      errMessage: 'Success',
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const handleResetPassword = async ({ token, newPassword }) => {
+  try {
+    // Tìm người dùng dựa vào token và kiểm tra token hết hạn chưa
+    const user = await db.User.findOne({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: { [Op.gt]: Date.now() },
+      },
+    });
+
+    if (!user) {
+      return {
+        errCode: 0,
+        errMessage: 'Link không hợp lệ hoặc đã hết hạn!',
+      };
+    }
+
+    // Cập nhật mật khẩu mới và xóa token
+    let hashPasswordFromBcrypt = await hashUserPassword(newPassword);
+    user.password = hashPasswordFromBcrypt; // Đừng quên hash mật khẩu trước khi lưu
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+    return {
+      errCode: 0,
+      errMessage: 'Mật khẩu của bạn đã được đặt lại thành công',
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   handleUserLogin,
   getAllUsers,
   createNewUser,
   deleteUser,
   updateUserData,
+  handleForgotPassword,
+  handleResetPassword,
 };

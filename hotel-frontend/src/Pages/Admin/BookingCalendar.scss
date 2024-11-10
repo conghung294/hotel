@@ -1,0 +1,52 @@
+/* BookingCalendar.css */
+
+.calendar {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+  }
+  
+  .calendar-header {
+    display: grid;
+    grid-template-columns: 150px repeat(31, 1fr); /* Adjust for number of days */
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .calendar-header-room {
+    padding: 8px;
+    background-color: #e0e0e0;
+  }
+  
+  .calendar-header-day {
+    padding: 8px;
+    border-left: 1px solid #ddd;
+  }
+  
+  .calendar-row {
+    display: grid;
+    grid-template-columns: 150px repeat(31, 1fr); /* Adjust for number of days */
+    border-top: 1px solid #ddd;
+  }
+  
+  .calendar-room-name {
+    padding: 8px;
+    background-color: #f9f9f9;
+    font-weight: bold;
+    text-align: center;
+    border-right: 1px solid #ddd;
+  }
+  
+  .calendar-cell {
+    border-left: 1px solid #ddd;
+  }
+  
+  .calendar-booking {
+    background-color: orange;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    border-radius: 4px;
+  }
+  

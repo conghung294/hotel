@@ -12,6 +12,10 @@ const getBookingByStatusService = (status) => {
   return axios.get(`/api/get-all-booking-by-status?status=${status}`);
 };
 
+const getBookingScheduleService = () => {
+  return axios.get(`/api/get-booking-schedule`);
+};
+
 const editBookingService = (inputData) => {
   return axios.put('/api/edit-booking', inputData);
 };
@@ -30,4 +34,5 @@ export {
   editBookingService,
   deleteBookingService,
   getBookingByStatusService,
+  getBookingScheduleService,
 };
