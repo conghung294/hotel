@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      quantity: DataTypes.INTEGER,
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

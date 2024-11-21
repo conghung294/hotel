@@ -16,9 +16,9 @@ let handleGetService = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -51,9 +51,43 @@ let searchServiceByName = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+let handleUpdateServiceForBooking = async (req, res) => {
+  try {
+    let services = await ServiceService.updateServiceForBooking(req.body);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: services,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
+let handleGetServiceByBooking = async (req, res) => {
+  try {
+    let id = req.query.id;
+    let services = await ServiceService.getServiceByBooking(id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: services,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -64,4 +98,6 @@ module.exports = {
   handleEditService,
   handleDeleteService,
   searchServiceByName,
+  handleUpdateServiceForBooking,
+  handleGetServiceByBooking,
 };

@@ -15,7 +15,7 @@ let getBodyHTMLEmail = (data) => {
             <div>Tên khách hàng: ${data?.bookingData?.name}</div>
             <div>SĐT: ${data?.bookingData?.phoneNumber}</div>
             <div>Địa chỉ: ${data?.bookingData?.address}</div>
-            <div>Giới tính: ${data?.bookingData.gender}</div> 
+            <div>Giới tính: ${data?.bookingData?.gender}</div> 
             <div>Thời gian đặt phòng: ${moment(data?.createdAt).format(
               'HH:mm:ss DD/MM/YYYY'
             )} </div>   

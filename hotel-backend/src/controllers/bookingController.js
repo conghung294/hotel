@@ -16,9 +16,9 @@ let handleGetBooking = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -34,9 +34,9 @@ let handleGetBookingByStatus = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -68,9 +68,9 @@ let handleGetBookingSchedule = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };

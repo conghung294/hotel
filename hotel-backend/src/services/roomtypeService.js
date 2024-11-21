@@ -121,16 +121,13 @@ let getRoomtypeAvailable = async (timeCome, timeGo) => {
     const bookedRooms = await db.Booking.findAll({
       where: {
         status: '1',
-        [Op.or]: [
-          {
-            timeCome: {
-              [Op.lte]: timeGo, // Thời gian đến <= thời gian đi người dùng chọn
-            },
-            timeGo: {
-              [Op.gte]: timeCome, // Thời gian đi >= thời gian đến người dùng chọn
-            },
-          },
-        ],
+
+        timeCome: {
+          [Op.lte]: timeGo, // Thời gian đến <= thời gian đi người dùng chọn
+        },
+        timeGo: {
+          [Op.gte]: timeCome, // Thời gian đi >= thời gian đến người dùng chọn
+        },
       },
     });
 

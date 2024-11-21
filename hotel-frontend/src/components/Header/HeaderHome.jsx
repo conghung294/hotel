@@ -5,6 +5,7 @@ import { useState } from 'react';
 import './Header.scss';
 import { useUser } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
+import ModalHistoryBooking from '../Modal/ModalHistoryBooking';
 
 const { Header } = Layout;
 
@@ -12,6 +13,7 @@ const HeaderHome = () => {
   const nagivate = useNavigate();
   const { user, setUser } = useUser();
   const [openModalInfo, setOpenModalInfo] = useState();
+  const [openModalBookingHistory, setOpenModalBookingHistory] = useState(false);
 
   // Hàm lấy chữ cái đầu từ từ cuối cùng của tên người dùng
   const getInitial = (name) => {
@@ -34,8 +36,12 @@ const HeaderHome = () => {
       key: '1',
       label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
     },
+    // {
+    //   key: '2',
+    //   label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
+    // },
     {
-      key: '2',
+      key: '3',
       label: <div onClick={() => handleLogout()}>Đăng xuất</div>,
     },
   ];
@@ -80,6 +86,10 @@ const HeaderHome = () => {
         </div>
       </Header>
       <ModalInfo modalOpen={openModalInfo} setModalOpen={setOpenModalInfo} />
+      <ModalHistoryBooking
+        modalOpen={openModalBookingHistory}
+        setModalOpen={setOpenModalBookingHistory}
+      />
     </>
   );
 };

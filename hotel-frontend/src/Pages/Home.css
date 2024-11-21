@@ -1,0 +1,246 @@
+@charset "UTF-8";
+.home-background {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../assets/image/background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.home-background1 {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../assets/image/background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.home-background2 {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../assets/image/image1.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.home-background3 {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../assets/image/image2.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.booking-background {
+  height: 100vh; /* Chiều cao là 100% của body */
+  width: 100%; /* Chiều rộng là 100% của body */
+  background-image: url("../assets/image/image1.png"); /* Đường dẫn đến hình ảnh */
+  background-size: cover; /* Để hình ảnh lấp đầy toàn bộ màn hình */
+  background-position: center; /* Căn giữa hình ảnh */
+}
+
+.btn-login {
+  width: 100%;
+  height: 48px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background-image: linear-gradient(310deg, #2dce89, #2dcecc);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.login-input {
+  height: 40px; /* Chiều cao bạn muốn */
+  font-size: 16px; /* Kích thước chữ (tuỳ chọn) */
+}
+
+.big-title:before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: hsl(183.53, 7%, 50%);
+  width: 40px;
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  margin-left: -20px;
+}
+
+.big-title:after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: hsl(183.53, 7%, 50%);
+  width: 60px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.background-roomtype {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66%; /* Tỷ lệ 2:3, chiều cao = 1.5 lần chiều rộng */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image3.jpg");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.roomtype-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image3.jpg");
+}
+
+.bg-entertainment {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image4.jpg");
+}
+
+.text-link {
+  text-decoration: none;
+  width: 45vw;
+}
+.text-link .section-customize {
+  margin-top: 10px;
+  min-height: 230px;
+  background-color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 3px 0;
+  cursor: pointer;
+}
+.text-link .section-customize .bg-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 4px;
+}
+.text-link .section-customize .name-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(77, 77, 77);
+}
+
+.slick-prev {
+  left: -22px;
+  z-index: 10;
+  height: 48px;
+  width: 44px;
+  background: #fff;
+  border: 2px solid #d7d7d7;
+}
+.slick-prev:hover {
+  background: #eceaea;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  color: red !important;
+}
+
+.slick-next {
+  right: -10px;
+  z-index: 10;
+  height: 48px;
+  width: 44px;
+  background: #fff;
+  border: 2px solid #d7d7d7;
+}
+.slick-next:hover {
+  background: #eceaea;
+}
+
+.slick-disabled {
+  display: none !important;
+}
+
+.background-cuisine {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image11.jpg");
+}
+
+.background-cusine-1 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image12.jpg");
+}
+
+.background-cusine-2 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image13.jpg");
+}
+
+.background-cusine-3 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image14.jpg");
+}
+
+.background-location {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image15.jpg");
+}
+
+.bg-location {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image16.jpg");
+}
+
+.bg-location-2 {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../assets/image/image17.jpg");
+}/*# sourceMappingURL=Home.css.map */

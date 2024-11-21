@@ -105,8 +105,6 @@ let deleteService = async (id) => {
 
 const searchServiceByName = async (name) => {
   try {
-    console.log(name);
-
     const services = await db.Service.findAll({
       where: {
         name: {
@@ -114,8 +112,6 @@ const searchServiceByName = async (name) => {
         },
       },
     });
-
-    console.log(services);
 
     if (services && services.length > 0) {
       services.forEach((item) => {
@@ -127,7 +123,86 @@ const searchServiceByName = async (name) => {
 
     return services;
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi tìm kiếm dịch vụ.' });
+    console.log(error);
+  }
+};
+
+const updateServiceForBooking = async (data) => {
+  try {
+    const dataService = data?.map(async (item) => {
+      // Kiểm tra nếu số lượng bằng 0, thực hiện xóa dịch vụ khỏi bảng BookingService
+      if (item?.quantity === 0) {
+        // Xóa dịch vụ khỏi BookingService nếu quantity = 0
+        await db.BookingService.destroy({
+          where: {
+            bookingId: item?.bookingId,
+            serviceId: item?.id,
+          },
+        });
+      } else {
+        // Nếu quantity > 0, kiểm tra dịch vụ đã tồn tại chưa
+        const existingService = await db.BookingService.findOne({
+          where: {
+            bookingId: item?.bookingId,
+            serviceId: item?.id,
+          },
+        });
+
+        if (existingService) {
+          // Nếu đã tồn tại, cập nhật số lượng
+          await existingService.update({
+            quantity: item?.quantity,
+          });
+        } else {
+          // Nếu chưa tồn tại, tạo mới
+          await db.BookingService.create({
+            bookingId: item?.bookingId,
+            serviceId: item?.id,
+            quantity: item?.quantity,
+          });
+        }
+      }
+    });
+
+    // Chờ các promises hoàn thành
+    await Promise.all(dataService);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+let getServiceByBooking = async (bookingId) => {
+  try {
+    // Lấy danh sách dịch vụ
+    let services = await db.Service.findAll();
+
+    // Lấy danh sách bookingService dựa trên bookingId
+    let bookingServices = await db.BookingService.findAll({
+      where: { bookingId: bookingId },
+    });
+
+    // Tạo map để tìm kiếm nhanh quantity theo serviceId
+    let bookingServiceMap = {};
+    bookingServices.forEach((item) => {
+      bookingServiceMap[item.serviceId] = item.quantity;
+    });
+
+    // Gán quantity vào từng dịch vụ
+    let servicesWithQuantity = services.map((item) => {
+      if (item?.image) {
+        item.image = Buffer.from(item.image, 'base64').toString('binary');
+      }
+      let quantity = bookingServiceMap[item.id] || 0; // Lấy quantity hoặc mặc định là 0
+      return {
+        ...item.dataValues, // Lấy dữ liệu dịch vụ
+        quantity, // Gán trường quantity
+      };
+    });
+
+    return servicesWithQuantity;
+  } catch (e) {
+    console.log(e);
+    throw e; // Nên throw lỗi để xử lý ở tầng trên nếu cần
   }
 };
 
@@ -137,4 +212,6 @@ module.exports = {
   updateService,
   deleteService,
   searchServiceByName,
+  updateServiceForBooking,
+  getServiceByBooking,
 };

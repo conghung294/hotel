@@ -15,9 +15,6 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
       },
-      booking_time: {
-        type: Sequelize.STRING,
-      },
       typeId: {
         type: Sequelize.INTEGER,
       },

@@ -24,10 +24,20 @@ const searchServiceService = (name) => {
   return axios.get(`/api/search-service?name=${name}`);
 };
 
+const saveSelectedServices = (data) => {
+  return axios.post('/api/update-service-for-booking', data);
+};
+
+const getServiceServiceByBooking = (id) => {
+  return axios.get(`/api/get-service-by-booking?id=${id}`);
+};
+
 export {
   createNewServiceService,
   getServiceService,
   editServiceService,
   deleteServiceService,
   searchServiceService,
+  saveSelectedServices,
+  getServiceServiceByBooking,
 };

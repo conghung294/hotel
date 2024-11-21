@@ -31,9 +31,9 @@ let handleGetAllUsers = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -59,19 +59,6 @@ let handleDeleteUser = async (req, res) => {
   }
   let message = await userService.deleteUser(req.body.id);
   return res.status(200).json(message);
-};
-
-let getAllCode = async (req, res) => {
-  try {
-    let data = await userService.getAllCodeService(req.query.type);
-    return res.status(200).json(data);
-  } catch (e) {
-    console.log(e);
-    return res.status(500).json({
-      errCode: -1,
-      errMessage: 'Error from server',
-    });
-  }
 };
 
 let handleForgotPassword = async (req, res) => {
@@ -102,13 +89,31 @@ let handleResetPassword = async (req, res) => {
   }
 };
 
+let searchUserByName = async (req, res) => {
+  try {
+    let name = req.query.name;
+    let users = await userService.searchUserByName(name);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: users,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 module.exports = {
   handleLogin,
   handleGetAllUsers,
   handleCreateNewUser,
   handleEditUser,
   handleDeleteUser,
-  getAllCode,
   handleForgotPassword,
   handleResetPassword,
+  searchUserByName,
 };

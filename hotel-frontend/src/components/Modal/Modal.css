@@ -1,0 +1,16 @@
+.preview-img-container .label-upload {
+  padding: 5px;
+  border-radius: 3px;
+  background: #ddd;
+  cursor: pointer;
+}
+.preview-img-container .label-upload:hover {
+  opacity: 0.8;
+}
+.preview-img-container .preview-image {
+  height: 100px;
+  width: 100%;
+  border: 1px solid #ddd;
+  background: center center/contain no-repeat;
+  cursor: pointer;
+}/*# sourceMappingURL=Modal.css.map */

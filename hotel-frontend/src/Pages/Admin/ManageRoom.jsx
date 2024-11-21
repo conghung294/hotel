@@ -150,7 +150,7 @@ const ManageRoom = () => {
         </Space>
 
         <div className="mt-5">
-          <Table columns={columns} dataSource={data} bordered />
+          <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
         </div>
       </div>
 

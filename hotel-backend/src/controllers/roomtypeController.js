@@ -16,9 +16,9 @@ let handleGetRoomtype = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -53,9 +53,9 @@ let handleGetRoomtypeAvailable = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -71,9 +71,9 @@ let searchRoomtypeByName = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };

@@ -5,6 +5,7 @@ import roomtypeController from '../controllers/roomtypeController';
 import roomController from '../controllers/roomController';
 import serviceController from '../controllers/serviceController';
 import bookingController from '../controllers/bookingController';
+import settingController from '../controllers/settingController';
 
 let router = expess.Router();
 
@@ -15,6 +16,7 @@ let initWebRoutes = (app) => {
   router.post('/api/create-new-user', userController.handleCreateNewUser);
   router.put('/api/edit-user', userController.handleEditUser);
   router.delete('/api/delete-user', userController.handleDeleteUser);
+  router.get('/api/search-user', userController.searchUserByName);
   router.post('/api/forgot-password', userController.handleForgotPassword);
   router.post('/api/reset-password', userController.handleResetPassword);
 
@@ -31,12 +33,17 @@ let initWebRoutes = (app) => {
   router.delete('/api/delete-room', roomController.handleDeleteRoom);
   router.get('/api/get-all-room-available', roomController.handleGetRoomAvailable);
   router.get('/api/search-room', roomController.searchRoomByName);
+  router.post('/api/check-in-room', roomController.handleCheckIn);
+  router.post('/api/check-out-room', roomController.handleCheckOut);
+  router.get('/api/get-info-check-in-by-room', roomController.handleGetInfoCheckIn);
 
   router.post('/api/create-new-service', serviceController.handleCreateService);
   router.get('/api/get-all-service', serviceController.handleGetService);
   router.put('/api/edit-service', serviceController.handleEditService);
   router.delete('/api/delete-service', serviceController.handleDeleteService);
   router.get('/api/search-service', serviceController.searchServiceByName);
+  router.post('/api/update-service-for-booking', serviceController.handleUpdateServiceForBooking);
+  router.get('/api/get-service-by-booking', serviceController.handleGetServiceByBooking);
 
   router.post('/api/create-new-booking', bookingController.handleCreateBooking);
   router.get('/api/get-all-booking', bookingController.handleGetBooking);
@@ -44,6 +51,9 @@ let initWebRoutes = (app) => {
   router.get('/api/get-booking-schedule', bookingController.handleGetBookingSchedule);
   router.put('/api/edit-booking', bookingController.handleEditBooking);
   router.delete('/api/delete-booking', bookingController.handleDeleteBooking);
+
+  router.put('/api/update-setting', settingController.updateSetting);
+  router.get('/api/get-setting', settingController.getSetting);
 
   return app.use('/', router);
 };

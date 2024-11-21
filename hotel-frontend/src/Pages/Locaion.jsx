@@ -42,8 +42,6 @@ function Locaion() {
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.8283328437856!2d105.84772707508004!3d20.999517380642494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac730ff81323%3A0x9032c0dde07a324c!2zNDAwIFAuIELhuqFjaCBNYWksIELhuqFjaCBNYWksIEhhaSBCw6AgVHLGsG5nLCBIw6AgTuG7mWksIFZpZXRuYW0!5e0!3m2!1sen!2sus!4v1731160759327!5m2!1sen!2sus"
           width="100%"
           height="100%"
-          // style="border:0;"
-          allowfullscreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>

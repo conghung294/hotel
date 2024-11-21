@@ -19,6 +19,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
 
+      cccd: {
+        type: Sequelize.STRING,
+      },
+
       address: {
         type: Sequelize.STRING,
       },

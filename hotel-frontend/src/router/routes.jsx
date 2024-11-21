@@ -13,6 +13,8 @@ import Roomtype from '../Pages/Roomtype';
 import Entertainment from '../Pages/Entertainment';
 import Cuisine from '../Pages/Cuisine';
 import Locaion from '../Pages/Locaion';
+import ManageUser from '../Pages/Admin/ManageUser';
+import { Bill } from '../components/Print/Bill';
 
 export const routes = [
   {
@@ -68,6 +70,11 @@ export const routes = [
     layout: 'admin',
   },
   {
+    path: '/admin/manageUser',
+    element: <ManageUser />,
+    layout: 'admin',
+  },
+  {
     path: '/admin/manageTyperoom',
     element: <ManageTyperoom />,
     layout: 'admin',
@@ -87,4 +94,10 @@ export const routes = [
     element: <BookingSchedule />,
     layout: 'admin',
   },
+
+  // {
+  //   path: '/admin/booking',
+  //   element: <Bill />,
+  //   layout: 'admin',
+  // },
 ];

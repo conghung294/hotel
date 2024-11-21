@@ -71,6 +71,11 @@ let getAllUsers = async (userId) => {
         attributes: {
           exclude: ['password'],
         },
+        where: {
+          roleId: {
+            [Op.ne]: null, // Lọc những user có roleId khác null
+          },
+        },
       });
     }
     if (userId && userId !== 'ALL') {
@@ -253,6 +258,36 @@ const handleResetPassword = async ({ token, newPassword }) => {
   }
 };
 
+const searchUserByName = async (query) => {
+  try {
+    const users = await db.User.findAll({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            email: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            phoneNumber: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+        ],
+      },
+    });
+
+    return users;
+  } catch (error) {
+    res.status(500).json({ error: 'Lỗi khi tìm kiếm người dùng.' });
+  }
+};
+
 module.exports = {
   handleUserLogin,
   getAllUsers,
@@ -261,4 +296,5 @@ module.exports = {
   updateUserData,
   handleForgotPassword,
   handleResetPassword,
+  searchUserByName,
 };

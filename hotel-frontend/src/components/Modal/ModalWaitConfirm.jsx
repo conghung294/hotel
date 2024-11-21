@@ -60,7 +60,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       width: '10%',
       align: 'center',
       render: (timeCome) => {
-        return moment(timeCome).format('DD/MM/YYYY');
+        return moment(timeCome).format('HH:mm:ss DD/MM/YYYY');
       },
     },
     {
@@ -70,7 +70,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       width: '10%',
       align: 'center',
       render: (timeGo) => {
-        return moment(timeGo).format('DD/MM/YYYY');
+        return moment(timeGo).format('HH:mm:ss DD/MM/YYYY');
       },
     },
     {
@@ -138,7 +138,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
 
   const getBookingWaitConfirm = async () => {
     const res = await getBookingByStatusService('0');
-    const dataWithKeys = res?.data.map((item, index) => {
+    const dataWithKeys = res?.data?.map((item, index) => {
       return { ...item, key: index };
     });
     setBookingConfirm(dataWithKeys);

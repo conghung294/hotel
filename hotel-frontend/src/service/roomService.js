@@ -30,6 +30,18 @@ const searchRoomService = (name) => {
   return axios.get(`/api/search-room?name=${name}`);
 };
 
+const checkInService = (data) => {
+  return axios.post(`/api/check-in-room`, data);
+};
+
+const checkOutService = (data) => {
+  return axios.post(`/api/check-out-room`, data);
+};
+
+const getInfoCheckInByRoom = (id) => {
+  return axios.get(`/api/get-info-check-in-by-room?id=${id}`);
+};
+
 export {
   createNewRoomService,
   getRoomService,
@@ -37,4 +49,7 @@ export {
   deleteRoomService,
   getRoomServiceAvailable,
   searchRoomService,
+  checkInService,
+  getInfoCheckInByRoom,
+  checkOutService,
 };

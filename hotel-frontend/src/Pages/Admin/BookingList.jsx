@@ -1,7 +1,7 @@
 import { ConfigProvider, DatePicker, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { formatCurrency } from '../../utils/CommonUtils';
-import { getBookingByStatusService } from '../../service/bookingService';
+import { getBookingService } from '../../service/bookingService';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import viVN from 'antd/lib/locale/vi_VN';
@@ -41,7 +41,7 @@ const BookingList = () => {
       width: '10%',
       align: 'center',
       render: (timeCome) => {
-        return dayjs(timeCome).format('DD/MM/YYYY');
+        return dayjs(timeCome).format('HH:mm:ss DD/MM/YYYY');
       },
     },
     {
@@ -51,7 +51,7 @@ const BookingList = () => {
       width: '10%',
       align: 'center',
       render: (timeGo) => {
-        return dayjs(timeGo).format('DD/MM/YYYY');
+        return dayjs(timeGo).format('HH:mm:ss DD/MM/YYYY');
       },
     },
     {
@@ -96,10 +96,10 @@ const BookingList = () => {
   };
 
   const getBookings = useCallback(async () => {
-    const res = await getBookingByStatusService('1');
+    const res = await getBookingService('ALL');
     const dataWithKeys = res?.data
-      .map((item, index) => ({ ...item, key: index }))
-      .filter((item) => dayjs(item.timeCome).isSame(selectedMonth, 'month')); // Lọc các bản ghi có timeCome nằm trong tháng đã chọn
+      ?.map((item, index) => ({ ...item, key: index }))
+      ?.filter((item) => dayjs(item.timeCome).isSame(selectedMonth, 'month')); // Lọc các bản ghi có timeCome nằm trong tháng đã chọn
     setData(dataWithKeys);
   }, [selectedMonth]);
 
@@ -107,8 +107,16 @@ const BookingList = () => {
     getBookings();
   }, [getBookings]);
 
+  // Thêm phương thức reloadData để gọi lại API
+  useEffect(() => {
+    const bookingListElement = document.querySelector('#booking-list');
+    if (bookingListElement) {
+      bookingListElement.reloadData = getBookings;
+    }
+  }, [getBookings]);
+
   return (
-    <div className="">
+    <div id="booking-list">
       <div className="month-picker flex gap-2 items-center">
         <div className="font-bold">Vui lòng chọn tháng:</div>
         <ConfigProvider locale={viVN}>
@@ -122,7 +130,13 @@ const BookingList = () => {
         </ConfigProvider>
       </div>
 
-      <Table columns={columns} dataSource={data} bordered className="mt-3" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        bordered
+        className="mt-3"
+        pagination={{ pageSize: 5 }}
+      />
     </div>
   );
 };

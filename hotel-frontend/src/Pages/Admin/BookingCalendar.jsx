@@ -60,8 +60,16 @@ const BookingCalendar = () => {
     getBookingSchedule();
   }, []);
 
+  // Thêm phương thức reloadData để gọi lại API
+  useEffect(() => {
+    const bookingCalenderElement = document.querySelector('#booking-calender');
+    if (bookingCalenderElement) {
+      bookingCalenderElement.reloadData = getBookingSchedule;
+    }
+  }, []);
+
   return (
-    <div className="calendar-container">
+    <div className="calendar-container" id="booking-calender">
       {/* Month Picker */}
       <div className="month-picker flex gap-2 items-center">
         <div className="font-bold">Vui lòng chọn tháng:</div>
@@ -101,7 +109,7 @@ const BookingCalendar = () => {
                 return (
                   <div
                     key={dayIndex}
-                    className="calendar-booking"
+                    className="calendar-booking truncate"
                     style={{
                       gridColumn: `span ${booking.duration}`,
                     }}

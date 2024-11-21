@@ -25,7 +25,7 @@ const Login = () => {
     if (res?.errCode === 0) {
       setUser(res.user);
 
-      if (res?.user?.roleId === 'ADMIN') {
+      if (res?.user?.roleId === 'Quản lý') {
         navigate('/admin');
       } else {
         navigate('/');

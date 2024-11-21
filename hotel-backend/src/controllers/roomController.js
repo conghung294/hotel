@@ -16,9 +16,9 @@ let handleGetRoom = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -51,9 +51,9 @@ let handleGetRoomAvailable = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -69,9 +69,60 @@ let searchRoomByName = async (req, res) => {
     });
   } catch (e) {
     return res.status(500).json({
-      EM: 'error from sever',
-      EC: '-1',
-      DT: '',
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
+let handleCheckIn = async (req, res) => {
+  try {
+    let data = await RoomService.checkInRoom(req.body);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: data,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
+let handleGetInfoCheckIn = async (req, res) => {
+  try {
+    let data = await RoomService.getInfoCheckIn(req.query?.id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: data,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
+let handleCheckOut = async (req, res) => {
+  try {
+    let data = await RoomService.checkOut(req.body);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: data,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
     });
   }
 };
@@ -83,4 +134,7 @@ module.exports = {
   handleDeleteRoom,
   handleGetRoomAvailable,
   searchRoomByName,
+  handleCheckIn,
+  handleGetInfoCheckIn,
+  handleCheckOut,
 };

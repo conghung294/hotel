@@ -31,6 +31,10 @@ const handleResetPassword = (data) => {
   return axios.post('/api/reset-password', data);
 };
 
+const searchUserService = (name) => {
+  return axios.get(`/api/search-user?name=${name}`);
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -39,4 +43,5 @@ export {
   editUserService,
   handleForgotPassword,
   handleResetPassword,
+  searchUserService,
 };

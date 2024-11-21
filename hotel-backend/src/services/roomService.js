@@ -1,5 +1,6 @@
 import db from '../models/index';
 import { Op } from 'sequelize';
+import { combineDateTimeNative } from '../utils/CommonUtils';
 
 let createNewRoom = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -8,7 +9,7 @@ let createNewRoom = (data) => {
         name: data.name,
         status: data.status,
         typeId: data.typeId,
-        status: 'TRỐNG',
+        status: 'ĐANG TRỐNG',
       });
 
       let roomtype = await db.Roomtype.findOne({
@@ -114,23 +115,25 @@ let deleteRoom = async (id) => {
   }
 };
 
-let getRoomAvailableByRoomtype = async (typeId, timeGo, timeCome) => {
+let getRoomAvailableByRoomtype = async (typeId, timeCome, timeGo) => {
+  const timeSetting = await db.Setting.findOne({ order: [['updatedAt', 'DESC']] });
+  const time = timeSetting
+    ? timeSetting
+    : {
+        timeCome: '14:00:00',
+        timeGo: '12:00:00',
+      };
   try {
     if (typeId && timeGo && timeCome) {
-      // Lấy danh sách các phòng đã được đặt trong khoảng thời gian yêu cầu
       const bookedRooms = await db.Booking.findAll({
         where: {
           status: '1',
-          [Op.or]: [
-            {
-              timeCome: {
-                [Op.lte]: timeGo, // Thời gian đến <= thời gian đi người dùng chọn
-              },
-              timeGo: {
-                [Op.gte]: timeCome, // Thời gian đi >= thời gian đến người dùng chọn
-              },
-            },
-          ],
+          timeCome: {
+            [Op.lte]: combineDateTimeNative(timeGo, time.timeGo), // Thời gian đến <= thời gian đi người dùng chọn
+          },
+          timeGo: {
+            [Op.gte]: combineDateTimeNative(timeCome, time.timeCome), // Thời gian đi >= thời gian đến người dùng chọn
+          },
         },
       });
 
@@ -174,7 +177,125 @@ const searchRoomByName = async (name) => {
 
     return rooms;
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi tìm kiếm phòng.' });
+    console.log(error);
+  }
+};
+
+const checkInRoom = async (data) => {
+  try {
+    const timeSetting = await db.Setting.findOne({ order: [['updatedAt', 'DESC']] });
+    const time = timeSetting
+      ? timeSetting
+      : {
+          timeCome: '14:00:00',
+          timeGo: '12:00:00',
+        };
+
+    const user = await db.User.create(data.user);
+    if (user) {
+      await db.Booking.create({
+        userId: user?.id,
+        roomId: data?.roomId,
+        typeroomId: data?.typeroomId,
+        timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
+        timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
+        price: data?.price,
+        status: '2',
+      });
+      let room = await db.Room.findOne({
+        where: { id: data.roomId },
+        raw: false,
+      });
+      if (room) {
+        room.status = 'ĐANG SỬ DỤNG';
+        await room.save();
+      }
+      return 'Nhận phòng thành công';
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getInfoCheckIn = async (roomId) => {
+  try {
+    const occupiedRoom = await db.Booking.findOne({
+      where: {
+        status: '2', // Booking đã xác nhận (có thể người dùng vẫn chưa trả phòng)
+        roomId: roomId,
+      },
+      include: [
+        {
+          model: db.User,
+          as: 'bookingData',
+        },
+        {
+          model: db.Roomtype,
+          as: 'typeData',
+        },
+        {
+          model: db.Room,
+          as: 'roomData',
+        },
+      ],
+    });
+
+    return occupiedRoom;
+  } catch (error) {
+    console.error('Error fetching occupied rooms:', error);
+  }
+};
+
+const checkOut = async (data) => {
+  const t = await db.sequelize.transaction(); // Bắt đầu một transaction
+  try {
+    // Tìm kiếm thông tin đặt phòng
+    let booking = await db.Booking.findOne({
+      where: { id: data.bookingId },
+      raw: false,
+      transaction: t,
+    });
+
+    // Kiểm tra nếu đặt phòng tồn tại và chưa trả phòng
+    if (booking) {
+      if (booking.status !== '3') {
+        // Trạng thái 3 có thể là trạng thái 'đã trả phòng'
+        booking.status = '3'; // Cập nhật trạng thái trả phòng
+        await booking.save({ transaction: t });
+      } else {
+        throw new Error('Booking đã được trả phòng trước đó');
+      }
+    } else {
+      throw new Error('Không tìm thấy đặt phòng');
+    }
+
+    // Tìm kiếm thông tin phòng
+    let room = await db.Room.findOne({
+      where: { id: data.roomId },
+      raw: false,
+      transaction: t,
+    });
+
+    // Kiểm tra nếu phòng tồn tại và chưa được đánh dấu là trống
+    if (room) {
+      if (room.status !== 'ĐANG TRỐNG') {
+        // Trạng thái "ĐANG TRỐNG" là trạng thái có sẵn
+        room.status = 'ĐANG TRỐNG'; // Cập nhật trạng thái phòng
+        await room.save({ transaction: t });
+      } else {
+        throw new Error('Phòng đã ở trạng thái trống');
+      }
+    } else {
+      throw new Error('Không tìm thấy phòng');
+    }
+
+    // Commit transaction nếu mọi thứ thành công
+    await t.commit();
+    console.log('Trả phòng thành công');
+  } catch (error) {
+    // Nếu có lỗi, rollback transaction
+    await t.rollback();
+    console.error('Trả phòng lỗi:', error.message);
   }
 };
 
@@ -185,4 +306,7 @@ module.exports = {
   deleteRoom,
   getRoomAvailableByRoomtype,
   searchRoomByName,
+  checkInRoom,
+  getInfoCheckIn,
+  checkOut,
 };

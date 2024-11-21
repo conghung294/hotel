@@ -1,15 +1,23 @@
-import { where } from 'sequelize';
 import db from '../models/index';
 import emailService from '../services/emailService';
+import { combineDateTimeNative } from '../utils/CommonUtils';
+import { Op } from 'sequelize';
 
 let createNewBooking = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const timeSetting = await db.Setting.findOne({ order: [['updatedAt', 'DESC']] });
+      const time = timeSetting
+        ? timeSetting
+        : {
+            timeCome: '14:00:00',
+            timeGo: '12:00:00',
+          };
       const booking = await db.Booking.create({
         userId: data.userId,
         typeroomId: data.typeroomId,
-        timeCome: data.timeCome,
-        timeGo: data.timeGo,
+        timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
+        timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
         price: data.price,
         status: data.status,
       });
@@ -18,6 +26,7 @@ let createNewBooking = (data) => {
           return {
             bookingId: booking.id,
             serviceId: item.id,
+            quantity: 1,
           };
         });
 
@@ -38,7 +47,32 @@ let getBooking = async (bookingId) => {
   try {
     let bookings = '';
     if (bookingId === 'ALL') {
-      bookings = await db.Booking.findAll();
+      bookings = await db.Booking.findAll({
+        where: {
+          status: {
+            [Op.ne]: '0', // Lấy các booking có status khác '0'
+          },
+        },
+        include: [
+          {
+            model: db.User,
+            as: 'bookingData',
+          },
+          {
+            model: db.Roomtype,
+            as: 'typeData',
+          },
+          {
+            model: db.Room,
+            as: 'roomData',
+          },
+          {
+            model: db.Service,
+            through: { attributes: [] }, // Lấy thông tin dịch vụ mà không cần thông tin từ bảng BookingService
+            as: 'services',
+          },
+        ],
+      });
     }
     if (bookingId && bookingId !== 'ALL') {
       bookings = await db.Booking.findOne({
@@ -148,7 +182,6 @@ let getBookingSchedule = async () => {
       include: [
         {
           model: db.Booking,
-          // where: { status: '1' },
           as: 'roomData',
           attributes: ['timeCome', 'timeGo'],
           include: [
@@ -160,6 +193,7 @@ let getBookingSchedule = async () => {
           ],
         },
       ],
+      order: [['id', 'ASC']],
     });
 
     // Format the data

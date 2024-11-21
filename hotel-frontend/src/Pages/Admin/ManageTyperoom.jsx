@@ -41,8 +41,10 @@ const ManageTyperoom = () => {
       width: '20%',
       align: 'center',
       render: (_, record) => (
-        <div className="w-[240px] h-[160px] rounded-lg overflow-hidden flex justify-center">
-          <img src={record?.image} alt="Ảnh hạng phòng" className="w-full h-full object-cover" />
+        <div className="flex justify-center items-center">
+          <div className="w-[180px] h-[120px] rounded-lg overflow-hidden ">
+            <img src={record?.image} alt="Ảnh hạng phòng" className="w-full h-full object-cover" />
+          </div>
         </div>
       ),
     },

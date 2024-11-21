@@ -1,0 +1,40 @@
+.header {
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #3d6b99;
+}
+.header .logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.header .header-right {
+  display: flex;
+  align-items: center;
+}
+.header .header-right .booking-btn {
+  background-color: #ff8127;
+  color: #ffffff;
+  border: none;
+  transition: background-color 0.3s ease-in-out;
+}
+.header .header-right .booking-btn:hover {
+  background-color: #ffa95d;
+  color: #fff;
+}
+.header .header-right .login-btn {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  transition: background-color 0.3s ease-in-out;
+}
+.header .header-right .login-btn:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}/*# sourceMappingURL=Header.css.map */

@@ -41,8 +41,6 @@ const Booking = () => {
   );
 
   const handleSubmit = async () => {
-    console.log(dates);
-
     if (!user) {
       toast.error('Vui lòng đăng nhập để thực hiện chức năng đặt phòng!');
       return;
