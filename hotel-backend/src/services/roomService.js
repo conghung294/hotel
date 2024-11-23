@@ -31,12 +31,73 @@ let createNewRoom = (data) => {
   });
 };
 
+// let getRoom = async (roomId) => {
+//   try {
+//     let rooms = '';
+//     if (roomId === 'ALL') {
+//       rooms = await db.Room.findAll({
+//         include: [
+//           {
+//             model: db.Roomtype,
+//             as: 'roomtypeData',
+//             attributes: ['name', 'price'],
+//             nested: false,
+//           },
+//         ],
+//       });
+//     }
+//     if (roomId && roomId !== 'ALL') {
+//       rooms = db.Room.findOne({
+//         where: { id: typeId },
+//       });
+//     }
+//     return rooms;
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
+
 let getRoom = async (roomId) => {
   try {
     let rooms = '';
     if (roomId === 'ALL') {
+      // Lấy giá trị comeFirst từ bản ghi Setting mới nhất
+      const setting = await db.Setting.findOne({
+        order: [['updatedAt', 'DESC']],
+      });
+
+      if (!setting || !setting.comeFirst) {
+        throw new Error('Không tìm thấy giá trị comeFirst trong bảng Setting.');
+      }
+
+      // Chuyển đổi comeFirst thành khoảng thời gian
+      const [hours, minutes, seconds] = setting.comeFirst.split(':').map(Number);
+      const currentTime = new Date();
+      const adjustedTime = new Date(currentTime.getTime());
+      adjustedTime.setHours(currentTime.getHours() + hours);
+      adjustedTime.setMinutes(currentTime.getMinutes() + minutes);
+      adjustedTime.setSeconds(currentTime.getSeconds() + seconds);
+
       rooms = await db.Room.findAll({
+        order: [['id', 'ASC']],
         include: [
+          {
+            model: db.Booking,
+            as: 'roomData',
+            where: {
+              timeCome: {
+                [Op.between]: [currentTime, adjustedTime],
+              },
+              status: 1,
+            },
+            include: [
+              {
+                model: db.User,
+                as: 'bookingData',
+              },
+            ],
+            required: false, // Để lấy cả phòng không có booking
+          },
           {
             model: db.Roomtype,
             as: 'roomtypeData',
@@ -45,13 +106,23 @@ let getRoom = async (roomId) => {
           },
         ],
       });
-    }
-    if (roomId && roomId !== 'ALL') {
-      rooms = db.Room.findOne({
-        where: { id: typeId },
+
+      // Cập nhật trạng thái phòng dựa trên booking
+      const roomData = rooms.map((room) => {
+        const hasUpcomingBooking = room.roomData && room.roomData.length > 0;
+        return {
+          ...room.toJSON(),
+          status: hasUpcomingBooking ? 'SẮP ĐẾN' : room.status,
+        };
       });
+
+      return roomData;
     }
-    return rooms;
+    // if (roomId && roomId !== 'ALL') {
+    //   rooms = db.Room.findOne({
+    //     where: { id: typeId },
+    //   });
+    // }
   } catch (e) {
     console.log(e);
   }
@@ -191,27 +262,49 @@ const checkInRoom = async (data) => {
           timeGo: '12:00:00',
         };
 
-    const user = await db.User.create(data.user);
-    if (user) {
-      await db.Booking.create({
-        userId: user?.id,
-        roomId: data?.roomId,
-        typeroomId: data?.typeroomId,
-        timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
-        timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
-        price: data?.price,
-        status: '2',
-      });
-      let room = await db.Room.findOne({
-        where: { id: data.roomId },
-        raw: false,
-      });
-      if (room) {
-        room.status = 'ĐANG SỬ DỤNG';
-        await room.save();
+    if (data?.bookingId && data?.user) {
+      await db.User.update(
+        { ...data?.user },
+        {
+          where: {
+            id: data?.userId,
+          },
+        }
+      );
+      await db.Booking.update(
+        {
+          status: '2',
+        },
+        {
+          where: {
+            id: data?.bookingId,
+          },
+        }
+      );
+    } else {
+      const user = await db.User.create(data.user);
+      if (user) {
+        await db.Booking.create({
+          userId: user?.id,
+          roomId: data?.roomId,
+          typeroomId: data?.typeroomId,
+          timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
+          timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
+          price: data?.price,
+          status: '2',
+        });
       }
-      return 'Nhận phòng thành công';
     }
+
+    let room = await db.Room.findOne({
+      where: { id: data.roomId },
+      raw: false,
+    });
+    if (room) {
+      room.status = 'ĐANG SỬ DỤNG';
+      await room.save();
+    }
+    return 'Nhận phòng thành công';
   } catch (error) {
     console.log(error);
   }
@@ -236,6 +329,14 @@ const getInfoCheckIn = async (roomId) => {
         {
           model: db.Room,
           as: 'roomData',
+        },
+        {
+          model: db.Service, // Thêm thông tin dịch vụ
+          as: 'services',
+          attributes: ['id', 'name', 'price', 'description'], // Các trường cần lấy từ bảng Service
+          through: {
+            attributes: ['quantity'], // Thêm thông tin về quantity từ bảng trung gian BookingService
+          },
         },
       ],
     });

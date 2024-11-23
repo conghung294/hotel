@@ -8,6 +8,7 @@ import { io } from 'socket.io-client';
 import { useUser } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalSetting from '../Modal/ModalSetting';
+import { FaHome } from 'react-icons/fa';
 
 const socket = io('http://localhost:8080');
 
@@ -80,35 +81,44 @@ const HeaderAdmin = () => {
         <ul className="px-20 flex items-center justify-between">
           <div>
             <li
+              onClick={() => handleTabClick('admin')}
+              className={`${activeTab === 'admin' ? 'active' : ''} `}
+            >
+              <Link to="/admin">
+                <FaHome size={20} />
+              </Link>
+            </li>
+
+            <li
               onClick={() => handleTabClick('manageUser')}
-              className={activeTab === 'manageUser' ? 'active' : ''}
+              className={`${activeTab === 'manageUser' ? 'active' : ''} `}
             >
               <Link to="/admin/manageUser">Quản lý người dùng</Link>
             </li>
             <li
               onClick={() => handleTabClick('manageTyperoom')}
-              className={activeTab === 'manageTyperoom' ? 'active' : ''}
+              className={`${activeTab === 'manageTyperoom' ? 'active' : ''} `}
             >
               <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>
             </li>
 
             <li
               onClick={() => handleTabClick('manageRoom')}
-              className={activeTab === 'manageRoom' ? 'active' : ''}
+              className={`${activeTab === 'manageRoom' ? 'active' : ''} `}
             >
               <Link to="/admin/manageRoom">Quản lý phòng</Link>
             </li>
 
             <li
               onClick={() => handleTabClick('manageService')}
-              className={activeTab === 'manageService' ? 'active' : ''}
+              className={`${activeTab === 'manageService' ? 'active' : ''} `}
             >
               <Link to="/admin/manageService">Quản lý dịch vụ</Link>
             </li>
 
             <li
               onClick={() => handleTabClick('booking')}
-              className={activeTab === 'booking' ? 'active' : ''}
+              className={`${activeTab === 'booking' ? 'active' : ''} `}
             >
               <Link to="/admin/booking">Lịch đặt phòng</Link>
             </li>

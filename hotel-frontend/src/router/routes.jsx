@@ -14,7 +14,6 @@ import Entertainment from '../Pages/Entertainment';
 import Cuisine from '../Pages/Cuisine';
 import Locaion from '../Pages/Locaion';
 import ManageUser from '../Pages/Admin/ManageUser';
-import { Bill } from '../components/Print/Bill';
 
 export const routes = [
   {

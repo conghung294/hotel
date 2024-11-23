@@ -53,6 +53,11 @@ const BookingSchedule = () => {
       if (bookingCalenderComponent?.reloadData) {
         bookingCalenderComponent.reloadData(); // Gọi hàm reload trong BookingList
       }
+    } else if (key === '3') {
+      const bookingDiagramComponent = document.querySelector('#booking-diagram');
+      if (bookingDiagramComponent?.reloadData) {
+        bookingDiagramComponent.reloadData(); // Gọi hàm reload trong BookingList
+      }
     }
   };
 

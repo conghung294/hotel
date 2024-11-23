@@ -2,14 +2,12 @@
 import { Form, Input, Modal, Select, Table } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import DatePickerCustom from '../DatePickerCustom';
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';
-import { checkInService, getRoomServiceAvailable } from '../../service/roomService';
+import { checkInService } from '../../service/roomService';
 import { toast } from 'react-toastify';
 
-const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
-  const [timeCome, setTimeCome] = useState(dayjs().startOf('day'));
-  const [timeGo, setTimeGo] = useState(dayjs().startOf('day').add(1, 'day'));
+const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
   // Sử dụng useMemo để cập nhật columns khi timeCome hoặc timeGo thay đổi
@@ -43,9 +41,9 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         key: 'timeCome',
         width: '15%',
         align: 'center',
-        render: () => (
+        render: (_, record) => (
           <div className="h-[40px]">
-            <DatePickerCustom date={timeCome} setDate={setTimeCome} disabled={true} />
+            <DatePickerCustom date={dayjs(record?.roomData[0]?.timeCome)} disabled={true} />
           </div>
         ),
       },
@@ -55,9 +53,9 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         key: 'timeGo',
         width: '15%',
         align: 'center',
-        render: () => (
+        render: (_, record) => (
           <div className="h-[40px]">
-            <DatePickerCustom date={timeGo} setDate={setTimeGo} />
+            <DatePickerCustom date={dayjs(record?.roomData[0]?.timeGo)} disabled={true} />
           </div>
         ),
       },
@@ -67,7 +65,14 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         key: 'totalTime',
         width: '10%',
         align: 'center',
-        render: () => <div>{dayjs(timeGo).diff(dayjs(timeCome), 'day')} ngày</div>,
+        render: (_, record) => (
+          <div>
+            {dayjs(record?.roomData[0]?.timeGo)
+              .startOf('day')
+              .diff(dayjs(record?.roomData[0]?.timeCome).startOf('day'), 'day')}
+            <span className="ml-1">ngày</span>
+          </div>
+        ),
       },
       {
         title: 'Thành tiền',
@@ -76,52 +81,42 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         width: '10%',
         align: 'center',
         render: (_, record) => {
-          const totalDays = dayjs(timeGo).diff(dayjs(timeCome), 'day');
+          const totalDays = dayjs(record?.roomData[0]?.timeGo)
+            .startOf('day')
+            .diff(dayjs(record?.roomData[0]?.timeCome).startOf('day'), 'day');
           const totalPrice = totalDays * (record?.roomtypeData?.price || 0);
           return <div>{formatCurrency(totalPrice)}</div>;
         },
       },
     ],
-    [timeCome, timeGo]
-  ); // dependencies đảm bảo columns sẽ được cập nhật khi timeCome hoặc timeGo thay đổi
+    []
+  );
 
   const onFinish = async (value) => {
-    const res = await getRoomServiceAvailable(room?.typeId, timeCome, timeGo);
-    if (res?.errCode === 0) {
-      const roomsAvail = res.data;
-      const check = roomsAvail.some((item) => item.id === room.id);
-      if (check) {
-        const data = {
-          user: value,
-          roomId: room?.id,
-          typeroomId: room?.typeId,
-          timeCome: timeCome,
-          timeGo: timeGo,
-          price: dayjs(timeGo).diff(dayjs(timeCome), 'day') * room?.roomtypeData?.price,
-          status: '1',
-        };
+    const res = await checkInService({
+      bookingId: room?.roomData[0]?.id,
+      user: value,
+      userId: room?.roomData[0]?.userId,
+    });
 
-        const res = await checkInService(data);
-
-        if (res.errCode === 0) {
-          form.resetFields();
-          setModalOpen(false);
-          toast.success('Nhận phòng thành công!');
-          getRoom();
-        } else {
-          toast.error('Thất bại!');
-        }
-      } else {
-        toast.error('Đã có người đặt phòng trong khoảng thời gian này!');
-      }
+    if (res.errCode === 0) {
+      toast.success('Nhận phòng thành công!');
+      setModalOpen(false);
+      getRoom();
     } else {
-      toast.error(res?.errMessage);
+      toast.error('Thất bại!');
     }
   };
 
+  useEffect(() => {
+    if (room) {
+      form.setFieldsValue(room?.roomData[0]?.bookingData);
+    }
+  }, [room, form]);
+
   return (
     <Modal
-      title={'Nhận phòng nhanh'}
+      title={'Nhận phòng'}
       centered
       open={modalOpen}
       onOk={form.submit}
@@ -147,16 +142,7 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
       >
         <div className="flex px-10 mt-10 gap-10">
           <div className="w-[50%]">
-            <Form.Item
-              label="Họ và tên"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập họ và tên!',
-                },
-              ]}
-            >
+            <Form.Item label="Họ và tên" name="name">
               <Input />
             </Form.Item>
             <Form.Item
@@ -204,4 +190,4 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
   );
 };
 
-export default ModalCheckIn;
+export default ModalBookingComming;

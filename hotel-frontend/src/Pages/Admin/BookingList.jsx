@@ -15,7 +15,7 @@ const BookingList = () => {
       title: 'Thời gian đặt',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: '10%',
+      width: '9%',
       align: 'center',
       render: (createdAt) => {
         return dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY');
@@ -25,7 +25,7 @@ const BookingList = () => {
       title: 'Khách đặt',
       dataIndex: 'name',
       key: 'name',
-      width: '15%',
+      width: '12%',
       align: 'center',
       render: (_, record) => (
         <div>
@@ -38,7 +38,7 @@ const BookingList = () => {
       title: 'Thời gian đến',
       dataIndex: 'timeCome',
       key: 'timeCome',
-      width: '10%',
+      width: '9%',
       align: 'center',
       render: (timeCome) => {
         return dayjs(timeCome).format('HH:mm:ss DD/MM/YYYY');
@@ -48,7 +48,7 @@ const BookingList = () => {
       title: 'Thời gian đi',
       dataIndex: 'timeGo',
       key: 'timeGo',
-      width: '10%',
+      width: '9%',
       align: 'center',
       render: (timeGo) => {
         return dayjs(timeGo).format('HH:mm:ss DD/MM/YYYY');
@@ -72,7 +72,7 @@ const BookingList = () => {
       title: 'Dịch vụ',
       dataIndex: 'service',
       key: 'service',
-      width: '20%',
+      width: '15%',
       render: (_, record) => (
         <div>
           {record?.services?.map((item) => {
@@ -85,9 +85,25 @@ const BookingList = () => {
       title: 'Tổng cộng',
       dataIndex: 'price',
       key: 'price',
-      width: '10%',
+      width: '8%',
       align: 'center',
       render: (_, record) => <div>{formatCurrency(record.price)}</div>,
+    },
+
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      width: '12%',
+      align: 'center',
+      render: (_, record) => (
+        <div>
+          {record?.status === '3'
+            ? 'ĐÃ THANH TOÁN'
+            : record?.status === '2'
+            ? 'ĐANG SỬ DỤNG'
+            : 'ĐẶT TRƯỚC'}
+        </div>
+      ),
     },
   ];
 

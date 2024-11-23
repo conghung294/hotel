@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getServiceServiceByBooking, saveSelectedServices } from '../../service/serviceService';
 import { formatCurrency } from '../../utils/CommonUtils';
 
-const ModalBookingService = ({ modalOpen, setModalOpen, bookingId }) => {
+const ModalBookingService = ({ modalOpen, setModalOpen, bookingId, getDataCheckIn }) => {
   const [data, setData] = useState([]);
 
   const updateQuantity = (recordKey, change) => {
@@ -29,6 +29,7 @@ const ModalBookingService = ({ modalOpen, setModalOpen, bookingId }) => {
     if (res.errCode === 0) {
       toast.success('Lưu thông tin thành công!');
       setModalOpen(false);
+      getDataCheckIn();
     } else {
       toast.error(res?.errMessage || 'Đã xảy ra lỗi!');
     }

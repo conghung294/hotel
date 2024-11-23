@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 const ModalSetting = ({ modalOpen, setModalOpen }) => {
   const [timeCome, setTimeCome] = useState(dayjs('12:00', 'HH:mm'));
   const [timeGo, setTimeGo] = useState(dayjs('14:00', 'HH:mm'));
-  const [hour, setHour] = useState(dayjs('06', 'HH'));
+  const [hour, setHour] = useState(dayjs('06:00', 'HH:mm'));
 
   const handleTimeComeChange = (time) => {
     setTimeCome(time);
@@ -27,7 +27,7 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
     if (res.errCode === 0) {
       setTimeCome(dayjs(res.data?.timeCome, 'HH:mm'));
       setTimeGo(dayjs(res.data?.timeGo, 'HH:mm'));
-      setHour(dayjs(res.data?.comeFirst, 'HH'));
+      setHour(dayjs(res.data?.comeFirst, 'HH:mm'));
     } else {
       toast.error('Có lỗi xảy ra!');
     }
@@ -91,7 +91,7 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
           <TimePicker
             value={hour}
             onChange={handleHourChange}
-            format="HH"
+            format="HH:mm"
             showNow={false}
             allowClear={false}
           />

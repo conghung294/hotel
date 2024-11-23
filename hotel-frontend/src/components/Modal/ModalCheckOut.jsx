@@ -78,7 +78,15 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
       key: 'price',
       width: '10%',
       align: 'center',
-      render: (_, record) => <div>{formatCurrency(record?.price)}</div>,
+      render: (_, record) => (
+        <div>
+          {formatCurrency(
+            dayjs(record?.timeGo)
+              .startOf('day')
+              .diff(dayjs(record?.timeCome).startOf('day'), 'day') * record?.typeData?.price
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -109,18 +117,14 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
   });
 
   const onFinish = async () => {
-    try {
-      const res = await checkOutService({
-        bookingId: dataCheckIn?.id,
-        roomId: dataCheckIn?.roomId,
-      });
-      if (res.errCode === 0) {
-        handlePrint(); // Gọi hàm in
-      } else {
-        toast.error('Thất bại!');
-      }
-    } catch (error) {
-      console.error(error);
+    const res = await checkOutService({
+      bookingId: dataCheckIn?.id,
+      roomId: dataCheckIn?.roomId,
+    });
+    if (res.errCode === 0) {
+      handlePrint(); // Gọi hàm in
+    } else {
+      toast.error('Thất bại!');
     }
   };
 
@@ -244,6 +248,7 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
         modalOpen={openModalService}
         setModalOpen={setOpenModalService}
         bookingId={dataCheckIn?.id}
+        getDataCheckIn={getDataCheckIn}
       />
     </Modal>
   );
