@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Form, Input, InputNumber, Modal } from 'antd';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
@@ -111,6 +110,22 @@ const ModalRoomtype = ({ modalOpen, setModalOpen, getRoomtype, action, currentRo
           name="price"
           label="Giá (VNĐ)"
           rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
+        >
+          <InputNumber min={0} style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          name="people"
+          label="Số người ở"
+          rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
+        >
+          <InputNumber min={1} style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          name="area"
+          label="Diện tích (m²)"
+          rules={[{ required: true, message: 'Vui lòng diện tích!' }]}
         >
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>

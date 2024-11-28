@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      orderCode: {
+        type: Sequelize.STRING,
+      },
       userId: {
         type: Sequelize.INTEGER,
       },
@@ -25,6 +28,13 @@ module.exports = {
         type: Sequelize.DATE,
       },
       price: {
+        type: Sequelize.INTEGER,
+      },
+      paid: {
+        type: Sequelize.INTEGER,
+      },
+
+      sale: {
         type: Sequelize.INTEGER,
       },
 

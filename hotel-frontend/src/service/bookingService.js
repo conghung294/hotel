@@ -28,6 +28,18 @@ const deleteBookingService = (id) => {
   });
 };
 
+const getDailyRoomUse = (month, year) => {
+  return axios.get(`/api/get-daily-use`, {
+    params: { month, year },
+  });
+};
+
+const getRevenue = (month) => {
+  return axios.get(`/api/get-revenue`, {
+    params: { month },
+  });
+};
+
 export {
   createNewBookingService,
   getBookingService,
@@ -35,4 +47,6 @@ export {
   deleteBookingService,
   getBookingByStatusService,
   getBookingScheduleService,
+  getDailyRoomUse,
+  getRevenue,
 };

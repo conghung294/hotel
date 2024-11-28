@@ -126,10 +126,55 @@ const searchServiceByName = async (name) => {
     console.log(error);
   }
 };
+const updateBookingPrice = async (bookingId) => {
+  try {
+    // Tìm booking theo ID, bao gồm thông tin Roomtype và các Service liên quan
+    const booking = await db.Booking.findOne({
+      where: { id: bookingId },
+      include: [
+        {
+          model: db.Roomtype,
+          as: 'typeData', // Quan hệ với Roomtype
+          attributes: ['price'], // Chỉ lấy giá phòng
+        },
+        {
+          model: db.Service,
+          as: 'services', // Quan hệ với Service thông qua BookingService
+          attributes: ['price'], // Lấy giá dịch vụ
+          through: {
+            attributes: ['quantity'], // Lấy quantity từ bảng BookingService
+          },
+        },
+      ],
+    });
+
+    if (!booking) {
+      throw new Error(`Booking with ID ${bookingId} not found`);
+    }
+
+    // Tính tổng giá phòng
+    const roomPrice = booking.typeData.price || 0;
+
+    // Tính tổng giá dịch vụ
+    const serviceTotalPrice = booking.services.reduce((total, service) => {
+      const quantity = service.BookingService.quantity || 0; // Lấy quantity từ bảng trung gian
+      return total + service.price * quantity;
+    }, 0);
+
+    // Cập nhật giá tổng (roomPrice + serviceTotalPrice)
+    const updatedPrice = (roomPrice + serviceTotalPrice) * (1 - booking?.sale / 100);
+
+    await booking.update({ price: updatedPrice });
+  } catch (error) {
+    console.error(`Error updating booking price: ${error.message}`);
+  }
+};
 
 const updateServiceForBooking = async (data) => {
   try {
+    let bookingId = '';
     const dataService = data?.map(async (item) => {
+      bookingId = item?.bookingId;
       // Kiểm tra nếu số lượng bằng 0, thực hiện xóa dịch vụ khỏi bảng BookingService
       if (item?.quantity === 0) {
         // Xóa dịch vụ khỏi BookingService nếu quantity = 0
@@ -166,6 +211,7 @@ const updateServiceForBooking = async (data) => {
 
     // Chờ các promises hoàn thành
     await Promise.all(dataService);
+    await updateBookingPrice(bookingId);
   } catch (error) {
     console.log(error);
   }

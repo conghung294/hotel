@@ -5,6 +5,9 @@ import { getBookingService } from '../../service/bookingService';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import viVN from 'antd/lib/locale/vi_VN';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8080');
 
 const BookingList = () => {
   const [data, setData] = useState([]);
@@ -15,7 +18,7 @@ const BookingList = () => {
       title: 'Thời gian đặt',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: '9%',
+      width: '8%',
       align: 'center',
       render: (createdAt) => {
         return dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY');
@@ -38,7 +41,7 @@ const BookingList = () => {
       title: 'Thời gian đến',
       dataIndex: 'timeCome',
       key: 'timeCome',
-      width: '9%',
+      width: '8%',
       align: 'center',
       render: (timeCome) => {
         return dayjs(timeCome).format('HH:mm:ss DD/MM/YYYY');
@@ -48,7 +51,7 @@ const BookingList = () => {
       title: 'Thời gian đi',
       dataIndex: 'timeGo',
       key: 'timeGo',
-      width: '9%',
+      width: '8%',
       align: 'center',
       render: (timeGo) => {
         return dayjs(timeGo).format('HH:mm:ss DD/MM/YYYY');
@@ -58,7 +61,7 @@ const BookingList = () => {
       title: 'Loại phòng',
       dataIndex: ['typeData', 'name'],
       key: 'typeroom',
-      width: '15%',
+      width: '14%',
       align: 'center',
     },
     {
@@ -88,6 +91,14 @@ const BookingList = () => {
       width: '8%',
       align: 'center',
       render: (_, record) => <div>{formatCurrency(record.price)}</div>,
+    },
+    {
+      title: 'Đã trả',
+      dataIndex: 'paid',
+      key: 'paid',
+      width: '8%',
+      align: 'center',
+      render: (_, record) => <div>{formatCurrency(record?.paid)}</div>,
     },
 
     {
@@ -123,13 +134,23 @@ const BookingList = () => {
     getBookings();
   }, [getBookings]);
 
-  // Thêm phương thức reloadData để gọi lại API
   useEffect(() => {
-    const bookingListElement = document.querySelector('#booking-list');
-    if (bookingListElement) {
-      bookingListElement.reloadData = getBookings;
-    }
+    socket.on('confirmSuccess', () => {
+      getBookings();
+    });
+
+    return () => {
+      socket.off('confirmSuccess');
+    };
   }, [getBookings]);
+
+  // Thêm phương thức reloadData để gọi lại API
+  // useEffect(() => {
+  //   const bookingListElement = document.querySelector('#booking-list');
+  //   if (bookingListElement) {
+  //     bookingListElement.reloadData = getBookings;
+  //   }
+  // }, [getBookings]);
 
   return (
     <div id="booking-list">
@@ -151,7 +172,7 @@ const BookingList = () => {
         dataSource={data}
         bordered
         className="mt-3"
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 4 }}
       />
     </div>
   );

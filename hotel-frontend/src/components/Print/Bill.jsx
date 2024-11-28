@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { forwardRef } from 'react';
 import { formatCurrency } from '../../utils/CommonUtils';
 import dayjs from 'dayjs';
@@ -70,7 +69,7 @@ export const Bill = forwardRef((props, ref) => {
           <div className="w-[25%] font-bold">Thành tiền</div>
         </div>
         <div className="flex mt-3 pb-4">
-          <div className="w-[25%]">Thời gian ở</div>
+          <div className="w-[25%]">{data?.typeData?.name}</div>
           <div className="w-[25%]">{formatCurrency(data?.typeData?.price)}</div>
           <div className="w-[25%]">
             {dayjs(data?.timeGo).startOf('day').diff(dayjs(data?.timeCome).startOf('day'), 'day')}
@@ -92,11 +91,23 @@ export const Bill = forwardRef((props, ref) => {
             );
           })}
 
-        <div className="flex border-t-2 border-black pt-4 border-dashed">
-          <div className="w-[25%] font-bold">Tổng thanh toán</div>
-          <div className="w-[25%]"></div>
-          <div className="w-[25%]"></div>
+        <div className="flex border-t-2 border-black pt-4 border-dashed justify-between">
+          <div className="w-[25%] font-bold">Tổng cộng</div>
           <div className="w-[25%]">{formatCurrency(totalPrice)}</div>
+        </div>
+        <div className="flex mt-4 justify-between">
+          <div className="w-[25%]">Giảm giá</div>
+          <div className="w-[25%]">{data?.sale} %</div>
+        </div>
+        <div className="flex mt-4 justify-between pb-4">
+          <div className="w-[25%]">Đã thanh toán</div>
+          <div className="w-[25%]">{formatCurrency(data?.paid)}</div>
+        </div>
+        <div className="flex pt-4 border-t justify-between">
+          <div className="w-[25%] font-bold">Còn cần trả</div>
+          <div className="w-[25%] font-bold">
+            {formatCurrency((totalPrice * (100 - data?.sale)) / 100 - data?.paid)}
+          </div>
         </div>
       </div>
     </div>

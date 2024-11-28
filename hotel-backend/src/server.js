@@ -16,7 +16,7 @@ let server = http.createServer(app);
 // Cấu hình Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // Cho phép client React kết nối
+    origin: '*', // Cho phép client React kết nối
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -24,7 +24,7 @@ const io = new Server(server, {
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -46,6 +46,7 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.set('io', io);
 
 viewEngine(app);
 initWebRoutes(app);
@@ -54,11 +55,7 @@ connectDB();
 
 // Lắng nghe kết nối socket
 io.on('connection', (socket) => {
-  // Gửi thông báo cho admin khi có đặt phòng mới
-  socket.on('booking', (data) => {
-    // Phát thông báo cho tất cả các admin
-    io.emit('bookingSuccess', data);
-  });
+  console.log('User connected');
 
   socket.on('disconnect', () => {
     console.log('User disconnected');

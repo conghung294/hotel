@@ -61,12 +61,9 @@ const Home = () => {
 
       <div className="flex px-20 flex-row-reverse" id="entertainment">
         <div className="w-1/2 ">
-          <div className="background-roomtype"></div>
+          <div className="background-entertainment"></div>
         </div>
-        <div
-          className="w-1/2 flex flex-col items-center px-[10%] justify-around bg-[#F7F7F7]"
-          id="room-type"
-        >
+        <div className="w-1/2 flex flex-col items-center px-[10%] justify-around bg-[#F7F7F7]">
           <div className="text-[#333333] leading-6 text-center text-[14px]">
             Khám phá những trải nghiệm độc đáo và đa dạng ngay tại khu nghỉ dưỡng
           </div>
@@ -126,14 +123,12 @@ const Home = () => {
           <div className="background-location flex items-center justify-center w-full h-full">
             <div className="w-[450px] h-[280px] bg-white z-10 flex items-center justify-center ">
               <div className="h-[calc(100%-8px)] w-[calc(100%-8px)] border border-gray-400 flex flex-col items-center  text-[#778788] justify-around">
-                <div className="text-[32px]  hover:opacity-80 cursor-pointer">
-                  Wafaifo Resort Hoi An
-                </div>
-                <div>Resort ★★★★★ - Hội An, Quảng Nam</div>
-                <div>328 Lý Thường Kiệt, Hội An, Tân An, Quảng Nam,</div>
+                <div className="text-[32px]  hover:opacity-80 cursor-pointer">PH Hotel Hoi An</div>
+                <div>Hotl ★★★★★</div>
+                <div>400 Bạch Mai, Hai bà Trưng, Hà Nội</div>
                 <div>560000, Vietnam</div>
-                <div>Phone +84 235 378 6999</div>
-                <div>E-mail info@wafaifo.com</div>
+                <div>Phone +84 235 123 7000</div>
+                <div>E-mail info@phuonghoa.com</div>
                 <Button type="primary" onClick={() => handleClickViewMap()}>
                   View on map
                 </Button>

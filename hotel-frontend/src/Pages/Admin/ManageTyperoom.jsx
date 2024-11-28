@@ -32,27 +32,35 @@ const ManageTyperoom = () => {
       title: 'Hạng phòng',
       dataIndex: 'name',
       key: 'name',
-      width: '15%',
+      width: '25%',
       align: 'center',
     },
     {
       title: 'Ảnh',
       key: 'image',
-      width: '20%',
+      width: '18%',
       align: 'center',
       render: (_, record) => (
         <div className="flex justify-center items-center">
-          <div className="w-[180px] h-[120px] rounded-lg overflow-hidden ">
+          <div className="w-[120px] h-[80px] rounded-lg overflow-hidden ">
             <img src={record?.image} alt="Ảnh hạng phòng" className="w-full h-full object-cover" />
           </div>
         </div>
       ),
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
-      width: '30%',
+      title: 'Số người',
+      dataIndex: 'people',
+      key: 'people',
+      align: 'center',
+      width: '10%',
+    },
+    {
+      title: 'Diện tích (m²)',
+      dataIndex: 'area',
+      key: 'area',
+      align: 'center',
+      width: '12%',
     },
     {
       title: 'Số lượng',
@@ -152,7 +160,7 @@ const ManageTyperoom = () => {
 
   return (
     <>
-      <div className="pt-10 px-20">
+      <div>
         <Space>
           <Button type="primary" onClick={() => handleAddRoomtype()}>
             <FiPlus /> Thêm mới
@@ -166,7 +174,7 @@ const ManageTyperoom = () => {
         </Space>
 
         <div className="mt-5">
-          <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
+          <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 3 }} />
         </div>
       </div>
 

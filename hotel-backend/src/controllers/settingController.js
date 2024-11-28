@@ -11,6 +11,7 @@ const getSetting = async (req, res) => {
           timeCome: '12:00',
           timeGo: '14:00',
           comeFirst: '06:00',
+          prePayment: 50,
         },
       });
     }

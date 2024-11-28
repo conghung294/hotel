@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Modal, Popconfirm, Space, Table } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,10 @@ import { deleteBookingService, getBookingByStatusService } from '../../service/b
 import { formatCurrency } from '../../utils/CommonUtils';
 import ModalConfirmBooking from './ModalConfirmBooking';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8080');
 
 const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
   const [bookingConfirm, setBookingConfirm] = useState([]);
@@ -44,7 +47,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       title: 'Khách đặt',
       dataIndex: 'name',
       key: 'name',
-      width: '20%',
+      width: '16%',
       align: 'center',
       render: (_, record) => (
         <div>
@@ -77,7 +80,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       title: 'Loại phòng',
       dataIndex: ['typeData', 'name'],
       key: 'typeroom',
-      width: '20%',
+      width: '16%',
       align: 'center',
     },
     {
@@ -85,15 +88,17 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       dataIndex: 'service',
       key: 'service',
       width: '20%',
-
       render: (_, record) => (
         <div>
-          {record?.services?.map((item) => {
-            return <div key={item?.id}>-{item?.name}</div>;
-          })}
+          {record?.services?.length > 0 ? (
+            record.services.map((item) => <div key={item?.id}>-{item?.name}</div>)
+          ) : (
+            <div>Không có</div>
+          )}
         </div>
       ),
     },
+
     {
       title: 'Tổng cộng',
       dataIndex: 'price',
@@ -101,6 +106,14 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
       width: '8%',
       align: 'center',
       render: (_, record) => <div>{formatCurrency(record.price)}</div>,
+    },
+    {
+      title: 'Đã trả',
+      dataIndex: 'paid',
+      key: 'paid',
+      width: '8%',
+      align: 'center',
+      render: (_, record) => <div>{formatCurrency(record.paid)}</div>,
     },
     {
       title: 'Hành động',
@@ -151,6 +164,18 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
   useEffect(() => {
     setCount(bookingConfirm.length);
   }, [bookingConfirm, setCount]);
+
+  useEffect(() => {
+    socket.on('bookingSuccess', () => {
+      console.log('helo');
+
+      getBookingWaitConfirm();
+    });
+
+    return () => {
+      socket.off('bookingSuccess');
+    };
+  }, []);
 
   return (
     <>

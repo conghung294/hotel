@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Form, Input, Modal, Select, Table } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import DatePickerCustom from '../DatePickerCustom';
@@ -136,7 +135,7 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
     >
       <Table columns={columns} dataSource={[room]} bordered pagination={false} />
       <Form
-        name="basic"
+        name="formCheckIn"
         labelCol={{
           span: 5,
         }}

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { DatePicker, Button } from 'antd';
 import dayjs from 'dayjs';
 import 'antd/dist/reset.css';

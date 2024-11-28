@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.BLOB('long'),
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
 
       quantity: {
@@ -25,7 +25,12 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER,
       },
-
+      people: {
+        type: Sequelize.INTEGER,
+      },
+      area: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

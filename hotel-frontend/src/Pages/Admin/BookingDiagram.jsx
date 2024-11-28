@@ -6,12 +6,16 @@ import ModalCheckIn from '../../components/Modal/ModalCheckIn';
 import { FaRegSquare } from 'react-icons/fa';
 import ModalCheckOut from '../../components/Modal/ModalCheckOut';
 import ModalBookingComming from '../../components/Modal/ModalBookingComming';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8080');
 
 const BookingDiagram = () => {
   const [data, setData] = useState([]);
   const [modalCheckInOpen, setModalCheckInOpen] = useState(false);
   const [modalCheckOutOpen, setModalCheckOutOpen] = useState(false);
   const [modalBookingCommingOpen, setModalBookingCommingOpen] = useState(false);
+
   const [choiceRoom, setChoiceRoom] = useState();
 
   const getRoom = useCallback(async () => {
@@ -68,11 +72,21 @@ const BookingDiagram = () => {
   }, [getRoom]);
 
   // Thêm phương thức reloadData để gọi lại API
+  // useEffect(() => {
+  //   const bookingListElement = document.querySelector('#booking-diagram');
+  //   if (bookingListElement) {
+  //     bookingListElement.reloadData = getRoom;
+  //   }
+  // }, [getRoom]);
+
   useEffect(() => {
-    const bookingListElement = document.querySelector('#booking-diagram');
-    if (bookingListElement) {
-      bookingListElement.reloadData = getRoom;
-    }
+    socket.on('confirmSuccess', () => {
+      getRoom();
+    });
+
+    return () => {
+      socket.off('confirmSuccess');
+    };
   }, [getRoom]);
 
   return (
@@ -133,8 +147,8 @@ const BookingDiagram = () => {
       />
 
       <ModalCheckOut
-        modalOpen={modalCheckOutOpen}
-        setModalOpen={setModalCheckOutOpen}
+        modalCheckOutOpen={modalCheckOutOpen}
+        setModalCheckOutOpen={setModalCheckOutOpen}
         room={choiceRoom}
         getRoom={getRoom}
       />

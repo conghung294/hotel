@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Form, Input, InputNumber, Modal } from 'antd';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';

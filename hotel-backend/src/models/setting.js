@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       timeCome: DataTypes.DATE,
       timeGo: DataTypes.DATE,
       comeFirst: DataTypes.DATE,
+      prePayment: DataTypes.INTEGER,
     },
     {
       sequelize,

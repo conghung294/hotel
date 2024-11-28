@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { Modal, TimePicker } from 'antd';
+import { InputNumber, Modal, TimePicker } from 'antd';
 import { useEffect, useState } from 'react';
 import { editSettingService, getSettingService } from '../../service/settingService';
 import { toast } from 'react-toastify';
@@ -9,6 +8,7 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
   const [timeCome, setTimeCome] = useState(dayjs('12:00', 'HH:mm'));
   const [timeGo, setTimeGo] = useState(dayjs('14:00', 'HH:mm'));
   const [hour, setHour] = useState(dayjs('06:00', 'HH:mm'));
+  const [prePay, setPrePay] = useState(50);
 
   const handleTimeComeChange = (time) => {
     setTimeCome(time);
@@ -28,6 +28,7 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
       setTimeCome(dayjs(res.data?.timeCome, 'HH:mm'));
       setTimeGo(dayjs(res.data?.timeGo, 'HH:mm'));
       setHour(dayjs(res.data?.comeFirst, 'HH:mm'));
+      setPrePay(res?.data?.prePayment);
     } else {
       toast.error('Có lỗi xảy ra!');
     }
@@ -38,6 +39,7 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
       timeCome: timeCome,
       timeGo: timeGo,
       comeFirst: hour,
+      prePayment: prePay,
     });
     if (res.errCode === 0) {
       toast.success('Cập nhật thành công!');
@@ -94,6 +96,17 @@ const ModalSetting = ({ modalOpen, setModalOpen }) => {
             format="HH:mm"
             showNow={false}
             allowClear={false}
+          />
+        </div>
+
+        <div className="flex justify-between mt-5">
+          Thanh toán trước (%)
+          <InputNumber
+            min={0}
+            max={100}
+            style={{ width: '136px' }}
+            value={prePay}
+            onChange={(value) => setPrePay(value)}
           />
         </div>
       </div>

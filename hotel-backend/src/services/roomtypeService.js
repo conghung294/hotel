@@ -10,6 +10,8 @@ let createNewRoomtype = (data) => {
         description: data.description,
         quantity: 0,
         price: data.price,
+        people: data?.people,
+        area: data?.area,
       });
       resolve({
         errCode: 0,
@@ -64,6 +66,8 @@ let updateRoomtype = async (data) => {
       roomtype.image = data.image;
       roomtype.description = data.description;
       roomtype.price = data.price;
+      roomtype.people = data?.people;
+      roomtype.area = data?.area;
 
       await roomtype.save();
       return {
@@ -164,6 +168,8 @@ let getRoomtypeAvailable = async (timeCome, timeGo) => {
           description: room.roomtypeData.description,
           image: Buffer.from(room.roomtypeData.image, 'base64').toString('binary'),
           count: 1, // Khởi tạo số lượng phòng trống
+          people: room.roomtypeData.people,
+          area: room.roomtypeData.area,
         };
       }
     });

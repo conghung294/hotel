@@ -8,12 +8,17 @@ import Booking from '../Pages/Booking';
 import ManageService from '../Pages/Admin/ManageService';
 import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
-import BookingSchedule from '../Pages/Admin/BookingSchedule';
 import Roomtype from '../Pages/Roomtype';
 import Entertainment from '../Pages/Entertainment';
 import Cuisine from '../Pages/Cuisine';
 import Locaion from '../Pages/Locaion';
 import ManageUser from '../Pages/Admin/ManageUser';
+
+import FailurePage from '../Pages/FailurePage';
+import PaymentStatusPage from '../Pages/PaymentStatusPage';
+import BookingList from '../Pages/Admin/BookingList';
+import BookingCalendar from '../Pages/Admin/BookingCalendar';
+import BookingDiagram from '../Pages/Admin/BookingDiagram';
 
 export const routes = [
   {
@@ -41,6 +46,14 @@ export const routes = [
     path: '/booking',
     element: <Booking />,
     layout: 'auth',
+  },
+  {
+    path: '/payment/result',
+    element: <PaymentStatusPage />,
+  },
+  {
+    path: '/payment/failure',
+    element: <FailurePage />,
   },
   {
     path: '/room-type',
@@ -89,14 +102,18 @@ export const routes = [
     layout: 'admin',
   },
   {
-    path: '/admin/booking',
-    element: <BookingSchedule />,
+    path: '/admin/bookingList',
+    element: <BookingList />,
     layout: 'admin',
   },
-
-  // {
-  //   path: '/admin/booking',
-  //   element: <Bill />,
-  //   layout: 'admin',
-  // },
+  {
+    path: '/admin/bookingCalendar',
+    element: <BookingCalendar />,
+    layout: 'admin',
+  },
+  {
+    path: '/admin/bookingDiagram',
+    element: <BookingDiagram />,
+    layout: 'admin',
+  },
 ];

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Form, Image, Upload } from 'antd';

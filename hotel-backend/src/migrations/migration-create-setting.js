@@ -19,6 +19,9 @@ module.exports = {
       comeFirst: {
         type: Sequelize.TIME,
       },
+      prePayment: {
+        type: Sequelize.INTEGER,
+      },
 
       createdAt: {
         allowNull: false,

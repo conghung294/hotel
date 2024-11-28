@@ -4,7 +4,10 @@ import BookingCalendar from './BookingCalendar';
 import BookingDiagram from './BookingDiagram';
 import { CiViewList, CiViewTable } from 'react-icons/ci';
 import { PiDeviceTablet } from 'react-icons/pi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8080');
 
 const items = [
   {
@@ -60,6 +63,21 @@ const BookingSchedule = () => {
       }
     }
   };
+
+  useEffect(() => {
+    socket.on('confirmSuccess', () => {
+      const bookingListComponent = document.querySelector('#booking-list');
+      const bookingCalenderComponent = document.querySelector('#booking-calender');
+      const bookingDiagramComponent = document.querySelector('#booking-diagram');
+      bookingListComponent?.reloadData();
+      bookingCalenderComponent?.reloadData();
+      bookingDiagramComponent?.reloadData();
+    });
+
+    return () => {
+      socket.off('confirmSuccess');
+    };
+  }, []);
 
   return (
     <div className="mt-6 px-10">

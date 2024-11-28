@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   Service.init(
     {
       name: DataTypes.STRING,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       price: DataTypes.STRING,
       image: DataTypes.STRING,
     },

@@ -6,6 +6,9 @@ import 'dayjs/locale/vi';
 import viVN from 'antd/lib/locale/vi_VN';
 import { getBookingScheduleService } from '../../service/bookingService';
 import { toast } from 'react-toastify';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8080');
 
 const BookingCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs()); // Bắt đầu với tháng hiện tại
@@ -45,9 +48,9 @@ const BookingCalendar = () => {
 
   const getBookingSchedule = async () => {
     const res = await getBookingScheduleService();
-    const dataWithKeys = res?.data?.map((item) => ({
+    const dataWithKeys = res?.data?.map((item, index) => ({
       ...item,
-      key: item?.id,
+      key: index,
     }));
     if (res?.errCode === 0) {
       setData(dataWithKeys);
@@ -61,12 +64,22 @@ const BookingCalendar = () => {
   }, []);
 
   // Thêm phương thức reloadData để gọi lại API
+  // useEffect(() => {
+  //   const bookingCalenderElement = document.querySelector('#booking-calender');
+  //   if (bookingCalenderElement) {
+  //     bookingCalenderElement.reloadData = getBookingSchedule;
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const bookingCalenderElement = document.querySelector('#booking-calender');
-    if (bookingCalenderElement) {
-      bookingCalenderElement.reloadData = getBookingSchedule;
-    }
-  }, []);
+    socket.on('confirmSuccess', () => {
+      getBookingSchedule();
+    });
+
+    return () => {
+      socket.off('confirmSuccess');
+    };
+  }, [getBookingSchedule]);
 
   return (
     <div className="calendar-container" id="booking-calender">
@@ -97,8 +110,8 @@ const BookingCalendar = () => {
         </div>
 
         {/* Render each room row with bookings */}
-        {rooms?.map((room) => (
-          <div key={room.id} className="calendar-row">
+        {rooms?.map((room, index) => (
+          <div key={index} className="calendar-row">
             <div className="calendar-room-name">{room.id}</div>
             {[...Array(daysInMonth)]?.map((_, dayIndex) => {
               // Kiểm tra xem có lịch đặt nào bắt đầu vào ngày này không

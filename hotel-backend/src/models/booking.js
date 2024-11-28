@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Booking.init(
     {
+      orderCode: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       typeroomId: DataTypes.INTEGER,
       roomId: DataTypes.INTEGER,
@@ -45,6 +46,8 @@ module.exports = (sequelize, DataTypes) => {
       timeGo: DataTypes.DATE,
       price: DataTypes.INTEGER,
       status: DataTypes.STRING,
+      sale: DataTypes.INTEGER,
+      paid: DataTypes.INTEGER,
     },
     {
       sequelize,

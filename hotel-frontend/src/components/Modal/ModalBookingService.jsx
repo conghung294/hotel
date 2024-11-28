@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Modal, Table, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';

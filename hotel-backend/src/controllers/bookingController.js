@@ -44,6 +44,9 @@ let handleGetBookingByStatus = async (req, res) => {
 let handleEditBooking = async (req, res) => {
   let data = req.body;
   let message = await BookingService.updateBooking(data);
+  if (message?.errCode === 0) {
+    req.app.get('io').emit('confirmSuccess');
+  }
   return res.status(200).json(message);
 };
 
@@ -75,6 +78,42 @@ let handleGetBookingSchedule = async (req, res) => {
   }
 };
 
+const handleCaculateDailyUse = async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    let result = await BookingService.caculateDailyRoomUse(month, year);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: result,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
+const handleCaculateRevenue = async (req, res) => {
+  try {
+    const { month } = req.query;
+    let result = await BookingService.caculateRevenue(month);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: result,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 module.exports = {
   handleCreateBooking,
   handleGetBooking,
@@ -82,4 +121,6 @@ module.exports = {
   handleDeleteBooking,
   handleGetBookingByStatus,
   handleGetBookingSchedule,
+  handleCaculateDailyUse,
+  handleCaculateRevenue,
 };

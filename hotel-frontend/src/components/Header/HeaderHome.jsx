@@ -36,10 +36,10 @@ const HeaderHome = () => {
       key: '1',
       label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
     },
-    // {
-    //   key: '2',
-    //   label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
-    // },
+    {
+      key: '2',
+      label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
+    },
     {
       key: '3',
       label: <div onClick={() => handleLogout()}>Đăng xuất</div>,

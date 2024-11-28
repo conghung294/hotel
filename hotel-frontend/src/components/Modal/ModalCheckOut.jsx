@@ -1,20 +1,19 @@
-/* eslint-disable react/prop-types */
 import { Button, Form, Input, Modal, Select, Table } from 'antd';
-import { formatCurrency } from '../../utils/CommonUtils';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dayjs from 'dayjs';
-import { checkOutService, getInfoCheckInByRoom } from '../../service/roomService';
 import { toast } from 'react-toastify';
-import { useReactToPrint } from 'react-to-print';
-import { Bill } from '../Print/Bill';
+import { formatCurrency } from '../../utils/CommonUtils';
+import { getInfoCheckInByRoom } from '../../service/roomService';
 import ModalBookingService from './ModalBookingService';
+import ModalPayment from './ModalPayment';
 
-const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
-  const [dataCheckIn, setDataCheckIn] = useState();
-  const [openModalService, setOpenModalService] = useState(false);
+const ModalCheckOut = ({ modalCheckOutOpen, setModalCheckOutOpen, room, getRoom }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const printRef = useRef(null);
+
+  const [dataCheckIn, setDataCheckIn] = useState();
+  const [openModalService, setOpenModalService] = useState(false);
+  const [openModalPayment, setOpenModalPayment] = useState(false);
 
   const columns = [
     {
@@ -46,7 +45,7 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
       width: '15%',
       align: 'center',
       render: (_, record) => {
-        return <div>{dayjs(record?.timeCome).format('YYYY-MM-DD HH:mm:ss')}</div>;
+        return <div>{dayjs(record?.timeCome).format('HH:mm DD/MM/YYYY')}</div>;
       },
     },
     {
@@ -56,7 +55,7 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
       width: '15%',
       align: 'center',
       render: (_, record) => {
-        return <div>{dayjs(record?.timeGo).format('YYYY-MM-DD HH:mm:ss')}</div>;
+        return <div>{dayjs(record?.timeGo).format('HH:mm DD/MM/YYYY')}</div>;
       },
     },
     {
@@ -90,16 +89,6 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
     },
   ];
 
-  const handleAfterPrint = React.useCallback(() => {
-    toast.success('Trả phòng thành công!');
-    setModalOpen(false);
-    getRoom();
-  }, [getRoom, setModalOpen]);
-
-  const handleBeforePrint = React.useCallback(() => {
-    return Promise.resolve();
-  }, []);
-
   const getDataCheckIn = useCallback(async () => {
     const res = await getInfoCheckInByRoom(room?.id);
     if (res?.errCode === 0) {
@@ -109,30 +98,15 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
     }
   }, [room?.id]);
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: 'Hóa Đơn Thanh Toán',
-    onAfterPrint: handleAfterPrint,
-    onBeforePrint: handleBeforePrint,
-  });
-
   const onFinish = async () => {
-    const res = await checkOutService({
-      bookingId: dataCheckIn?.id,
-      roomId: dataCheckIn?.roomId,
-    });
-    if (res.errCode === 0) {
-      handlePrint(); // Gọi hàm in
-    } else {
-      toast.error('Thất bại!');
-    }
+    setOpenModalPayment(true);
   };
 
   useEffect(() => {
-    if (room?.status === 'ĐANG SỬ DỤNG' && modalOpen === true) {
+    if (room?.status === 'ĐANG SỬ DỤNG' && modalCheckOutOpen === true) {
       getDataCheckIn();
     }
-  }, [room, getDataCheckIn, modalOpen]);
+  }, [room, getDataCheckIn, modalCheckOutOpen]);
 
   useEffect(() => {
     if (dataCheckIn) {
@@ -140,21 +114,22 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
     }
   }, [dataCheckIn, form]);
 
-  console.log(dataCheckIn);
-
   return (
     <Modal
       title={'Trả phòng'}
       centered
-      open={modalOpen}
-      onCancel={() => setModalOpen(false)}
+      open={modalCheckOutOpen}
+      onCancel={() => {
+        setModalCheckOutOpen(false);
+        setOpenModalPayment(false);
+      }}
       maskClosable={false}
       className="!w-[80%]"
       footer={[
         <Button
           key="cancel"
           onClick={() => {
-            setModalOpen(false);
+            setModalCheckOutOpen(false);
             setDataCheckIn(null);
           }}
         >
@@ -169,13 +144,13 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
           Thêm dịch vụ
         </Button>,
         <Button key="submit" type="primary" onClick={form.submit}>
-          Trả phòng và thanh toán
+          Trả phòng
         </Button>,
       ]}
     >
       <Table columns={columns} dataSource={[dataCheckIn || room]} bordered pagination={false} />
       <Form
-        name="basic"
+        name="formCheckOut"
         labelCol={{
           span: 5,
         }}
@@ -237,10 +212,6 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
               </Select>
             </Form.Item>
           </div>
-
-          <div className="hidden">
-            <Bill ref={printRef} data={dataCheckIn} />
-          </div>
         </div>
       </Form>
 
@@ -250,6 +221,15 @@ const ModalCheckOut = ({ modalOpen, setModalOpen, room, getRoom }) => {
         bookingId={dataCheckIn?.id}
         getDataCheckIn={getDataCheckIn}
       />
+      {openModalPayment && (
+        <ModalPayment
+          modalOpen={openModalPayment}
+          setModalOpen={setOpenModalPayment}
+          data={dataCheckIn}
+          getRoom={getRoom}
+          setModalCheckOutOpen={setModalCheckOutOpen}
+        />
+      )}
     </Modal>
   );
 };

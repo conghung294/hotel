@@ -91,6 +91,16 @@
   background-image: url('../assets/image/image3.jpg');
 }
 
+.background-entertainment {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66%; /* Tỷ lệ 2:3, chiều cao = 1.5 lần chiều rộng */
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-image: url('../assets/image/image6.jpg');
+}
+
 
 html {
   scroll-behavior: smooth;
@@ -258,4 +268,21 @@ html {
   background-position: center; 
   background-repeat: no-repeat; 
   background-image: url('../assets/image/image17.jpg');
+}
+
+.no-room {
+  height: 70vh; 
+  width: 100%; 
+  background-image: url('../assets/image/image1.jpg'); 
+  background-size: cover; 
+  background-position: center;
+}
+
+
+.demo-logo-vertical {
+  height: 200px; 
+  width: 200px; 
+  background-image: url('../assets/image/logo.jpg'); 
+  background-size: cover; 
+  background-position: center;
 }

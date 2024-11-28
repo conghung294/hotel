@@ -136,7 +136,7 @@ const ManageRoom = () => {
 
   return (
     <>
-      <div className="pt-10 px-20">
+      <div className="">
         <Space>
           <Button type="primary" onClick={() => handleAddRoom()}>
             <FiPlus /> Thêm mới

@@ -148,7 +148,7 @@ const ManageUser = () => {
 
   return (
     <>
-      <div className="pt-10 px-20">
+      <div className="">
         <Space>
           <Button type="primary" onClick={() => handleAddUser()}>
             <FiPlus /> Thêm mới

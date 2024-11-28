@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Form, Modal, Select } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import moment from 'moment';
@@ -77,11 +76,11 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
             <div>Giới tính: </div>
           </div>
           <div className="w-[70%] flex flex-col gap-2">
-            <div>{choiceBooking?.bookingData?.name}</div>
-            <div>{choiceBooking?.bookingData?.email}</div>
-            <div>{choiceBooking?.bookingData?.phoneNumber}</div>
-            <div>{choiceBooking?.bookingData?.address}</div>
-            <div>{choiceBooking?.bookingData?.gender}</div>
+            <div>{choiceBooking?.bookingData?.name || 'Không có'}</div>
+            <div>{choiceBooking?.bookingData?.email || 'Không có'}</div>
+            <div>{choiceBooking?.bookingData?.phoneNumber || 'Không có'}</div>
+            <div>{choiceBooking?.bookingData?.address || 'Không có'}</div>
+            <div>{choiceBooking?.bookingData?.gender || 'Không có'}</div>
           </div>
         </div>
         <hr />
@@ -103,20 +102,20 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
           </div>
         </div>
 
-        <div className="flex">
-          <div className="w-[30%] mt-2">
+        <div className="flex mt-2">
+          <div className="w-[30%]">
             <div>Dịch vụ: </div>
           </div>
-          <div className="w-[70%]">
-            <div>
-              {choiceBooking?.services?.map((item) => {
-                return (
-                  <div key={item?.id} className="mt-2">{`-${item?.name} ( ${formatCurrency(
-                    item?.price
-                  )} )`}</div>
-                );
-              })}
-            </div>
+          <div className="w-[70%] flex flex-col justify-center">
+            {choiceBooking?.services?.length > 0 ? (
+              choiceBooking.services.map((item) => (
+                <div key={item?.id} className="mt-2">{`-${item?.name} ( ${formatCurrency(
+                  item?.price
+                )} )`}</div>
+              ))
+            ) : (
+              <div>Không có</div>
+            )}
           </div>
         </div>
 

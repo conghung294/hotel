@@ -32,6 +32,7 @@ const ManageService = () => {
       title: 'Tên dịch vụ',
       dataIndex: 'name',
       key: 'name',
+      align: 'center',
       width: '20%',
     },
     {
@@ -41,7 +42,7 @@ const ManageService = () => {
       align: 'center',
       render: (_, record) => (
         <div className="flex justify-center items-center">
-          <div className="w-[180px] h-[120px] rounded-lg overflow-hidden ">
+          <div className="w-[120px] h-[80px] rounded-lg overflow-hidden ">
             <img src={record?.image} alt="Ảnh dịch vụ" className="w-full h-full object-cover" />
           </div>
         </div>
@@ -51,6 +52,7 @@ const ManageService = () => {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'status',
+      align: 'center',
       width: '35%',
     },
 
@@ -145,7 +147,7 @@ const ManageService = () => {
 
   return (
     <>
-      <div className="pt-10 px-20">
+      <div>
         <Space>
           <Button type="primary" onClick={() => handleAddService()}>
             <FiPlus /> Thêm mới
@@ -159,7 +161,7 @@ const ManageService = () => {
         </Space>
 
         <div className="mt-5">
-          <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
+          <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 3 }} />
         </div>
       </div>
 

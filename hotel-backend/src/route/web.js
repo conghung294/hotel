@@ -6,6 +6,7 @@ import roomController from '../controllers/roomController';
 import serviceController from '../controllers/serviceController';
 import bookingController from '../controllers/bookingController';
 import settingController from '../controllers/settingController';
+import paymentController from '../controllers/paymentController';
 
 let router = expess.Router();
 
@@ -51,9 +52,14 @@ let initWebRoutes = (app) => {
   router.get('/api/get-booking-schedule', bookingController.handleGetBookingSchedule);
   router.put('/api/edit-booking', bookingController.handleEditBooking);
   router.delete('/api/delete-booking', bookingController.handleDeleteBooking);
+  router.get('/api/get-daily-use', bookingController.handleCaculateDailyUse);
+  router.get('/api/get-revenue', bookingController.handleCaculateRevenue);
 
   router.put('/api/update-setting', settingController.updateSetting);
   router.get('/api/get-setting', settingController.getSetting);
+
+  router.post('/vnpay/payment', paymentController.handlePayment);
+  router.get('/vnpay_return', paymentController.handleReturn);
 
   return app.use('/', router);
 };

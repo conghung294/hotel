@@ -2,18 +2,15 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
 import { BsArrowRepeat } from 'react-icons/bs';
-import { io } from 'socket.io-client';
 
 import DateRangePicker from '../components/DateRangePicker';
 import Room from '../components/Room/Room';
 import { formatCurrency } from '../utils/CommonUtils';
 import { getServiceService } from '../service/serviceService';
 import Service from '../components/Service/Service';
-import { createNewBookingService } from '../service/bookingService';
 import { useUser } from '../context/UserContext';
-
-// Kết nối tới server socket.io
-const socket = io('http://localhost:8080');
+import axios from 'axios';
+import { getSettingService } from '../service/settingService';
 
 const Booking = () => {
   const { user } = useUser();
@@ -24,10 +21,20 @@ const Booking = () => {
   const [choiceServices, setChoiceServices] = useState([]);
   const [time, setTime] = useState();
   const [isChoice, setIsChoice] = useState(false);
+  const [prePay, setPrePay] = useState(50);
 
   const handleReChoice = () => {
     setChoiceRoom(null);
     setChoiceServices([]);
+  };
+
+  const getSetting = async () => {
+    const res = await getSettingService();
+    if (res.errCode === 0) {
+      setPrePay(res?.data?.prePayment);
+    } else {
+      toast.error('Có lỗi xảy ra!');
+    }
   };
 
   const getService = async () => {
@@ -52,29 +59,30 @@ const Booking = () => {
       timeCome: dates[0],
       timeGo: dates[1],
       price: choiceRoom?.price * time + totalServicePrice,
-      status: '0',
+      status: '-1',
       services: choiceServices,
+      paid: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100,
     };
-    const res = await createNewBookingService(dataBooking);
-    if (res?.errCode === 0) {
-      socket.emit('booking', dataBooking);
-      setChoiceRoom(null);
-      setChoiceServices([]);
-      setRoomtype(null);
-      setDates(null);
-      setIsChoice(false);
-      toast.success('Đặt phòng thành công. Chúng tôi sẽ sớm gửi xác nhận đến email của bạn!');
-    } else {
-      toast.error(res?.errMessage);
+
+    const response = await axios.post('http://localhost:8080/vnpay/payment', {
+      amount: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100, // Số tiền thanh toán
+      bankCode: '',
+      language: 'vn',
+      dataBooking,
+    });
+
+    if (response?.data) {
+      window.location.href = response.data; // Chuyển hướng người dùng đến VNPay
     }
   };
 
   useEffect(() => {
     getService();
+    getSetting();
   }, []);
 
   return (
-    <>
+    <div className="min-h-[100vh] ">
       {!isChoice && (
         <div className="flex justify-center items-center home-background">
           <div className="w-[600px]">
@@ -92,8 +100,8 @@ const Booking = () => {
         </div>
       )}
 
-      <div className="mt-20 px-10 flex justify-between">
-        <div className="w-[30%]">
+      <div className="mt-20 px-10 flex justify-end ">
+        <div className="w-[30%]  fixed top-[90px] left-[30px]">
           {!choiceRoom && isChoice && (
             <div className="flex flex-col justify-center items-center w-full">
               <div className="mb-5 flex justify-center font-bold text-lg text-black">
@@ -111,7 +119,7 @@ const Booking = () => {
             </div>
           )}
           {choiceRoom && (
-            <div className="mt-3">
+            <div className="mt-3 bg-white px-3 pb-3 rounded-lg">
               <div className="font-bold text-lg">Thông tin thanh toán</div>
               <hr className="my-3" />
               <div className="mt-3 font-bold">Thông tin phòng</div>
@@ -148,6 +156,9 @@ const Booking = () => {
                   {formatCurrency(choiceRoom?.price * time + totalServicePrice)}
                 </span>
               </div>
+              <div className="mt-3 text-red-600">
+                Vui lòng thanh toán trước <span>{prePay}</span>% đơn đặt phòng!
+              </div>
               <Button
                 type="primary"
                 className="w-full font-bold py-5 mt-4"
@@ -166,29 +177,25 @@ const Booking = () => {
           )}
         </div>
 
-        {!choiceRoom && (
+        {!choiceRoom && isChoice && (
           <div className="w-[66%]">
-            {roomtype?.length > 0 &&
-              roomtype.map((item) => {
-                return (
-                  <div className="my-4 w-full" key={item?.id}>
-                    <Room
-                      room={item}
-                      image={item?.image}
-                      price={item?.price}
-                      name={item?.name}
-                      description={item?.description}
-                      quantity={item?.count}
-                      setChoiceRoom={setChoiceRoom}
-                    />
-                  </div>
-                );
-              })}
+            {roomtype?.length > 0 ? (
+              roomtype.map((item) => (
+                <div className="my-4 w-full" key={item?.id}>
+                  <Room room={item} setChoiceRoom={setChoiceRoom} />
+                </div>
+              ))
+            ) : (
+              <div className="text-center text-red-500 text-lg mt-3">
+                Không có phòng nào thỏa mãn thời gian đã chọn. Vui lòng chọn ngày khác.
+                <div className="no-room mt-6"></div>
+              </div>
+            )}
           </div>
         )}
 
         {choiceRoom && (
-          <div className="w-[66%] mt-3">
+          <div className="w-[66%] mt-3 pb-40">
             <div className="font-bold text-lg">Chọn thêm dịch vụ cho kỳ nghỉ của bạn</div>
             {services?.length > 0 &&
               services.map((item) => {
@@ -209,7 +216,7 @@ const Booking = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

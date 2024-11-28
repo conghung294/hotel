@@ -66,12 +66,10 @@ let getRoom = async (roomId) => {
         order: [['updatedAt', 'DESC']],
       });
 
-      if (!setting || !setting.comeFirst) {
-        throw new Error('Không tìm thấy giá trị comeFirst trong bảng Setting.');
-      }
+      let comeFirst = setting?.comeFirst || '06:00:00';
 
       // Chuyển đổi comeFirst thành khoảng thời gian
-      const [hours, minutes, seconds] = setting.comeFirst.split(':').map(Number);
+      const [hours, minutes, seconds] = comeFirst.split(':').map(Number);
       const currentTime = new Date();
       const adjustedTime = new Date(currentTime.getTime());
       adjustedTime.setHours(currentTime.getHours() + hours);
@@ -292,6 +290,8 @@ const checkInRoom = async (data) => {
           timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
           price: data?.price,
           status: '2',
+          paid: data?.paid || 0,
+          sale: data?.sale || 0,
         });
       }
     }
@@ -360,8 +360,10 @@ const checkOut = async (data) => {
     // Kiểm tra nếu đặt phòng tồn tại và chưa trả phòng
     if (booking) {
       if (booking.status !== '3') {
-        // Trạng thái 3 có thể là trạng thái 'đã trả phòng'
         booking.status = '3'; // Cập nhật trạng thái trả phòng
+        booking.sale = data?.sale;
+        booking.paid = data?.paid;
+        booking.price = data?.price;
         await booking.save({ transaction: t });
       } else {
         throw new Error('Booking đã được trả phòng trước đó');

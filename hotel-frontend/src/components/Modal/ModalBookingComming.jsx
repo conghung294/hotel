@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Form, Input, Modal, Select, Table } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import DatePickerCustom from '../DatePickerCustom';
@@ -97,6 +96,7 @@ const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
       bookingId: room?.roomData[0]?.id,
       user: value,
       userId: room?.roomData[0]?.userId,
+      roomId: room?.id,
     });
 
     if (res.errCode === 0) {

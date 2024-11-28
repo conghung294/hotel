@@ -1,16 +1,27 @@
 import { useEffect, useState } from 'react';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Avatar, Badge, Button, Dropdown, Layout, Menu, theme, Tooltip } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
-
-import './HeaderAdmin.scss';
+import { FaHotel } from 'react-icons/fa6';
 import ModalWaitConfirm from '../Modal/ModalWaitConfirm';
-import { useUser } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalSetting from '../Modal/ModalSetting';
-import { FaHome } from 'react-icons/fa';
+import { useUser } from '../../context/UserContext';
+import { CiCircleCheck, CiClock2, CiUser, CiViewList, CiViewTable } from 'react-icons/ci';
+import { RxDashboard } from 'react-icons/rx';
+import {
+  MdOutlineBedroomChild,
+  MdOutlineCleaningServices,
+  MdOutlineMeetingRoom,
+} from 'react-icons/md';
+import { PiDeviceTablet } from 'react-icons/pi';
+const { Header, Sider, Content } = Layout;
+const LayoutAdmin = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
-const HeaderAdmin = () => {
-  const [activeTab, setActiveTab] = useState();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [count, setCount] = useState();
   const [openModalInfo, setOpenModalInfo] = useState();
@@ -19,6 +30,18 @@ const HeaderAdmin = () => {
 
   const nagivate = useNavigate();
   const { user, setUser } = useUser();
+
+  const items = [
+    {
+      key: '1',
+      label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
+    },
+
+    {
+      key: '2',
+      label: <div onClick={() => handleLogout()}>Đăng xuất</div>,
+    },
+  ];
 
   // Hàm lấy chữ cái đầu từ từ cuối cùng của tên người dùng
   const getInitial = (name) => {
@@ -36,22 +59,6 @@ const HeaderAdmin = () => {
     setOpenModalInfo(true);
   };
 
-  const items = [
-    {
-      key: '1',
-      label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
-    },
-
-    {
-      key: '2',
-      label: <div onClick={() => handleLogout()}>Đăng xuất</div>,
-    },
-  ];
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
   const openModalWaitConfirm = () => {
     setIsOpenModal(true);
   };
@@ -63,67 +70,104 @@ const HeaderAdmin = () => {
   }, [user?.roleId, nagivate]);
 
   return (
-    <>
-      <div className="admin-header">
-        <ul className="px-20 flex items-center justify-between">
-          <div>
-            <li
-              onClick={() => handleTabClick('admin')}
-              className={`${activeTab === 'admin' ? 'active' : ''} `}
-            >
-              <Link to="/admin">
-                <FaHome size={20} />
-              </Link>
-            </li>
-
-            <li
-              onClick={() => handleTabClick('manageUser')}
-              className={`${activeTab === 'manageUser' ? 'active' : ''} `}
-            >
-              <Link to="/admin/manageUser">Quản lý người dùng</Link>
-            </li>
-            <li
-              onClick={() => handleTabClick('manageTyperoom')}
-              className={`${activeTab === 'manageTyperoom' ? 'active' : ''} `}
-            >
-              <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>
-            </li>
-
-            <li
-              onClick={() => handleTabClick('manageRoom')}
-              className={`${activeTab === 'manageRoom' ? 'active' : ''} `}
-            >
-              <Link to="/admin/manageRoom">Quản lý phòng</Link>
-            </li>
-
-            <li
-              onClick={() => handleTabClick('manageService')}
-              className={`${activeTab === 'manageService' ? 'active' : ''} `}
-            >
-              <Link to="/admin/manageService">Quản lý dịch vụ</Link>
-            </li>
-
-            <li
-              onClick={() => handleTabClick('booking')}
-              className={`${activeTab === 'booking' ? 'active' : ''} `}
-            >
-              <Link to="/admin/booking">Lịch đặt phòng</Link>
-            </li>
+    <Layout className="h-[100vh]">
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        {!collapsed ? (
+          <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
+            <FaHotel size={30} color="white" />
+            <div className="text-white font-bold text-[28px]">PH HOTEL</div>
           </div>
+        ) : (
+          <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
+            <FaHotel size={30} color="white" />
+          </div>
+        )}
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={[
+            {
+              key: '1',
+              icon: <RxDashboard size={20} />,
+              label: <Link to="/admin">Dashboard</Link>,
+            },
+            {
+              key: '2',
+              icon: <CiUser size={20} />,
+              label: <Link to="/admin/manageUser">Quản lý người dùng</Link>,
+            },
+            {
+              key: '3',
+              icon: <MdOutlineBedroomChild size={20} />,
+              label: <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>,
+            },
+            {
+              key: '4',
+              icon: <MdOutlineMeetingRoom size={20} />,
+              label: <Link to="/admin/manageRoom">Quản lý phòng</Link>,
+            },
+            {
+              key: '5',
+              icon: <MdOutlineCleaningServices size={20} />,
+              label: <Link to="/admin/manageService">Quản lý dịch vụ</Link>,
+            },
+            {
+              key: '6',
+              icon: <CiClock2 size={20} />,
+              label: 'Lịch đặt phòng',
+              children: [
+                {
+                  icon: <CiViewList size={20} />,
+                  label: <Link to="/admin/bookingList">Dạng danh sách</Link>,
+                },
+                {
+                  icon: <PiDeviceTablet size={20} />,
+                  label: <Link to="/admin/bookingDiagram">Dạng sơ đồ</Link>,
+                },
+                {
+                  icon: <CiViewTable size={20} />,
+                  label: <Link to="/admin/bookingCalendar">Dạng lưới</Link>,
+                },
+              ],
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingRight: '20px',
+          }}
+        >
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: '16px',
+              width: 64,
+              height: 64,
+            }}
+          />
 
           <div className="flex items-center gap-4 ">
             <Badge
               count={count}
-              offset={[10, 0]}
-              className="text-white text-[16px] flex gap-2 items-center cursor-pointer hover:underline mr-6"
+              offset={[0, 0]}
+              className="text-[16px] flex gap-2 items-center cursor-pointer mr-3 bg-[#1677FF] p-2 rounded-2xl text-white"
               onClick={() => openModalWaitConfirm()}
             >
-              {/* <CiCircleCheck size={20} /> */}
+              <CiCircleCheck size={20} />
               Chờ xác nhận
             </Badge>
 
             <div
-              className=" border-white-light bg-[#E3E8EF] dark:border-white-light/10 flex rounded-full p-2 cursor-pointer  hover:text-[#4361ee]"
+              className=" border-white-light bg-[#E3E8EF] dark:border-white-light/10 flex rounded-full p-2 cursor-pointer  hover:text-[#4361ee] border-r"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onClick={() => setIsShowModalSettings(true)}
@@ -149,21 +193,34 @@ const HeaderAdmin = () => {
                 </svg>
               </Tooltip>
             </div>
-
+            {/* <div className="w-[1px] h-[60%] bg-red-600"></div>
+            <div>{user?.name || user?.email || user?.phoneNumber}</div> */}
             <Dropdown menu={{ items }} placement="bottomRight" arrow trigger="click">
               <Avatar size={36} className="bg-[#fde3cf] text-[#f56a00] cursor-pointer">
                 {getInitial(user?.name ?? 'U')}
               </Avatar>
             </Dropdown>
           </div>
-        </ul>
-      </div>
-      <div className="h-[30px]"></div>
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            overflowY: 'auto',
+          }}
+          className="custom-scrollbar"
+        >
+          {children}
+        </Content>
+      </Layout>
+
       <ModalWaitConfirm modalOpen={isOpenModal} setModalOpen={setIsOpenModal} setCount={setCount} />
       <ModalInfo modalOpen={openModalInfo} setModalOpen={setOpenModalInfo} />
       <ModalSetting modalOpen={isShowModalSettings} setModalOpen={setIsShowModalSettings} />
-    </>
+    </Layout>
   );
 };
-
-export default HeaderAdmin;
+export default LayoutAdmin;
