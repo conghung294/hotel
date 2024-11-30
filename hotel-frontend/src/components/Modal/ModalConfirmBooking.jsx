@@ -8,16 +8,19 @@ import { toast } from 'react-toastify';
 
 const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookingWaitConfirm }) => {
   const { Option } = Select;
-  const [rooms, setRooms] = useState();
+  const [rooms, setRooms] = useState([]);
+  const [formLoading, setFormLoading] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
+    setFormLoading(true);
     const res = await editBookingService({
       ...values,
       status: '1',
       id: choiceBooking.id,
       data: choiceBooking,
     });
+    setFormLoading(false);
     if (res.errCode === 0) {
       setModalOpen(false);
       getBookingWaitConfirm();
@@ -57,6 +60,7 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
       className="!w-[50%]"
       okText="Xác nhận"
       cancelText="Hủy bỏ"
+      confirmLoading={formLoading} // Show loading on confirm button
     >
       <Form
         form={form}
@@ -97,19 +101,19 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
             <div>{moment(choiceBooking?.createdAt).format('HH:mm:ss DD/MM/YYYY')}</div>
             <div>{choiceBooking?.typeData?.name}</div>
             <div>{formatCurrency(choiceBooking?.typeData?.price)}</div>
-            <div>{moment(choiceBooking?.timeCome).format('DD/MM/YYYY')}</div>
-            <div>{moment(choiceBooking?.timeGo).format('DD/MM/YYYY')}</div>
+            <div>{moment(choiceBooking?.timeCome).format('HH:mm:ss DD/MM/YYYY')}</div>
+            <div>{moment(choiceBooking?.timeGo).format('HH:mm:ss DD/MM/YYYY')}</div>
           </div>
         </div>
 
-        <div className="flex mt-2">
+        <div className="flex-1 mt-2">
           <div className="w-[30%]">
             <div>Dịch vụ: </div>
           </div>
-          <div className="w-[70%] flex flex-col justify-center">
+          <div className="w-[70%] flex flex-col justify-center gap-2">
             {choiceBooking?.services?.length > 0 ? (
               choiceBooking.services.map((item) => (
-                <div key={item?.id} className="mt-2">{`-${item?.name} ( ${formatCurrency(
+                <div key={item?.id} className="">{`-${item?.name} ( ${formatCurrency(
                   item?.price
                 )} )`}</div>
               ))
