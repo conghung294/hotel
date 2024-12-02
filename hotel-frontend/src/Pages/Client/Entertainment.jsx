@@ -2,12 +2,12 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import image5 from '../assets/image/image5.jpg';
-import image6 from '../assets/image/image6.jpg';
-import image7 from '../assets/image/image7.jpg';
-import image8 from '../assets/image/image8.jpg';
-import image9 from '../assets/image/image9.jpg';
-import image10 from '../assets/image/image10.jpg';
+import image5 from '../../assets/image/image5.jpg';
+import image6 from '../../assets/image/image6.jpg';
+import image7 from '../../assets/image/image7.jpg';
+import image8 from '../../assets/image/image8.jpg';
+import image9 from '../../assets/image/image9.jpg';
+import image10 from '../../assets/image/image10.jpg';
 import { Image } from 'antd';
 
 const images = [image5, image6, image7, image8, image9, image10];

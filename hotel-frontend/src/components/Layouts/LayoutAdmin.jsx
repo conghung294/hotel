@@ -94,28 +94,8 @@ const LayoutAdmin = ({ children }) => {
             },
             {
               key: '2',
-              icon: <CiUser size={20} />,
-              label: <Link to="/admin/manageUser">Quản lý người dùng</Link>,
-            },
-            {
-              key: '3',
-              icon: <MdOutlineBedroomChild size={20} />,
-              label: <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>,
-            },
-            {
-              key: '4',
-              icon: <MdOutlineMeetingRoom size={20} />,
-              label: <Link to="/admin/manageRoom">Quản lý phòng</Link>,
-            },
-            {
-              key: '5',
-              icon: <MdOutlineCleaningServices size={20} />,
-              label: <Link to="/admin/manageService">Quản lý dịch vụ</Link>,
-            },
-            {
-              key: '6',
               icon: <CiClock2 size={20} />,
-              label: 'Lịch đặt phòng',
+              label: 'Quản lý chung',
               children: [
                 {
                   icon: <CiViewList size={20} />,
@@ -130,6 +110,26 @@ const LayoutAdmin = ({ children }) => {
                   label: <Link to="/admin/bookingCalendar">Dạng lưới</Link>,
                 },
               ],
+            },
+            {
+              key: '3',
+              icon: <CiUser size={20} />,
+              label: <Link to="/admin/manageUser">Quản lý người dùng</Link>,
+            },
+            {
+              key: '4',
+              icon: <MdOutlineBedroomChild size={20} />,
+              label: <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>,
+            },
+            {
+              key: '5',
+              icon: <MdOutlineMeetingRoom size={20} />,
+              label: <Link to="/admin/manageRoom">Quản lý phòng</Link>,
+            },
+            {
+              key: '6',
+              icon: <MdOutlineCleaningServices size={20} />,
+              label: <Link to="/admin/manageService">Quản lý dịch vụ</Link>,
             },
           ]}
         />

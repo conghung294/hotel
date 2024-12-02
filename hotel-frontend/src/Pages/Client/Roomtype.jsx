@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
-import { getRoomtypeService } from '../service/roomtypeService';
+import { getRoomtypeService } from '../../service/roomtypeService';
 import { useEffect, useState } from 'react';
-import { formatCurrency } from '../utils/CommonUtils';
-import ModalRoomDetail from '../components/Modal/ModalRoomDetail';
+import { formatCurrency } from '../../utils/CommonUtils';
+import ModalRoomDetail from '../../components/Modal/ModalRoomDetail';
 
 const Roomtype = () => {
   const [data, setData] = useState();

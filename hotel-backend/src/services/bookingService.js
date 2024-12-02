@@ -82,6 +82,25 @@ let getBooking = async (userId) => {
     if (userId && userId !== 'ALL') {
       bookings = await db.Booking.findAll({
         where: { userId: userId },
+        include: [
+          {
+            model: db.User,
+            as: 'bookingData',
+          },
+          {
+            model: db.Roomtype,
+            as: 'typeData',
+          },
+          {
+            model: db.Room,
+            as: 'roomData',
+          },
+          {
+            model: db.Service,
+            through: { attributes: [] }, // Lấy thông tin dịch vụ mà không cần thông tin từ bảng BookingService
+            as: 'services',
+          },
+        ],
       });
     }
     return bookings;

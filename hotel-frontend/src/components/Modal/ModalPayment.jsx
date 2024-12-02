@@ -1,7 +1,7 @@
 import { InputNumber, Modal } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import dayjs from 'dayjs';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Bill } from '../Print/Bill';
 import { toast } from 'react-toastify';
 import { useReactToPrint } from 'react-to-print';
@@ -11,6 +11,7 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
   const printRef = useRef(null);
   const [sale, setSale] = useState(0);
   const [open, setOpen] = useState(modalOpen);
+  const [customerPay, setCustomerPay] = useState(0);
 
   // Tính tổng thời gian ở
   const stayDurationDays = dayjs(data?.timeGo)
@@ -27,6 +28,10 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
 
   // Tính tổng thanh toán
   const totalPrice = stayPrice + totalServicePrice;
+
+  useEffect(() => {
+    setCustomerPay(totalPrice);
+  }, [totalPrice]);
 
   const handleAfterPrint = useCallback(() => {
     setModalOpen(false);
@@ -67,7 +72,10 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
       title={'Trả phòng và thanh toán'}
       centered
       open={open}
-      onCancel={() => setOpen(false)}
+      onCancel={() => {
+        setOpen(false);
+        setModalOpen(false);
+      }}
       maskClosable={false}
       className="!w-[60%]"
       footer={false}
@@ -140,8 +148,26 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
 
           <div className="flex justify-between mt-3 border-t pt-4 items-center">
             <div className="font-bold">Còn cần trả</div>
-            <div className="text-[20px] text-green-600 font-bold">
+            <div className="text-[18px] text-green-600 font-bold">
               {formatCurrency((totalPrice * (100 - sale)) / 100 - data?.paid)}
+            </div>
+          </div>
+
+          <div className="flex justify-between mt-3 items-center">
+            <div className="">Khách thanh toán</div>
+
+            <InputNumber
+              min={0}
+              style={{ width: '100px' }}
+              value={customerPay}
+              onChange={(value) => setCustomerPay(value)}
+            />
+          </div>
+
+          <div className="flex justify-between mt-3 border-t pt-4 items-center">
+            <div className="font-bold">Tiền thừa trả khách</div>
+            <div className="text-[18px] text-green-600 font-bold">
+              {formatCurrency(customerPay - (totalPrice * (100 - sale)) / 100 - data?.paid)}
             </div>
           </div>
 
@@ -154,7 +180,7 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
         </div>
       </div>
       <div className="hidden">
-        <Bill ref={printRef} data={{ ...data, sale }} />
+        <Bill ref={printRef} data={{ ...data, sale, customerPay }} />
       </div>
     </Modal>
   );

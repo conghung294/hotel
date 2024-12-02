@@ -3,14 +3,14 @@ import { toast } from 'react-toastify';
 import { Button } from 'antd';
 import { BsArrowRepeat } from 'react-icons/bs';
 
-import DateRangePicker from '../components/DateRangePicker';
-import Room from '../components/Room/Room';
-import { formatCurrency } from '../utils/CommonUtils';
-import { getServiceService } from '../service/serviceService';
-import Service from '../components/Service/Service';
-import { useUser } from '../context/UserContext';
+import DateRangePicker from '../../components/DateRangePicker';
+import Room from '../../components/Room/Room';
+import { formatCurrency } from '../../utils/CommonUtils';
+import { getServiceService } from '../../service/serviceService';
+import Service from '../../components/Service/Service';
+import { useUser } from '../../context/UserContext';
 import axios from 'axios';
-import { getSettingService } from '../service/settingService';
+import { getSettingService } from '../../service/settingService';
 
 const Booking = () => {
   const { user } = useUser();

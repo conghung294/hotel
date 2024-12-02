@@ -6,6 +6,8 @@ import './Header.scss';
 import { useUser } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalHistoryBooking from '../Modal/ModalHistoryBooking';
+import { CiUser } from 'react-icons/ci';
+import { IoIosLogOut } from 'react-icons/io';
 
 const { Header } = Layout;
 
@@ -27,22 +29,32 @@ const HeaderHome = () => {
     nagivate('/login');
   };
 
-  const handleOpenModalInfo = () => {
-    setOpenModalInfo(true);
-  };
+  // const handleOpenModalInfo = () => {
+  //   setOpenModalInfo(true);
+  // };
 
   const items = [
     {
       key: '1',
-      label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
+      label: (
+        <div onClick={() => nagivate('/personal-info')} className="flex items-center gap-2">
+          <CiUser size={20} />
+          Thông tin cá nhân
+        </div>
+      ),
     },
+    // {
+    //   key: '2',
+    //   label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
+    // },
     {
       key: '2',
-      label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
-    },
-    {
-      key: '3',
-      label: <div onClick={() => handleLogout()}>Đăng xuất</div>,
+      label: (
+        <div onClick={() => handleLogout()} className="flex items-center gap-2">
+          <IoIosLogOut size={20} />
+          Đăng xuất
+        </div>
+      ),
     },
   ];
 

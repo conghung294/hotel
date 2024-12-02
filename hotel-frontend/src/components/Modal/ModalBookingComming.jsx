@@ -131,7 +131,7 @@ const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
     >
       <Table columns={columns} dataSource={[room]} bordered pagination={false} />
       <Form
-        name="basic"
+        name="formBookingComing"
         labelCol={{
           span: 5,
         }}

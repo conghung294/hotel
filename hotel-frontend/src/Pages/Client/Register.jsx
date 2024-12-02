@@ -2,7 +2,7 @@ import { Button, Form, Input, Select } from 'antd';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { createNewUserService } from '../service/userService';
+import { createNewUserService } from '../../service/userService';
 import './Home.scss';
 
 const Register = () => {

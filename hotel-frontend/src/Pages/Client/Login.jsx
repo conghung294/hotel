@@ -2,8 +2,8 @@ import { Form, Input } from 'antd';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { handleLoginApi } from '../service/userService';
-import { useUser } from '../context/UserContext';
+import { handleLoginApi } from '../../service/userService';
+import { useUser } from '../../context/UserContext';
 import './Home.scss';
 
 const Login = () => {

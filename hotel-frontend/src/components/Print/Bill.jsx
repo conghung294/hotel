@@ -109,6 +109,18 @@ export const Bill = forwardRef((props, ref) => {
             {formatCurrency((totalPrice * (100 - data?.sale)) / 100 - data?.paid)}
           </div>
         </div>
+        <div className="flex pt-4 justify-between">
+          <div className="w-[25%]">Khách đã trả</div>
+          <div className="w-[25%]">{formatCurrency(data?.customerPay)}</div>
+        </div>
+        <div className="flex pt-4 border-t justify-between mt-3">
+          <div className="w-[25%] font-bold">Tiền thừa trả khách</div>
+          <div className="w-[25%] font-bold">
+            {formatCurrency(
+              data?.customerPay - (totalPrice * (100 - data?.sale)) / 100 - data?.paid
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

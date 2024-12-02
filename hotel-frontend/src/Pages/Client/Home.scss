@@ -1,7 +1,7 @@
 .home-background {
     height: 100vh; 
     width: 100%; 
-    background-image: url('../assets/image/background.jpg'); 
+    background-image: url('../../assets/image/background.jpg'); 
     background-size: cover; 
     background-position: center;
   }
@@ -9,7 +9,7 @@
   .home-background1 {
     height: 100vh; 
     width: 100%; 
-    background-image: url('../assets/image/background.jpg'); 
+    background-image: url('../../assets/image/background.jpg'); 
     background-size: cover; 
     background-position: center;
   }
@@ -17,7 +17,7 @@
   .home-background2 {
     height: 100vh; 
     width: 100%; 
-    background-image: url('../assets/image/image1.jpg'); 
+    background-image: url('../../assets/image/image1.jpg'); 
     background-size: cover; 
     background-position: center;
   }
@@ -25,14 +25,14 @@
   .home-background3 {
     height: 100vh; 
     width: 100%; 
-    background-image: url('../assets/image/image2.jpg'); 
+    background-image: url('../../assets/image/image2.jpg'); 
     background-size: cover; 
     background-position: center;
   }
   .booking-background {
     height: 100vh; /* Chiều cao là 100% của body */
     width: 100%; /* Chiều rộng là 100% của body */
-    background-image: url('../assets/image/image1.png'); /* Đường dẫn đến hình ảnh */
+    background-image: url('../../assets/image/image1.png'); /* Đường dẫn đến hình ảnh */
     background-size: cover; /* Để hình ảnh lấp đầy toàn bộ màn hình */
     background-position: center; /* Căn giữa hình ảnh */
   }
@@ -88,7 +88,7 @@
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image3.jpg');
+  background-image: url('../../assets/image/image3.jpg');
 }
 
 .background-entertainment {
@@ -98,7 +98,7 @@
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image6.jpg');
+  background-image: url('../../assets/image/image6.jpg');
 }
 
 
@@ -113,7 +113,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image3.jpg');
+  background-image: url('../../assets/image/image3.jpg');
 }
 
 .bg-entertainment{
@@ -123,7 +123,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image4.jpg');
+  background-image: url('../../assets/image/image4.jpg');
 }
 
 
@@ -204,7 +204,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image11.jpg');
+  background-image: url('../../assets/image/image11.jpg');
 }
 
 .background-cusine-1{
@@ -214,7 +214,7 @@ html {
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
-    background-image: url('../assets/image/image12.jpg');
+    background-image: url('../../assets/image/image12.jpg');
 }
 
 .background-cusine-2{
@@ -224,7 +224,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image13.jpg');
+  background-image: url('../../assets/image/image13.jpg');
 }
 
 .background-cusine-3{
@@ -234,7 +234,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image14.jpg');
+  background-image: url('../../assets/image/image14.jpg');
 }
 
 .background-location{
@@ -245,7 +245,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image15.jpg');
+  background-image: url('../../assets/image/image15.jpg');
 }
 
 .bg-location{
@@ -256,7 +256,7 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image16.jpg');
+  background-image: url('../../assets/image/image16.jpg');
 }
 
 .bg-location-2{
@@ -267,13 +267,13 @@ html {
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
-  background-image: url('../assets/image/image17.jpg');
+  background-image: url('../../assets/image/image17.jpg');
 }
 
 .no-room {
   height: 70vh; 
   width: 100%; 
-  background-image: url('../assets/image/image1.jpg'); 
+  background-image: url('../../assets/image/image1.jpg'); 
   background-size: cover; 
   background-position: center;
 }
@@ -282,7 +282,7 @@ html {
 .demo-logo-vertical {
   height: 200px; 
   width: 200px; 
-  background-image: url('../assets/image/logo.jpg'); 
+  background-image: url('../../assets/image/logo.jpg'); 
   background-size: cover; 
   background-position: center;
 }

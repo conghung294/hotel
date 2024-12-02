@@ -1,24 +1,25 @@
-import Login from '../Pages/Login';
-import Register from '../Pages/Register';
-import Home from '../Pages/Home';
+import Login from '../Pages/Client/Login';
+import Register from '../Pages/Client/Register';
+import Home from '../Pages/Client/Home';
 import AdminPage from '../Pages/Admin/AdminPage';
 import ManageTyperoom from '../Pages/Admin/ManageTyperoom';
 import ManageRoom from '../Pages/Admin/ManageRoom';
-import Booking from '../Pages/Booking';
+import Booking from '../Pages/Client/Booking';
 import ManageService from '../Pages/Admin/ManageService';
 import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
-import Roomtype from '../Pages/Roomtype';
-import Entertainment from '../Pages/Entertainment';
-import Cuisine from '../Pages/Cuisine';
-import Locaion from '../Pages/Locaion';
+import Roomtype from '../Pages/Client/Roomtype';
+import Entertainment from '../Pages/Client/Entertainment';
+import Cuisine from '../Pages/Client/Cuisine';
+import Locaion from '../Pages/Client/Locaion';
 import ManageUser from '../Pages/Admin/ManageUser';
 
-import FailurePage from '../Pages/FailurePage';
-import PaymentStatusPage from '../Pages/PaymentStatusPage';
+import FailurePage from '../Pages/Client/FailurePage';
+import PaymentStatusPage from '../Pages/Client/PaymentStatusPage';
 import BookingList from '../Pages/Admin/BookingList';
 import BookingCalendar from '../Pages/Admin/BookingCalendar';
 import BookingDiagram from '../Pages/Admin/BookingDiagram';
+import PersonalInfo from '../Pages/Client/PersonalInfo';
 
 export const routes = [
   {
@@ -45,6 +46,11 @@ export const routes = [
   {
     path: '/booking',
     element: <Booking />,
+    layout: 'auth',
+  },
+  {
+    path: '/personal-info',
+    element: <PersonalInfo />,
     layout: 'auth',
   },
   {
