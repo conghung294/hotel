@@ -23,6 +23,7 @@ const Login = () => {
   const onFinish = async (data) => {
     const res = await handleLoginApi(data.email, data.password);
     if (res?.errCode === 0) {
+      localStorage.setItem('accessToken', res.data?.accessToken);
       setUser(res.user);
 
       if (res?.user?.roleId === 'Quản lý') {

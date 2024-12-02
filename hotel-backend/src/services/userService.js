@@ -46,23 +46,6 @@ let handleUserLogin = (email, password) => {
   });
 };
 
-let checkUserEmail = (useremail) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let user = await db.User.findOne({
-        where: { email: useremail },
-      });
-      if (user) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 let getAllUsers = async (userId) => {
   try {
     let users = '';

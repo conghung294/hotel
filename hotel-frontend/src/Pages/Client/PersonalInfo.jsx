@@ -113,9 +113,11 @@ function PersonalInfo() {
   ];
 
   const getBookings = useCallback(async () => {
-    const res = await getBookingService(user?.id);
-    const dataWithKeys = res?.data?.map((item, index) => ({ ...item, key: index }));
-    setData(dataWithKeys);
+    if (user?.id) {
+      const res = await getBookingService(user.id);
+      const dataWithKeys = res?.data?.map((item, index) => ({ ...item, key: index }));
+      setData(dataWithKeys);
+    }
   }, [user?.id]);
 
   useEffect(() => {
@@ -124,13 +126,15 @@ function PersonalInfo() {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await getAllUsers(user?.id);
-      if (res?.errCode === 0) {
-        setUserInfo(res?.data);
+      if (user) {
+        const res = await getAllUsers(user?.id);
+        if (res?.errCode === 0) {
+          setUserInfo(res?.data);
+        }
       }
     };
     getUser();
-  }, [user?.id]);
+  }, [user, user?.id]);
 
   const onFinish = async (values) => {
     const res = await editUserService({ ...values, id: user.id });
