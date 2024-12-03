@@ -1,33 +1,60 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { getAccount } from '../service/userService';
 
 // Tạo context
-const UserContext = createContext();
-
-// Hook để sử dụng context
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+export const UserContext = createContext(null);
 
 // Provider để cung cấp context cho các component con
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    // Lấy user từ localStorage nếu có
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const userDefault = useMemo(
+    () => ({
+      id: '',
+      email: '',
+      name: '',
+      roleId: '',
+    }),
+    [] // Không có dependencies, chỉ khởi tạo một lần
+  );
+  const [user, setUser] = useState(userDefault);
+
+  const loginContext = (userData) => {
+    setUser({ ...userData });
+  };
+
+  const logoutContext = () => {
+    setUser({ ...userDefault });
+  };
+
+  const fetchUser = useCallback(async () => {
+    let response = await getAccount();
+    if (response && response.EC === 0) {
+      let id = response.DT.id;
+      let email = response.DT.email;
+      let name = response.DT.name;
+      let roleId = response.DT.roleId;
+
+      let data = {
+        id,
+        email,
+        name,
+        roleId,
+      };
+      setUser({ ...data });
+    }
+  }, []);
 
   useEffect(() => {
-    // Mỗi khi user thay đổi, cập nhật lại localStorage
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+    if (window.location.pathname !== '/login') {
+      fetchUser();
     } else {
-      localStorage.removeItem('user');
+      // setUser({ ...user });
     }
-  }, [user]);
+  }, [fetchUser]);
+  console.log(user);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser, loginContext, logoutContext }}>
+      {children}
+    </UserContext.Provider>
+  );
 };

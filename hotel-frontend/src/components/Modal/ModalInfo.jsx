@@ -1,13 +1,13 @@
 import { Form, Input, Modal, Select } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { editUserService, getAllUsers } from '../../service/userService';
-import { useUser } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 
 const ModalInfo = ({ modalOpen, setModalOpen }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const { user } = useUser();
+  const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState();
 
   const onFinish = async (values) => {

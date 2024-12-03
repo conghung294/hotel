@@ -1,18 +1,19 @@
 import { Form, Input, Select, Table, Tabs } from 'antd';
-import { useUser } from '../../context/UserContext';
+
 import { editUserService, getAllUsers } from '../../service/userService';
 import { toast } from 'react-toastify';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { formatCurrency } from '../../utils/CommonUtils';
 import { getBookingService } from '../../service/bookingService';
 import dayjs from 'dayjs';
 import { CiUser } from 'react-icons/ci';
 import { MdHistory } from 'react-icons/md';
+import { UserContext } from '../../context/UserContext';
 
 function PersonalInfo() {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const { user } = useUser();
+  const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState();
   const [data, setData] = useState([]);
   const [activeTab, setActiveTab] = useState('1'); // Lưu trạng thái tab hiện tại

@@ -3,8 +3,9 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { handleLoginApi } from '../../service/userService';
-import { useUser } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import './Home.scss';
+import { useContext } from 'react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,15 +19,16 @@ const Login = () => {
   // const validatePassword = (password) => {
   //   return password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
   // };
-  const { setUser } = useUser();
+
+  const { loginContext } = useContext(UserContext);
 
   const onFinish = async (data) => {
     const res = await handleLoginApi(data.email, data.password);
     if (res?.errCode === 0) {
       localStorage.setItem('accessToken', res.data?.accessToken);
-      setUser(res.user);
+      loginContext(res?.data?.user);
 
-      if (res?.user?.roleId === 'Quản lý') {
+      if (res?.data?.roleId === 'Quản lý') {
         navigate('/admin');
       } else {
         navigate('/');

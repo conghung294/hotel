@@ -29,6 +29,7 @@ const HeaderAdmin = () => {
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('accessToken');
     nagivate('/login');
   };
 

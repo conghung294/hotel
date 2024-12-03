@@ -40,6 +40,10 @@ const getRevenue = (month) => {
   });
 };
 
+const handlePayment = (data) => {
+  return axios.post('/vnpay/payment', data);
+};
+
 export {
   createNewBookingService,
   getBookingService,
@@ -49,4 +53,5 @@ export {
   getBookingScheduleService,
   getDailyRoomUse,
   getRevenue,
+  handlePayment,
 };

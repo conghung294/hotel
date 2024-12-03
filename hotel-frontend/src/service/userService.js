@@ -35,6 +35,14 @@ const searchUserService = (name) => {
   return axios.get(`/api/search-user?name=${name}`);
 };
 
+const getAccount = () => {
+  return axios.get(`/api/account`);
+};
+
+const handleLogoutApi = () => {
+  return axios.post('/api/logout');
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -44,4 +52,6 @@ export {
   handleForgotPassword,
   handleResetPassword,
   searchUserService,
+  getAccount,
+  handleLogoutApi,
 };

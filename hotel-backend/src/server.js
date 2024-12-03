@@ -5,8 +5,8 @@ import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
 import http from 'http';
 import { Server } from 'socket.io'; // Thêm Server từ socket.io
-
-// import cors from "cors";
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 require('dotenv').config();
 let app = express();
 
@@ -22,30 +22,31 @@ const io = new Server(server, {
   },
 });
 
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173/');
+// app.use(function (req, res, next) {
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Pass to next layer of middleware
-  next();
-});
-// app.use(cors({ origin: true, credentials: true }));
+//   // Pass to next layer of middleware
+//   next();
+// });
+app.use(cors({ origin: true, credentials: true }));
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(cookieParser());
 app.set('io', io);
 
 viewEngine(app);

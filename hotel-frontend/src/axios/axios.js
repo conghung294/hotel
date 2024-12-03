@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
       {},
       { withCredentials: true }
     );
-    const newAccessToken = res.data.accessToken;
+    const newAccessToken = res.data?.accessToken;
 
     // Update the new Access Token in localStorage
     localStorage.setItem('accessToken', newAccessToken);

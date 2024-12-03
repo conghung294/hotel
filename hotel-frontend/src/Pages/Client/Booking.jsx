@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
 import { BsArrowRepeat } from 'react-icons/bs';
@@ -8,12 +8,13 @@ import Room from '../../components/Room/Room';
 import { formatCurrency } from '../../utils/CommonUtils';
 import { getServiceService } from '../../service/serviceService';
 import Service from '../../components/Service/Service';
-import { useUser } from '../../context/UserContext';
-import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 import { getSettingService } from '../../service/settingService';
+import { handlePayment } from '../../service/bookingService';
 
 const Booking = () => {
-  const { user } = useUser();
+  const { user } = useContext(UserContext);
+
   const [roomtype, setRoomtype] = useState([]);
   const [choiceRoom, setChoiceRoom] = useState();
   const [dates, setDates] = useState(null);
@@ -64,15 +65,15 @@ const Booking = () => {
       paid: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100,
     };
 
-    const response = await axios.post('http://localhost:8080/vnpay/payment', {
+    const response = await handlePayment({
       amount: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100, // Số tiền thanh toán
       bankCode: '',
       language: 'vn',
       dataBooking,
     });
 
-    if (response?.data) {
-      window.location.href = response.data; // Chuyển hướng người dùng đến VNPay
+    if (response) {
+      window.location.href = response; // Chuyển hướng người dùng đến VNPay
     }
   };
 

@@ -1,13 +1,13 @@
 import { Modal, Table } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { useUser } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import { formatCurrency } from '../../utils/CommonUtils';
 import dayjs from 'dayjs';
 import { getBookingService } from '../../service/bookingService';
 
 const ModalHistoryBooking = ({ modalOpen, setModalOpen }) => {
-  const { user } = useUser();
+  const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const columns = [
     {
@@ -108,7 +108,8 @@ const ModalHistoryBooking = ({ modalOpen, setModalOpen }) => {
 
   const getBookings = useCallback(async () => {
     const res = await getBookingService(user?.id);
-    const dataWithKeys = res?.data?.map((item, index) => ({ ...item, key: index }));
+    const dataWithKeys =
+      res?.data?.length > 0 && res?.data?.map((item, index) => ({ ...item, key: index }));
 
     setData(dataWithKeys);
   }, [user?.id]);

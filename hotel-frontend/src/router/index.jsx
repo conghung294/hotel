@@ -3,6 +3,7 @@ import { routes } from './routes';
 import DefaultLayout from '../components/Layouts/DefaultLayout';
 import BlankLayout from '../components/Layouts/BlankLayout';
 import LayoutAdmin from '../components/Layouts/LayoutAdmin';
+import ReceptionistLayout from '../components/Layouts/ReceptionistLayout';
 
 const checkLayout = (route) => {
   if (route?.layout) {
@@ -11,6 +12,8 @@ const checkLayout = (route) => {
         return <DefaultLayout>{route.element}</DefaultLayout>;
       case 'admin':
         return <LayoutAdmin>{route.element}</LayoutAdmin>;
+      case 'receptionist':
+        return <ReceptionistLayout>{route.element}</ReceptionistLayout>;
       default:
         return <DefaultLayout>{route.element}</DefaultLayout>;
     }

@@ -1,19 +1,21 @@
 import { Layout, Button, Avatar, Dropdown } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import './Header.scss';
-import { useUser } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalHistoryBooking from '../Modal/ModalHistoryBooking';
 import { CiUser } from 'react-icons/ci';
 import { IoIosLogOut } from 'react-icons/io';
+import { handleLogoutApi } from '../../service/userService';
 
 const { Header } = Layout;
 
 const HeaderHome = () => {
   const nagivate = useNavigate();
-  const { user, setUser } = useUser();
+  const { logoutContext } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [openModalInfo, setOpenModalInfo] = useState();
   const [openModalBookingHistory, setOpenModalBookingHistory] = useState(false);
 
@@ -24,8 +26,10 @@ const HeaderHome = () => {
     return words[words.length - 1].charAt(0).toUpperCase(); // Lấy chữ cái đầu của từ cuối cùng
   };
 
-  const handleLogout = () => {
-    setUser(null);
+  const handleLogout = async () => {
+    logoutContext();
+    await handleLogoutApi();
+    localStorage.removeItem('accessToken');
     nagivate('/login');
   };
 

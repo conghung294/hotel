@@ -6,6 +6,23 @@ import { sendForgotPasswordEmail } from './emailService';
 
 const salt = bcrypt.genSaltSync(10);
 
+let checkUserEmail = (useremail) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { email: useremail },
+      });
+      if (user) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 let handleUserLogin = (email, password) => {
   return new Promise(async (resolve, reject) => {
     try {

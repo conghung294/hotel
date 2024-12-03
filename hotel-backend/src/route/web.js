@@ -17,10 +17,12 @@ let initWebRoutes = (app) => {
   router.all('*', checkUserJWT);
 
   router.get('/', homeController.getHomePage);
+  router.get('/api/account', authController.getUserAccount);
   router.post('/api/login', authController.handleLogin);
+  router.post('/api/logout', authController.handleLogout);
   router.post('/api/refresh-token', authController.handleRefreshToken);
 
-  router.get('/api/get-all-user', authorizeRole(['Quản lý']), userController.handleGetAllUsers);
+  router.get('/api/get-all-user', userController.handleGetAllUsers);
   router.post(
     '/api/create-new-user',
     authorizeRole(['Quản lý']),

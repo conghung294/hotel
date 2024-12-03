@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
-const nonSecurePaths = ['/logout', '/login', '/register'];
+const nonSecurePaths = ['/api/logout', '/api/login', '/api/register', '/api/refresh-token'];
 
 const checkUserJWT = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) {
