@@ -71,14 +71,6 @@ const BookingDiagram = () => {
     };
   }, [getRoom]);
 
-  // Thêm phương thức reloadData để gọi lại API
-  // useEffect(() => {
-  //   const bookingListElement = document.querySelector('#booking-diagram');
-  //   if (bookingListElement) {
-  //     bookingListElement.reloadData = getRoom;
-  //   }
-  // }, [getRoom]);
-
   useEffect(() => {
     socket.on('confirmSuccess', () => {
       getRoom();
@@ -131,7 +123,7 @@ const BookingDiagram = () => {
                 <div className="mt-3 font-bold truncate">{item?.roomtypeData.name}</div>
                 <div className="mt-3">{formatCurrency(item?.roomtypeData.price)} / ngày</div>
                 {item?.status === 'SẮP ĐẾN' && (
-                  <div className="text-red-500">
+                  <div className="text-red-500 mt-2">
                     {calculateTimeDifference(item?.roomData[0]?.timeCome)}
                   </div>
                 )}

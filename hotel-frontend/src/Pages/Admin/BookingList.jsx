@@ -144,14 +144,6 @@ const BookingList = () => {
     };
   }, [getBookings]);
 
-  // Thêm phương thức reloadData để gọi lại API
-  // useEffect(() => {
-  //   const bookingListElement = document.querySelector('#booking-list');
-  //   if (bookingListElement) {
-  //     bookingListElement.reloadData = getBookings;
-  //   }
-  // }, [getBookings]);
-
   return (
     <div id="booking-list">
       <div className="month-picker flex gap-2 items-center">

@@ -57,7 +57,7 @@ const HeaderAdmin = () => {
   };
 
   useEffect(() => {
-    if (user?.roleId !== 'Quản lý') {
+    if (user?.roleId !== 'Quản lý' && user?.roleId !== 'Lễ tân') {
       nagivate('/');
     }
   }, [user?.roleId, nagivate]);

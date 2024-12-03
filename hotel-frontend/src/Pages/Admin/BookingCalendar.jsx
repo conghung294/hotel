@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import './BookingCalendar.scss';
@@ -46,7 +46,7 @@ const BookingCalendar = () => {
     setSelectedMonth(date);
   };
 
-  const getBookingSchedule = async () => {
+  const getBookingSchedule = useCallback(async () => {
     const res = await getBookingScheduleService();
     const dataWithKeys = res?.data?.map((item, index) => ({
       ...item,
@@ -57,19 +57,11 @@ const BookingCalendar = () => {
     } else {
       toast.error(res?.message);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getBookingSchedule();
-  }, []);
-
-  // Thêm phương thức reloadData để gọi lại API
-  // useEffect(() => {
-  //   const bookingCalenderElement = document.querySelector('#booking-calender');
-  //   if (bookingCalenderElement) {
-  //     bookingCalenderElement.reloadData = getBookingSchedule;
-  //   }
-  // }, []);
+  }, [getBookingSchedule]);
 
   useEffect(() => {
     socket.on('confirmSuccess', () => {
