@@ -9,9 +9,15 @@ const Home = () => {
   return (
     <>
       <Carousel autoplay>
-        <div className="home-background1"></div>
-        <div className="home-background2"></div>
-        <div className="home-background3"></div>
+        <div className="home-background1 relative">
+          <div className=" text-overlay">GREEN HILL</div>
+        </div>
+        <div className="home-background2 relative">
+          <div className=" text-overlay">GREEN HILL</div>
+        </div>
+        <div className="home-background3 relative">
+          <div className=" text-overlay">GREEN HILL</div>
+        </div>
       </Carousel>
 
       <div className="px-[27%] flex flex-col items-center mt-20 text-[#333333] text-[14px]">

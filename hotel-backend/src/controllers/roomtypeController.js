@@ -78,6 +78,25 @@ let searchRoomtypeByName = async (req, res) => {
   }
 };
 
+let handleGetQuantityRoomType = async (req, res) => {
+  try {
+    let { month, year } = req.query;
+
+    let roomtypes = await roomtypeService.getQuantityRoomTypeEachMonth(month, year);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: roomtypes,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 module.exports = {
   handleCreateRoomtype,
   handleGetRoomtype,
@@ -85,4 +104,5 @@ module.exports = {
   handleDeleteRoomtype,
   handleGetRoomtypeAvailable,
   searchRoomtypeByName,
+  handleGetQuantityRoomType,
 };

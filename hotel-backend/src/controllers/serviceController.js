@@ -92,6 +92,24 @@ let handleGetServiceByBooking = async (req, res) => {
   }
 };
 
+const handleCaculateQuantityEachService = async (req, res) => {
+  try {
+    let { month, year } = req.query;
+    let services = await ServiceService.caculateQuantityEachService(month, year);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: services,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 module.exports = {
   handleCreateService,
   handleGetService,
@@ -100,4 +118,5 @@ module.exports = {
   searchServiceByName,
   handleUpdateServiceForBooking,
   handleGetServiceByBooking,
+  handleCaculateQuantityEachService,
 };

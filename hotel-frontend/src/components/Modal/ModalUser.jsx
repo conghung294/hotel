@@ -78,7 +78,7 @@ const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) =>
             },
           ]}
         >
-          <Input />
+          <Input disabled={action === 'EDIT'} />
         </Form.Item>
         {action === 'CREATE' && (
           <Form.Item

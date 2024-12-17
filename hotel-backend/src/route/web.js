@@ -24,6 +24,7 @@ let initWebRoutes = (app) => {
   router.post('/api/create-new-roomtype', roomtypeController.handleCreateRoomtype);
   router.get('/api/get-all-roomtype', roomtypeController.handleGetRoomtype);
   router.get('/api/get-all-roomtype-available', roomtypeController.handleGetRoomtypeAvailable);
+  router.get('/api/get-roomtype-quantity-each-month', roomtypeController.handleGetQuantityRoomType);
   router.put('/api/edit-roomtype', roomtypeController.handleEditRoomtype);
   router.delete('/api/delete-roomtype', roomtypeController.handleDeleteRoomtype);
   router.get('/api/search-roomtype', roomtypeController.searchRoomtypeByName);
@@ -45,10 +46,12 @@ let initWebRoutes = (app) => {
   router.get('/api/search-service', serviceController.searchServiceByName);
   router.post('/api/update-service-for-booking', serviceController.handleUpdateServiceForBooking);
   router.get('/api/get-service-by-booking', serviceController.handleGetServiceByBooking);
+  router.get('/api/get-quantity-each-service', serviceController.handleCaculateQuantityEachService);
 
   router.post('/api/create-new-booking', bookingController.handleCreateBooking);
   router.get('/api/get-all-booking', bookingController.handleGetBooking);
   router.get('/api/get-all-booking-by-status', bookingController.handleGetBookingByStatus);
+  router.get('/api/get-booking-by-id', bookingController.handleGetBookingById);
   router.get('/api/get-booking-schedule', bookingController.handleGetBookingSchedule);
   router.put('/api/edit-booking', bookingController.handleEditBooking);
   router.delete('/api/delete-booking', bookingController.handleDeleteBooking);

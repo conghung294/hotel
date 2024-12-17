@@ -13,4 +13,12 @@ const formatCurrency = (value, locale = 'vi-VN', currency = 'VND') => {
   }).format(value);
 };
 
-export { getBase64, formatCurrency };
+const generateId = (prefix, length, id) => {
+  // Chuyển id thành chuỗi và thêm số 0 ở đầu để đạt độ dài yêu cầu
+  const paddedId = id.toString().padStart(length - prefix.length, '0');
+
+  // Kết hợp prefix với id đã được định dạng
+  return `${prefix}${paddedId}`;
+};
+
+export { getBase64, formatCurrency, generateId };

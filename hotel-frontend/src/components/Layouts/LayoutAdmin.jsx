@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Button, Dropdown, Layout, Menu, theme, Tooltip } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaHotel } from 'react-icons/fa6';
 import ModalWaitConfirm from '../Modal/ModalWaitConfirm';
 import ModalInfo from '../Modal/ModalInfo';
@@ -21,6 +21,7 @@ const LayoutAdmin = ({ children }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const location = useLocation();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [count, setCount] = useState();
@@ -63,6 +64,9 @@ const LayoutAdmin = ({ children }) => {
     setIsOpenModal(true);
   };
 
+  // Xác định key đang được chọn dựa trên đường dẫn
+  const selectedKey = location.pathname;
+
   useEffect(() => {
     if (user?.roleId !== 'Quản lý' && user?.roleId !== 'Lễ tân') {
       nagivate('/');
@@ -74,8 +78,8 @@ const LayoutAdmin = ({ children }) => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         {!collapsed ? (
           <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
-            <FaHotel size={30} color="white" />
-            <div className="text-white font-bold text-[28px]">PH HOTEL</div>
+            <FaHotel size={28} color="white" />
+            <div className="text-white font-bold text-[26px]">GREEN HILL</div>
           </div>
         ) : (
           <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
@@ -85,68 +89,70 @@ const LayoutAdmin = ({ children }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[selectedKey]}
           items={
             user?.roleId === 'Quản lý'
               ? [
                   {
-                    key: '1',
+                    key: '/admin',
                     icon: <RxDashboard size={20} />,
                     label: <Link to="/admin">Dashboard</Link>,
                   },
                   {
-                    key: '2',
                     icon: <CiClock2 size={20} />,
                     label: 'Quản lý chung',
                     children: [
                       {
+                        key: '/admin/bookingList',
                         icon: <CiViewList size={20} />,
                         label: <Link to="/admin/bookingList">Dạng danh sách</Link>,
                       },
                       {
+                        key: '/admin/bookingDiagram',
                         icon: <PiDeviceTablet size={20} />,
                         label: <Link to="/admin/bookingDiagram">Dạng sơ đồ</Link>,
                       },
                       {
+                        key: '/admin/bookingCalendar',
                         icon: <CiViewTable size={20} />,
                         label: <Link to="/admin/bookingCalendar">Dạng lưới</Link>,
                       },
                     ],
                   },
                   {
-                    key: '3',
+                    key: '/admin/manageUser',
                     icon: <CiUser size={20} />,
                     label: <Link to="/admin/manageUser">Quản lý người dùng</Link>,
                   },
                   {
-                    key: '4',
+                    key: '/admin/manageTyperoom',
                     icon: <MdOutlineBedroomChild size={20} />,
                     label: <Link to="/admin/manageTyperoom">Quản lý hạng phòng</Link>,
                   },
                   {
-                    key: '5',
+                    key: '/admin/manageRoom',
                     icon: <MdOutlineMeetingRoom size={20} />,
                     label: <Link to="/admin/manageRoom">Quản lý phòng</Link>,
                   },
                   {
-                    key: '6',
+                    key: '/admin/manageService',
                     icon: <MdOutlineCleaningServices size={20} />,
                     label: <Link to="/admin/manageService">Quản lý dịch vụ</Link>,
                   },
                 ]
               : [
                   {
-                    key: '1',
+                    key: '/admin/bookingList',
                     icon: <CiViewList size={20} />,
                     label: <Link to="/admin/bookingList">Danh sách đặt</Link>,
                   },
                   {
-                    key: '2',
+                    key: '/admin/bookingDiagram',
                     icon: <PiDeviceTablet size={20} />,
                     label: <Link to="/admin/bookingDiagram">Sơ đồ phòng</Link>,
                   },
                   {
-                    key: '3',
+                    key: '/admin/bookingCalendar',
                     icon: <CiViewTable size={20} />,
                     label: <Link to="/admin/bookingCalendar">Lịch đặt phòng</Link>,
                   },
@@ -225,19 +231,24 @@ const LayoutAdmin = ({ children }) => {
             </Dropdown>
           </div>
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-            overflowY: 'auto',
-          }}
-          className="custom-scrollbar"
-        >
-          {children}
-        </Content>
+
+        {selectedKey !== '/admin' ? (
+          <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              minHeight: 280,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+              overflowY: 'auto',
+            }}
+            className="custom-scrollbar"
+          >
+            {children}
+          </Content>
+        ) : (
+          <div>{children}</div>
+        )}
       </Layout>
 
       <ModalWaitConfirm modalOpen={isOpenModal} setModalOpen={setIsOpenModal} setCount={setCount} />

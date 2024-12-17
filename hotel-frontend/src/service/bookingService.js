@@ -12,6 +12,10 @@ const getBookingByStatusService = (status) => {
   return axios.get(`/api/get-all-booking-by-status?status=${status}`);
 };
 
+const getBookingByIdService = (id) => {
+  return axios.get(`/api/get-booking-by-id?id=${id}`);
+};
+
 const getBookingScheduleService = () => {
   return axios.get(`/api/get-booking-schedule`);
 };
@@ -49,4 +53,5 @@ export {
   getBookingScheduleService,
   getDailyRoomUse,
   getRevenue,
+  getBookingByIdService,
 };

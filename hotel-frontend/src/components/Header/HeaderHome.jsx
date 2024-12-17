@@ -1,13 +1,14 @@
 import { Layout, Button, Avatar, Dropdown } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { CiUser } from 'react-icons/ci';
+import { IoIosLogOut } from 'react-icons/io';
+import { GoHistory } from 'react-icons/go';
 
 import './Header.scss';
 import { useUser } from '../../context/UserContext';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalHistoryBooking from '../Modal/ModalHistoryBooking';
-import { CiUser } from 'react-icons/ci';
-import { IoIosLogOut } from 'react-icons/io';
 
 const { Header } = Layout;
 
@@ -43,12 +44,17 @@ const HeaderHome = () => {
         </div>
       ),
     },
-    // {
-    //   key: '2',
-    //   label: <div onClick={() => setOpenModalBookingHistory(true)}>Lịch sử đặt phòng</div>,
-    // },
     {
       key: '2',
+      label: (
+        <div onClick={() => nagivate('/booking-history')} className="flex items-center gap-2">
+          <GoHistory size={20} />
+          Lịch sử đặt phòng
+        </div>
+      ),
+    },
+    {
+      key: '3',
       label: (
         <div onClick={() => handleLogout()} className="flex items-center gap-2">
           <IoIosLogOut size={20} />

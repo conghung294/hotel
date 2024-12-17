@@ -140,6 +140,37 @@ let getBookingByStatus = async (status) => {
   }
 };
 
+let getBookingById = async (id) => {
+  try {
+    const bookings = await db.Booking.findAll({
+      where: { id: id },
+      include: [
+        {
+          model: db.User,
+          as: 'bookingData',
+        },
+        {
+          model: db.Roomtype,
+          as: 'typeData',
+        },
+        {
+          model: db.Room,
+          as: 'roomData',
+        },
+        {
+          model: db.Service,
+          through: { attributes: [] }, // Lấy thông tin dịch vụ mà không cần thông tin từ bảng BookingService
+          as: 'services',
+        },
+      ],
+    });
+
+    return bookings;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 let updateBooking = async (data) => {
   try {
     if (!data.id) {
@@ -207,7 +238,7 @@ let getBookingSchedule = async () => {
         {
           model: db.Booking,
           as: 'roomData',
-          attributes: ['timeCome', 'timeGo'],
+          attributes: ['timeCome', 'timeGo', 'id'],
           include: [
             {
               model: db.User,
@@ -222,8 +253,9 @@ let getBookingSchedule = async () => {
 
     // Format the data
     const result = rooms?.map((room) => ({
-      id: room?.name,
+      roomName: room?.name,
       bookings: room?.roomData?.map((booking) => ({
+        id: booking?.id,
         timeCome: booking?.timeCome,
         timeGo: booking?.timeGo,
         name: booking?.bookingData?.name || booking?.bookingData?.email,
@@ -357,4 +389,5 @@ module.exports = {
   getBookingSchedule,
   caculateDailyRoomUse,
   caculateRevenue,
+  getBookingById,
 };

@@ -15,6 +15,14 @@ const BookingList = () => {
 
   const columns = [
     {
+      title: 'Mã ĐP',
+      dataIndex: 'stt',
+      key: 'stt',
+      width: '5%',
+      align: 'center',
+      render: (_, record) => <div>{record?.id}</div>,
+    },
+    {
       title: 'Thời gian đặt',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -41,27 +49,29 @@ const BookingList = () => {
       title: 'Thời gian đến',
       dataIndex: 'timeCome',
       key: 'timeCome',
-      width: '8%',
+      width: '9%',
       align: 'center',
       render: (timeCome) => {
         return dayjs(timeCome).format('HH:mm:ss DD/MM/YYYY');
       },
+      sorter: (a, b) => dayjs(a.timeCome).valueOf() - dayjs(b.timeCome).valueOf(),
     },
     {
       title: 'Thời gian đi',
       dataIndex: 'timeGo',
       key: 'timeGo',
-      width: '8%',
+      width: '9%',
       align: 'center',
       render: (timeGo) => {
         return dayjs(timeGo).format('HH:mm:ss DD/MM/YYYY');
       },
+      sorter: (a, b) => dayjs(a.timeGo).valueOf() - dayjs(b.timeGo).valueOf(),
     },
     {
       title: 'Loại phòng',
       dataIndex: ['typeData', 'name'],
       key: 'typeroom',
-      width: '14%',
+      width: '9%',
       align: 'center',
     },
     {
@@ -75,7 +85,7 @@ const BookingList = () => {
       title: 'Dịch vụ',
       dataIndex: 'service',
       key: 'service',
-      width: '15%',
+      width: '13%',
       render: (_, record) => (
         <div>
           {record?.services?.map((item) => {

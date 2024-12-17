@@ -16,12 +16,12 @@ const ManageUser = () => {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Mã NV',
       dataIndex: 'stt',
       key: 'stt',
-      width: '5%',
+      width: '7%',
       align: 'center',
-      render: (text, record, index) => index + 1,
+      render: (_, record) => <div>{record?.id}</div>,
     },
     {
       title: 'Email',
@@ -36,12 +36,13 @@ const ManageUser = () => {
       dataIndex: 'name',
       key: 'name',
       width: '15%',
+      align: 'center',
     },
     {
       title: 'Số điện thoại',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      width: '15%',
+      width: '13%',
       align: 'center',
     },
     {

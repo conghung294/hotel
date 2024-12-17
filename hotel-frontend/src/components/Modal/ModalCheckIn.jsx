@@ -1,14 +1,18 @@
 import { Form, Input, Modal, Select, Table } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import DatePickerCustom from '../DatePickerCustom';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
 import { checkInService, getRoomServiceAvailable } from '../../service/roomService';
 import { toast } from 'react-toastify';
+import { useReactToPrint } from 'react-to-print';
+import { BookingForm } from '../Print/BookingForm';
 
 const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
+  const printRef = useRef(null);
   const [timeCome, setTimeCome] = useState(dayjs().startOf('day'));
   const [timeGo, setTimeGo] = useState(dayjs().startOf('day').add(1, 'day'));
+  const [customer, setCustomer] = useState();
   const { Option } = Select;
   const [form] = Form.useForm();
   // Sử dụng useMemo để cập nhật columns khi timeCome hoặc timeGo thay đổi
@@ -85,6 +89,7 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
   ); // dependencies đảm bảo columns sẽ được cập nhật khi timeCome hoặc timeGo thay đổi
 
   const onFinish = async (value) => {
+    setCustomer(value);
     const res = await getRoomServiceAvailable(room?.typeId, timeCome, timeGo);
     if (res?.errCode === 0) {
       const roomsAvail = res.data;
@@ -103,10 +108,7 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         const res = await checkInService(data);
 
         if (res.errCode === 0) {
-          form.resetFields();
-          setModalOpen(false);
-          toast.success('Nhận phòng thành công!');
-          getRoom();
+          handlePrint();
         } else {
           toast.error('Thất bại!');
         }
@@ -117,6 +119,24 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
       toast.error(res?.errMessage);
     }
   };
+
+  const handleAfterPrint = useCallback(() => {
+    form.resetFields();
+    setModalOpen(false);
+    toast.success('Nhận phòng thành công!');
+    getRoom();
+  }, [form, getRoom, setModalOpen]);
+
+  const handleBeforePrint = useCallback(() => {
+    return Promise.resolve();
+  }, []);
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: 'Phiếu Đặt Phòng',
+    onAfterPrint: handleAfterPrint,
+    onBeforePrint: handleBeforePrint,
+  });
 
   return (
     <Modal
@@ -199,6 +219,9 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
           </div>
         </div>
       </Form>
+      <div className="hidden">
+        <BookingForm ref={printRef} data={{ ...room, timeCome, timeGo, user: customer }} />
+      </div>
     </Modal>
   );
 };

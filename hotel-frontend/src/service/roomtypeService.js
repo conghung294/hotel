@@ -28,6 +28,15 @@ const searchRoomtypeService = (name) => {
   return axios.get(`/api/search-roomtype?name=${name}`);
 };
 
+const getRoomtypeQuantityEachMonth = (month, year) => {
+  return axios.get(`/api/get-roomtype-quantity-each-month`, {
+    params: {
+      month,
+      year,
+    },
+  });
+};
+
 export {
   createNewRoomtypeService,
   getRoomtypeService,
@@ -35,4 +44,5 @@ export {
   deleteRoomtypeService,
   getRoomtypeAvailableService,
   searchRoomtypeService,
+  getRoomtypeQuantityEachMonth,
 };

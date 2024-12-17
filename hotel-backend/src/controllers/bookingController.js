@@ -41,6 +41,24 @@ let handleGetBookingByStatus = async (req, res) => {
   }
 };
 
+let handleGetBookingById = async (req, res) => {
+  try {
+    let id = req.query.id;
+    let bookings = await BookingService.getBookingById(id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: bookings,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 let handleEditBooking = async (req, res) => {
   let data = req.body;
   let message = await BookingService.updateBooking(data);
@@ -117,6 +135,7 @@ const handleCaculateRevenue = async (req, res) => {
 module.exports = {
   handleCreateBooking,
   handleGetBooking,
+  handleGetBookingById,
   handleEditBooking,
   handleDeleteBooking,
   handleGetBookingByStatus,

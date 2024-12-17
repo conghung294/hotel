@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import db from '../models/index';
+import sequelize from 'sequelize';
 
 let createNewRoomtype = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -206,6 +207,54 @@ const searchRoomtypeByName = async (name) => {
   }
 };
 
+const getQuantityRoomTypeEachMonth = async (month, year) => {
+  try {
+    // Kiểm tra đầu vào
+    if (!year || !month) {
+      return null;
+    }
+
+    // Tính toán ngày bắt đầu và kết thúc của tháng
+    const startOfMonth = new Date(year, month - 1, 1); // Ngày đầu tháng
+    const endOfMonth = new Date(year, month, 0); // Ngày cuối tháng
+
+    // Lấy tất cả các loại phòng
+    const roomtypes = await db.Roomtype.findAll({
+      attributes: ['id', 'name'], // Chỉ lấy các thuộc tính cần thiết
+    });
+
+    // Lọc các Booking hợp lệ
+    const bookings = await db.Booking.findAll({
+      where: {
+        status: '3', // Trạng thái hợp lệ
+        updatedAt: {
+          [Op.between]: [startOfMonth, endOfMonth], // Thời gian trong tháng
+        },
+      },
+      attributes: ['typeroomId'], // Chỉ lấy id loại phòng
+    });
+
+    // Đếm số lượng booking theo từng loại phòng
+    const bookingCounts = bookings.reduce((acc, booking) => {
+      const { typeroomId } = booking;
+      acc[typeroomId] = (acc[typeroomId] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Gắn số lượng booking vào từng loại phòng
+    const result = roomtypes.map((roomtype) => ({
+      id: roomtype.id,
+      name: roomtype.name,
+      usageCount: bookingCounts[roomtype.id] || 0, // Nếu không có booking thì trả về 0
+    }));
+
+    // Trả về kết quả
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   createNewRoomtype,
   getRoomtype,
@@ -213,4 +262,5 @@ module.exports = {
   deleteRoomtype,
   getRoomtypeAvailable,
   searchRoomtypeByName,
+  getQuantityRoomTypeEachMonth,
 };

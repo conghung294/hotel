@@ -20,6 +20,7 @@ import BookingList from '../Pages/Admin/BookingList';
 import BookingCalendar from '../Pages/Admin/BookingCalendar';
 import BookingDiagram from '../Pages/Admin/BookingDiagram';
 import PersonalInfo from '../Pages/Client/PersonalInfo';
+import { BookingForm } from '../components/Print/BookingForm';
 
 export const routes = [
   {
@@ -54,6 +55,11 @@ export const routes = [
     layout: 'auth',
   },
   {
+    path: '/booking-history',
+    element: <PersonalInfo />,
+    layout: 'auth',
+  },
+  {
     path: '/payment/result',
     element: <PaymentStatusPage />,
   },
@@ -74,6 +80,12 @@ export const routes = [
   {
     path: '/cuisine',
     element: <Cuisine />,
+    layout: 'auth',
+  },
+
+  {
+    path: '/1',
+    element: <BookingForm />,
     layout: 'auth',
   },
 

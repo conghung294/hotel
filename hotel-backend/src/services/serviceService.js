@@ -1,5 +1,6 @@
 import db from '../models/index';
 import { Op } from 'sequelize';
+import Sequelize from 'sequelize';
 
 let createNewService = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -61,6 +62,7 @@ let updateService = async (data) => {
       service.name = data.name;
       service.description = data.description;
       service.price = data.price;
+      service.image = data?.image;
 
       await service.save();
       return {
@@ -252,6 +254,58 @@ let getServiceByBooking = async (bookingId) => {
   }
 };
 
+const caculateQuantityEachService = async (month, year) => {
+  try {
+    if (!year || !month) return null;
+
+    // Tính toán ngày bắt đầu và kết thúc trong tháng
+    const startOfMonth = new Date(year, month - 1, 1); // Ngày đầu tháng
+    const endOfMonth = new Date(year, month, 0); // Ngày cuối tháng
+
+    // Lấy tất cả dịch vụ
+    const services = await db.Service.findAll({
+      attributes: ['id', 'name'], // Lấy id và tên dịch vụ
+    });
+
+    // Truy vấn các Booking trong tháng có status = 3
+    const bookings = await db.Booking.findAll({
+      where: {
+        status: '3',
+        updatedAt: { [Op.between]: [startOfMonth, endOfMonth] },
+      },
+      include: [
+        {
+          model: db.Service,
+          as: 'services',
+          through: { model: db.BookingService, attributes: ['quantity'] },
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
+
+    // Tạo một đối tượng để lưu trữ số lượng dịch vụ đã sử dụng trong tháng
+    const serviceUsageMap = services.reduce((acc, service) => {
+      acc[service.id] = { id: service.id, serviceName: service.name, totalQuantity: 0 }; // Mặc định số lượng là 0
+      return acc;
+    }, {});
+
+    // Tính số lượng dịch vụ đã sử dụng từ các booking
+    bookings.forEach((booking) => {
+      booking.services.forEach((service) => {
+        // Cộng dồn số lượng dịch vụ vào serviceUsageMap
+        serviceUsageMap[service.id].totalQuantity += service.BookingService.quantity;
+      });
+    });
+
+    // Chuyển đổi đối tượng serviceUsageMap thành danh sách trả về
+    const serviceUsage = Object.values(serviceUsageMap);
+    // Trả về kết quả
+    return serviceUsage;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   createNewService,
   getService,
@@ -260,4 +314,5 @@ module.exports = {
   searchServiceByName,
   updateServiceForBooking,
   getServiceByBooking,
+  caculateQuantityEachService,
 };

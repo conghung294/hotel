@@ -15,7 +15,6 @@ function PersonalInfo() {
   const { user } = useUser();
   const [userInfo, setUserInfo] = useState();
   const [data, setData] = useState([]);
-  const [activeTab, setActiveTab] = useState('1'); // Lưu trạng thái tab hiện tại
 
   const columns = [
     {
@@ -143,7 +142,7 @@ function PersonalInfo() {
 
   const items = [
     {
-      key: '1',
+      key: '/personal-info',
       label: (
         <div className="flex items-center  gap-2 pr-4">
           <CiUser size={20} /> Thông tin cá nhân
@@ -194,7 +193,7 @@ function PersonalInfo() {
       ),
     },
     {
-      key: '2',
+      key: '/booking-history',
       label: (
         <div className="flex items-center gap-2">
           <MdHistory size={20} /> Lịch sử đặt phòng
@@ -215,9 +214,7 @@ function PersonalInfo() {
     },
   ];
 
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-  };
+  const selectedKey = location.pathname;
 
   useEffect(() => {
     if (userInfo) {
@@ -227,14 +224,7 @@ function PersonalInfo() {
 
   return (
     <div className="flex mt-[100px] h-[80vh] px-6 w-full">
-      <Tabs
-        defaultActiveKey="1"
-        items={items}
-        activeKey={activeTab}
-        onChange={handleTabChange}
-        tabPosition="left"
-        className="w-full"
-      />
+      <Tabs defaultActiveKey={selectedKey} items={items} tabPosition="left" className="w-full" />
     </div>
   );
 }

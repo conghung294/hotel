@@ -7,6 +7,7 @@ import viVN from 'antd/lib/locale/vi_VN';
 import { getBookingScheduleService } from '../../service/bookingService';
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
+import ModalDetailBooking from '../../components/Modal/ModalDetailBooking';
 
 const socket = io('http://localhost:8080');
 
@@ -14,10 +15,12 @@ const BookingCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs()); // Bắt đầu với tháng hiện tại
   const daysInMonth = selectedMonth?.daysInMonth();
   const [data, setData] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [idBooking, setIdBooking] = useState();
 
   // Xử lý lịch đặt cho từng phòng, chỉ lấy lịch đặt trong tháng được chọn
   const rooms = data?.map((room) => ({
-    id: room.id,
+    roomName: room.roomName,
     bookings: room.bookings
       .filter((booking) => {
         // Lọc các lịch đặt trong tháng đã chọn
@@ -34,6 +37,7 @@ const BookingCalendar = () => {
         const duration = endDay - startDay + 1; // Tính toán thời gian kéo dài trong ngày
 
         return {
+          id: booking?.id,
           name: `${booking.name}`,
           startDay,
           duration,
@@ -58,6 +62,11 @@ const BookingCalendar = () => {
       toast.error(res?.message);
     }
   }, []);
+
+  const handleViewBooking = (id) => {
+    setIdBooking(id);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     getBookingSchedule();
@@ -104,7 +113,7 @@ const BookingCalendar = () => {
         {/* Render each room row with bookings */}
         {rooms?.map((room, index) => (
           <div key={index} className="calendar-row">
-            <div className="calendar-room-name">{room.id}</div>
+            <div className="calendar-room-name">{room.roomName}</div>
             {[...Array(daysInMonth)]?.map((_, dayIndex) => {
               // Kiểm tra xem có lịch đặt nào bắt đầu vào ngày này không
               const booking = room.bookings.find((booking) => booking.startDay === dayIndex + 1);
@@ -114,10 +123,11 @@ const BookingCalendar = () => {
                 return (
                   <div
                     key={dayIndex}
-                    className="calendar-booking truncate"
+                    className="calendar-booking truncate cursor-pointer hover:opacity-90"
                     style={{
                       gridColumn: `span ${booking.duration}`,
                     }}
+                    onClick={() => handleViewBooking(booking?.id)}
                   >
                     {booking.name}
                   </div>
@@ -129,6 +139,8 @@ const BookingCalendar = () => {
           </div>
         ))}
       </div>
+
+      <ModalDetailBooking modalOpen={modalOpen} setModalOpen={setModalOpen} id={idBooking} />
     </div>
   );
 };

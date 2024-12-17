@@ -10,7 +10,7 @@ import {
   searchRoomtypeService,
 } from '../../service/roomtypeService';
 import ModalRoomtype from '../../components/Modal/ModalRoomtype';
-import { formatCurrency } from '../../utils/CommonUtils';
+import { formatCurrency, generateId } from '../../utils/CommonUtils';
 
 const ManageTyperoom = () => {
   const { Search } = Input;
@@ -21,18 +21,18 @@ const ManageTyperoom = () => {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Mã HP',
       dataIndex: 'stt',
       key: 'stt',
-      width: '5%',
+      width: '10%',
       align: 'center',
-      render: (text, record, index) => index + 1,
+      render: (_, record) => <div>{record?.id}</div>,
     },
     {
       title: 'Hạng phòng',
       dataIndex: 'name',
       key: 'name',
-      width: '25%',
+      width: '20%',
       align: 'center',
     },
     {

@@ -174,7 +174,7 @@ let updateUserData = async (data) => {
       raw: false,
     });
     if (user) {
-      user.name = data.firstName;
+      user.name = data.name;
       user.address = data.address;
       user.roleId = data.roleId;
       user.gender = data.gender;

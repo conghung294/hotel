@@ -21,12 +21,12 @@ const ManageService = () => {
 
   const columns = [
     {
-      title: 'STT',
-      dataIndex: 'stt',
-      key: 'stt',
-      width: '5%',
+      title: 'Mã DV',
+      dataIndex: 'madv',
+      key: 'madv',
+      width: '10%',
       align: 'center',
-      render: (text, record, index) => index + 1,
+      render: (_, record) => <div>{record?.id}</div>,
     },
     {
       title: 'Tên dịch vụ',
@@ -53,7 +53,7 @@ const ManageService = () => {
       dataIndex: 'description',
       key: 'status',
       align: 'center',
-      width: '35%',
+      width: '30%',
     },
 
     {

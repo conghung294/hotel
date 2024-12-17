@@ -17,12 +17,12 @@ const ManageRoom = () => {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Mã phòng',
       dataIndex: 'stt',
       key: 'stt',
-      width: '5%',
+      width: '10%',
       align: 'center',
-      render: (text, record, index) => index + 1, // Hiển thị số thứ tự
+      render: (_, record) => <div>{record?.id}</div>,
     },
     {
       title: 'Tên phòng',
@@ -35,7 +35,7 @@ const ManageRoom = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      width: '20%',
+      width: '15%',
       align: 'center',
     },
     {

@@ -32,6 +32,15 @@ const getServiceServiceByBooking = (id) => {
   return axios.get(`/api/get-service-by-booking?id=${id}`);
 };
 
+const getQuantityEachService = (month, year) => {
+  return axios.get(`/api/get-quantity-each-service`, {
+    params: {
+      month,
+      year,
+    },
+  });
+};
+
 export {
   createNewServiceService,
   getServiceService,
@@ -40,4 +49,5 @@ export {
   searchServiceService,
   saveSelectedServices,
   getServiceServiceByBooking,
+  getQuantityEachService,
 };
