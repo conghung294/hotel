@@ -136,7 +136,7 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id, getBookingSchedule })
           okText="Hủy phòng"
           cancelText="Không"
         >
-          <Button type="primary" danger>
+          <Button type="primary" danger disabled={record?.status !== '1'}>
             Hủy phòng
           </Button>
         </Popconfirm>
@@ -156,7 +156,6 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id, getBookingSchedule })
       getBookingDetails();
     }
   }, [id]);
-  console.log(bookingDetails);
 
   return (
     <>

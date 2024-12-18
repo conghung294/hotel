@@ -98,6 +98,7 @@ const ModalRoomtype = ({ modalOpen, setModalOpen, getRoomtype, action, currentRo
         labelAlign="left"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        style={{ marginTop: '16px' }}
       >
         <Form.Item
           label="Tên"

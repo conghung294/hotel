@@ -22,6 +22,7 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
     });
     setFormLoading(false);
     if (res.errCode === 0) {
+      form.resetFields();
       setModalOpen(false);
       getBookingWaitConfirm();
       toast.success('Xác nhận đặt phòng thành công!');
@@ -68,6 +69,7 @@ const ModalConfirmBooking = ({ modalOpen, setModalOpen, choiceBooking, getBookin
         labelAlign="left"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        style={{ maxHeight: '80vh', overflowY: 'auto' }}
       >
         <hr />
         <div className="font-bold mt-2">Thông tin khách hàng</div>

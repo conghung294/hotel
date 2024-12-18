@@ -99,7 +99,7 @@ const BookingDiagram = () => {
           data.map((item) => {
             return (
               <div
-                className={`w-[calc(20%-16px)] h-[134px] p-[10px] pt-[16px] border rounded-md ${
+                className={`w-[calc(20%-16px)] h-[134px] p-[10px] pt-[20px] border rounded-md ${
                   item?.status === '1'
                     ? 'bg-[#F2F7F6] border-green-600'
                     : item?.status === '3'
@@ -120,10 +120,10 @@ const BookingDiagram = () => {
                 >
                   {item.name}
                 </span>
-                <div className="mt-3 font-bold truncate">{item?.roomtypeData.name}</div>
-                <div className="mt-3">{formatCurrency(item?.roomtypeData.price)} / ngày</div>
+                <div className="mt-4 font-bold truncate ml-1">{item?.roomtypeData.name}</div>
+                <div className="mt-4 ml-1">{formatCurrency(item?.roomtypeData.price)} / ngày</div>
                 {item?.status === '3' && (
-                  <div className="text-red-500 mt-2">
+                  <div className="text-red-500 mt-2 ml-1">
                     {calculateTimeDifference(item?.roomData[0]?.timeCome)}
                   </div>
                 )}

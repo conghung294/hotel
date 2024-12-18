@@ -331,8 +331,8 @@ const AdminPage = () => {
             </ConfigProvider>
           </div>
         </div>
-        <div className="flex items-center justify-around">
-          <div className="mt-10 w-[30%] flex flex-col gap-5 items-center">
+        <div className="flex  justify-around mt-10">
+          <div className="w-[34%] flex flex-col gap-5 items-center">
             <div className="font-bold text-[18px]">Dịch vụ </div>
             <ReactChartJs
               type="pie"
@@ -341,7 +341,7 @@ const AdminPage = () => {
               options={pieOptions}
             />
           </div>
-          <div className="mt-10 w-[30%] flex flex-col gap-5 items-center">
+          <div className="w-[30%] flex flex-col gap-5 items-center justify-start">
             <div className="font-bold text-[18px]">Hạng phòng </div>
             <ReactChartJs
               type="pie"

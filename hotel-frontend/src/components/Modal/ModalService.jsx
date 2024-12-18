@@ -97,6 +97,7 @@ const ModalService = ({ modalOpen, setModalOpen, getService, action, currentServ
         labelAlign="left"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        style={{ marginTop: '16px' }}
       >
         <Form.Item
           label="Tên"

@@ -137,16 +137,18 @@ const Booking = () => {
                 <div>
                   <hr className="my-3" />
                   <div className="mt-3 font-bold">Dịch vụ thêm</div>
-                  {choiceServices.map((item) => {
-                    return (
-                      <div key={item.id}>
-                        <div className="flex justify-between mt-3">
-                          <div>{item.name}</div>
-                          <div>{formatCurrency(item?.price)}</div>
+                  <div className="h-[200px] overflow-y-auto">
+                    {choiceServices.map((item) => {
+                      return (
+                        <div key={item.id}>
+                          <div className="flex justify-between mt-3">
+                            <div>{item.name}</div>
+                            <div>{formatCurrency(item?.price)}</div>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               )}
               <hr className="mt-3" />

@@ -192,7 +192,7 @@ const ModalWaitConfirm = ({ modalOpen, setModalOpen, setCount }) => {
           columns={columns}
           dataSource={bookingConfirm}
           bordered
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 4 }}
         />
       </Modal>
 
