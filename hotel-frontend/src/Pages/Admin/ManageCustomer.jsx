@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { toast } from 'react-toastify';
-import { FiPlus } from 'react-icons/fi';
 import { VscQuestion } from 'react-icons/vsc';
 
-import { deleteUserService, getAllUsers, searchUserService } from '../../service/userService';
+import { deleteUserService, getAllCustomers, searchUserService } from '../../service/userService';
 import ModalUser from '../../components/Modal/ModalUser';
 
-const ManageUser = () => {
+const ManageCustomer = () => {
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,10 +15,10 @@ const ManageUser = () => {
 
   const columns = [
     {
-      title: 'Mã NV',
+      title: 'Mã KH',
       dataIndex: 'stt',
       key: 'stt',
-      width: '6%',
+      width: '7%',
       align: 'center',
       render: (_, record) => <div>{record?.id}</div>,
     },
@@ -42,23 +41,21 @@ const ManageUser = () => {
       title: 'Số điện thoại',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      width: '9%',
+      width: '10%',
       align: 'center',
     },
-
     {
       title: 'CCCD',
       dataIndex: 'cccd',
       key: 'cccd',
-      width: '9%',
+      width: '10%',
       align: 'center',
     },
-
     {
       title: 'Giới tính',
       dataIndex: 'gender',
       key: 'gender',
-      width: '7%',
+      width: '8%',
       align: 'center',
     },
     {
@@ -68,18 +65,11 @@ const ManageUser = () => {
       width: '25%',
       align: 'center',
     },
-    {
-      title: 'Chức vụ',
-      dataIndex: 'role',
-      key: 'role',
-      width: '9%',
-      align: 'center',
-    },
 
     {
       title: 'Hành động',
       key: 'action',
-      width: '9%',
+      width: '10%',
       align: 'center',
       render: (_, record) => (
         <Space size="middle">
@@ -87,8 +77,8 @@ const ManageUser = () => {
             Sửa
           </Button>
           <Popconfirm
-            title="Xóa người dùng"
-            description={`Bạn có chắc chắn muốn xóa người dùng ${record.name} không?`}
+            title="Xóa khách hàng"
+            description={`Bạn có chắc chắn muốn xóa khách hàng ${record.name} không?`}
             placement="topRight"
             icon={
               <div className="mt-[2px] pr-1">
@@ -119,7 +109,7 @@ const ManageUser = () => {
   };
 
   const getUser = async () => {
-    const res = await getAllUsers('ALL');
+    const res = await getAllCustomers();
     const dataWithKeys = res.data.map((item) => ({
       ...item,
       key: item?.id,
@@ -129,12 +119,6 @@ const ManageUser = () => {
     } else {
       toast.error(res?.message);
     }
-  };
-
-  const handleAddUser = () => {
-    setCurrentUser(null);
-    setAction('CREATE');
-    setModalOpen(true);
   };
 
   const handleEditUser = (user) => {
@@ -159,17 +143,12 @@ const ManageUser = () => {
   return (
     <>
       <div className="">
-        <Space>
-          <Button type="primary" onClick={() => handleAddUser()}>
-            <FiPlus /> Thêm mới
-          </Button>
-          <Search
-            placeholder="Nhập người dùng cần tìm kiếm!"
-            allowClear
-            onSearch={onSearch}
-            style={{ width: 300 }}
-          />
-        </Space>
+        <Search
+          placeholder="Nhập khách hàng cần tìm kiếm!"
+          allowClear
+          onSearch={onSearch}
+          style={{ width: 300 }}
+        />
 
         <div className="mt-5">
           <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
@@ -182,9 +161,10 @@ const ManageUser = () => {
         getUser={getUser}
         action={action}
         currentUser={currentUser}
+        role="customer"
       />
     </>
   );
 };
 
-export default ManageUser;
+export default ManageCustomer;

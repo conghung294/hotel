@@ -7,10 +7,10 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       image: {
         type: Sequelize.BLOB('long'),
@@ -20,13 +20,13 @@ module.exports = {
       },
 
       quantity: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL(10, 2),
       },
       people: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(10),
       },
       area: {
         type: Sequelize.INTEGER,

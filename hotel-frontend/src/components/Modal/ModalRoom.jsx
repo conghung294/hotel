@@ -40,7 +40,6 @@ const ModalRoom = ({ modalOpen, setModalOpen, getRoom, action, currentRoom }) =>
 
   const handleCancel = () => {
     setModalOpen(false);
-    form.resetFields();
   };
 
   const getRoomtype = async () => {
@@ -55,6 +54,8 @@ const ModalRoom = ({ modalOpen, setModalOpen, getRoom, action, currentRoom }) =>
   useEffect(() => {
     if (currentRoom) {
       form.setFieldsValue(currentRoom);
+    } else {
+      form.resetFields();
     }
   }, [currentRoom, form]);
 

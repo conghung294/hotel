@@ -69,6 +69,9 @@ const ModalBookingService = ({ modalOpen, setModalOpen, bookingId, getDataCheckI
       key: 'description',
       align: 'center',
       width: '30%',
+      render: (_, record) => (
+        <div className="text-ellipsis line-clamp-3">{record?.description}</div>
+      ),
     },
     {
       title: 'Giá',
@@ -142,7 +145,7 @@ const ModalBookingService = ({ modalOpen, setModalOpen, bookingId, getDataCheckI
       okText="Lưu thông tin"
       cancelText="Hủy bỏ"
     >
-      <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} />
+      <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 3 }} />
     </Modal>
   );
 };

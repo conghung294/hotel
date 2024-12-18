@@ -54,6 +54,9 @@ const ManageService = () => {
       key: 'status',
       align: 'center',
       width: '30%',
+      render: (_, record) => (
+        <div className="text-ellipsis line-clamp-3">{record?.description}</div>
+      ),
     },
 
     {
@@ -130,7 +133,7 @@ const ManageService = () => {
   };
 
   const handleAddService = () => {
-    setCurrentService();
+    setCurrentService(null);
     setAction('CREATE');
     setModalOpen(true);
   };

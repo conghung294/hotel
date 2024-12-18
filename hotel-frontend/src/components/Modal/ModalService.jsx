@@ -49,7 +49,6 @@ const ModalService = ({ modalOpen, setModalOpen, getService, action, currentServ
 
   const handleCancel = () => {
     setModalOpen(false);
-    form.resetFields();
     setAvatar('');
     setPreviewImgURL('');
   };
@@ -78,6 +77,8 @@ const ModalService = ({ modalOpen, setModalOpen, getService, action, currentServ
         setPreviewImgURL(currentService.image);
         setAvatar(currentService.image);
       }
+    } else {
+      form.resetFields();
     }
   }, [currentService, form]);
 

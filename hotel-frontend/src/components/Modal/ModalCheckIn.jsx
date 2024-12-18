@@ -7,8 +7,10 @@ import { checkInService, getRoomServiceAvailable } from '../../service/roomServi
 import { toast } from 'react-toastify';
 import { useReactToPrint } from 'react-to-print';
 import { BookingForm } from '../Print/BookingForm';
+import { searchExactUserService } from '../../service/userService';
 
 const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
+  const { Search } = Input;
   const printRef = useRef(null);
   const [timeCome, setTimeCome] = useState(dayjs().startOf('day'));
   const [timeGo, setTimeGo] = useState(dayjs().startOf('day').add(1, 'day'));
@@ -138,6 +140,22 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
     onBeforePrint: handleBeforePrint,
   });
 
+  const onSearch = async (value) => {
+    if (value) {
+      const res = await searchExactUserService(value);
+      if (res?.errCode === 0) {
+        if (res?.data === null) {
+          form.resetFields();
+          toast.warn('Không có thông tin khách hàng');
+        } else {
+          form.setFieldsValue(res?.data);
+        }
+      } else {
+        toast.error(res?.errMessage);
+      }
+    }
+  };
+
   return (
     <Modal
       title={'Nhận phòng nhanh'}
@@ -164,7 +182,13 @@ const ModalCheckIn = ({ modalOpen, setModalOpen, room, getRoom }) => {
         autoComplete="off"
         labelAlign="left"
       >
-        <div className="flex px-10 mt-10 gap-10">
+        <Search
+          placeholder="Nhập số điện thoại hoặc cccd !"
+          allowClear
+          onSearch={onSearch}
+          style={{ width: 300, marginTop: '16px' }}
+        />
+        <div className="flex mt-5 gap-10">
           <div className="w-[50%]">
             <Form.Item
               label="Họ và tên"

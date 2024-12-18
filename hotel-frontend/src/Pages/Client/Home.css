@@ -2,7 +2,7 @@
 .home-background {
   height: 100vh;
   width: 100%;
-  background-image: url("../assets/image/background.jpg");
+  background-image: url("../../assets/image/background.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -10,7 +10,7 @@
 .home-background1 {
   height: 100vh;
   width: 100%;
-  background-image: url("../assets/image/background.jpg");
+  background-image: url("../../assets/image/background.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -18,7 +18,7 @@
 .home-background2 {
   height: 100vh;
   width: 100%;
-  background-image: url("../assets/image/image1.jpg");
+  background-image: url("../../assets/image/image1.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -26,7 +26,7 @@
 .home-background3 {
   height: 100vh;
   width: 100%;
-  background-image: url("../assets/image/image2.jpg");
+  background-image: url("../../assets/image/image2.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -34,7 +34,7 @@
 .booking-background {
   height: 100vh; /* Chiều cao là 100% của body */
   width: 100%; /* Chiều rộng là 100% của body */
-  background-image: url("../assets/image/image1.png"); /* Đường dẫn đến hình ảnh */
+  background-image: url("../../assets/image/image1.png"); /* Đường dẫn đến hình ảnh */
   background-size: cover; /* Để hình ảnh lấp đầy toàn bộ màn hình */
   background-position: center; /* Căn giữa hình ảnh */
 }
@@ -85,7 +85,17 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image3.jpg");
+  background-image: url("../../assets/image/image3.jpg");
+}
+
+.background-entertainment {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66%; /* Tỷ lệ 2:3, chiều cao = 1.5 lần chiều rộng */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/image/image6.jpg");
 }
 
 html {
@@ -99,7 +109,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image3.jpg");
+  background-image: url("../../assets/image/image3.jpg");
 }
 
 .bg-entertainment {
@@ -109,7 +119,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image4.jpg");
+  background-image: url("../../assets/image/image4.jpg");
 }
 
 .text-link {
@@ -182,7 +192,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image11.jpg");
+  background-image: url("../../assets/image/image11.jpg");
 }
 
 .background-cusine-1 {
@@ -192,7 +202,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image12.jpg");
+  background-image: url("../../assets/image/image12.jpg");
 }
 
 .background-cusine-2 {
@@ -202,7 +212,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image13.jpg");
+  background-image: url("../../assets/image/image13.jpg");
 }
 
 .background-cusine-3 {
@@ -212,7 +222,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image14.jpg");
+  background-image: url("../../assets/image/image14.jpg");
 }
 
 .background-location {
@@ -222,7 +232,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image15.jpg");
+  background-image: url("../../assets/image/image15.jpg");
 }
 
 .bg-location {
@@ -232,7 +242,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image16.jpg");
+  background-image: url("../../assets/image/image16.jpg");
 }
 
 .bg-location-2 {
@@ -242,5 +252,50 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/image/image17.jpg");
+  background-image: url("../../assets/image/image17.jpg");
+}
+
+.no-room {
+  height: 70vh;
+  width: 100%;
+  background-image: url("../../assets/image/image1.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.demo-logo-vertical {
+  height: 200px;
+  width: 200px;
+  background-image: url("../../assets/image/logo.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white; /* Màu chữ */
+  font-size: 60px; /* Kích thước chữ */
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Đổ bóng để chữ nổi bật */
+  letter-spacing: 5px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.logo-booking-form {
+  height: 150px;
+  width: 150px;
+  background-image: url("../../assets/image/logo.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.logo-admin {
+  height: 40px;
+  width: 40px;
+  background-image: url("../../assets/image/logo1.png");
+  background-size: cover;
+  background-position: center;
 }/*# sourceMappingURL=Home.css.map */

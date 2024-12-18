@@ -103,8 +103,8 @@ const AdminPage = () => {
     }
   }, []);
 
-  const emptyRoomsCount = rooms.filter((room) => room?.status === 'ĐANG TRỐNG').length;
-  const usedRoomsCount = rooms.filter((room) => room?.status === 'ĐANG SỬ DỤNG').length;
+  const emptyRoomsCount = rooms.filter((room) => room?.status === '1').length;
+  const usedRoomsCount = rooms.filter((room) => room?.status === '2').length;
 
   const chartData = {
     labels: dailyUse?.map((item) => `${item?.date?.split('-')[2]}`),

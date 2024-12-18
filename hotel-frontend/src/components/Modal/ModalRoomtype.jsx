@@ -49,7 +49,6 @@ const ModalRoomtype = ({ modalOpen, setModalOpen, getRoomtype, action, currentRo
 
   const handleCancel = () => {
     setModalOpen(false);
-    form.resetFields();
     setAvatar('');
     setPreviewImgURL('');
   };
@@ -79,6 +78,8 @@ const ModalRoomtype = ({ modalOpen, setModalOpen, getRoomtype, action, currentRo
         setPreviewImgURL(currentRoomtype.image); // Assuming image is a base64 string or a URL
         setAvatar(currentRoomtype.image);
       }
+    } else {
+      form.resetFields();
     }
   }, [currentRoomtype, form]);
 

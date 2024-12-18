@@ -37,6 +37,15 @@ const ManageRoom = () => {
       key: 'status',
       width: '15%',
       align: 'center',
+      render: (_, record) => (
+        <div>
+          {record?.status === '1'
+            ? 'ĐANG TRỐNG'
+            : record?.status === '2'
+            ? 'ĐANG SỬ DỤNG'
+            : 'SẮP ĐẾN'}
+        </div>
+      ),
     },
     {
       title: 'Loại phòng',

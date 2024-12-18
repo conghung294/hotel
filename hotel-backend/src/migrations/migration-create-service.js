@@ -7,16 +7,16 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       description: {
         type: Sequelize.TEXT,
       },
       price: {
-        type: Sequelize.STRING,
+        type: Sequelize.DECIMAL(10.2),
       },
 
       image: {

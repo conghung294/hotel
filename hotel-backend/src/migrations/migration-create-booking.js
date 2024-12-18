@@ -7,19 +7,19 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       orderCode: {
         type: Sequelize.STRING,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       typeroomId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
       roomId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
       timeCome: {
         type: Sequelize.DATE,
@@ -28,14 +28,14 @@ module.exports = {
         type: Sequelize.DATE,
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL(10, 2),
       },
       paid: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL(10, 2),
       },
 
       sale: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
 
       status: {

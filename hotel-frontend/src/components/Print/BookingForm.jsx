@@ -8,16 +8,17 @@ export const BookingForm = forwardRef((props, ref) => {
   return (
     <div ref={ref} className="flex justify-center items-center mt-20">
       <div className="w-[80%]">
-        <div className="flex">
-          <div className="w-[30%] font-bold text-[30px] flex-1">GREEN HILL</div>
-          <div className="flex flex-col items-center gap-3 w-[70%]">
-            <div>Green Hill Đà Lạt</div>
-            <div>112 Nguyễn Văn Trỗi, Đà Lạt</div>
-            <div>T +84 98 348 06 36 E phuonghoalt@gmail.com</div>
-            <div>www.greenhill.com</div>
+        <div className="flex justify-between">
+          <div className="logo-booking-form"></div>
+          <div className="flex flex-col  gap-3 w-[60%] justify-center">
+            <div className="mt-3 text-[20px] font-bold">Green Hill Đà Lạt</div>
+            <div>Địa chỉ: 112 Nguyễn Văn Trỗi, Đà Lạt</div>
+            <div>Điện thoại: +84 98 348 06 36</div>
+            <div>website: www.greenhill.com</div>
           </div>
         </div>
         <div className="text-center font-bold text-lg mb-5 mt-6">PHIẾU ĐẶT PHÒNG</div>
+        <div className="mt-5">Ngày lập hóa đơn: {dayjs().format('HH:mm:ss DD/MM/YYYY')}</div>
         <p className="font-bold mt-4">1. Thông tin khách hàng</p>
         <div className="flex">
           <div className="flex flex-col w-[400px]">

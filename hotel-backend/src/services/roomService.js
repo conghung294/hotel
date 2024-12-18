@@ -9,7 +9,7 @@ let createNewRoom = (data) => {
         name: data.name,
         status: data.status,
         typeId: data.typeId,
-        status: 'ĐANG TRỐNG',
+        status: '1',
       });
 
       let roomtype = await db.Roomtype.findOne({
@@ -110,7 +110,7 @@ let getRoom = async (roomId) => {
         const hasUpcomingBooking = room.roomData && room.roomData.length > 0;
         return {
           ...room.toJSON(),
-          status: hasUpcomingBooking ? 'SẮP ĐẾN' : room.status,
+          status: hasUpcomingBooking ? '3' : room.status,
         };
       });
 
@@ -301,7 +301,7 @@ const checkInRoom = async (data) => {
       raw: false,
     });
     if (room) {
-      room.status = 'ĐANG SỬ DỤNG';
+      room.status = '2';
       await room.save();
     }
     return 'Nhận phòng thành công';
@@ -381,9 +381,9 @@ const checkOut = async (data) => {
 
     // Kiểm tra nếu phòng tồn tại và chưa được đánh dấu là trống
     if (room) {
-      if (room.status !== 'ĐANG TRỐNG') {
-        // Trạng thái "ĐANG TRỐNG" là trạng thái có sẵn
-        room.status = 'ĐANG TRỐNG'; // Cập nhật trạng thái phòng
+      if (room.status !== '1') {
+        // Trạng thái "1" là trạng thái có sẵn
+        room.status = '1'; // Cập nhật trạng thái phòng
         await room.save({ transaction: t });
       } else {
         throw new Error('Phòng đã ở trạng thái trống');

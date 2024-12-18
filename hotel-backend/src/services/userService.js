@@ -14,7 +14,7 @@ let handleUserLogin = (email, password) => {
       let isExistUserEmail = await checkUserEmail(email);
       if (isExistUserEmail) {
         let user = await db.User.findOne({
-          attributes: ['id', 'email', 'roleId', 'password', 'name'],
+          attributes: ['id', 'email', 'role', 'password', 'name'],
           where: { email: email },
           raw: true,
         });
@@ -63,6 +63,25 @@ let checkUserEmail = (useremail) => {
   });
 };
 
+let getAllCustomers = async (userId) => {
+  try {
+    let users = db.User.findAll({
+      attributes: {
+        exclude: ['password'],
+      },
+      where: {
+        role: {
+          [Op.eq]: null,
+        },
+      },
+    });
+
+    return users;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 let getAllUsers = async (userId) => {
   try {
     let users = '';
@@ -72,8 +91,8 @@ let getAllUsers = async (userId) => {
           exclude: ['password'],
         },
         where: {
-          roleId: {
-            [Op.ne]: null, // Lọc những user có roleId khác null
+          role: {
+            [Op.ne]: null, // Lọc những user có role khác null
           },
         },
       });
@@ -111,7 +130,7 @@ let createNewUser = (data) => {
           address: data.address,
           phoneNumber: data.phoneNumber,
           gender: data.gender,
-          roleId: data.roleId,
+          role: data.role,
         });
       }
 
@@ -176,9 +195,10 @@ let updateUserData = async (data) => {
     if (user) {
       user.name = data.name;
       user.address = data.address;
-      user.roleId = data.roleId;
+      user.role = data.role;
       user.gender = data.gender;
       user.phoneNumber = data.phoneNumber;
+      user.cccd = data.cccd;
 
       await user.save();
       return {
@@ -278,13 +298,48 @@ const searchUserByName = async (query) => {
               [Op.like]: `%${query}%`,
             },
           },
+          {
+            cccd: {
+              [Op.like]: `%${query}%`,
+            },
+          },
         ],
       },
     });
 
     return users;
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi tìm kiếm người dùng.' });
+    console.log(error);
+  }
+};
+
+const searchExactUser = async (query) => {
+  try {
+    const user = await db.User.findOne({
+      where: {
+        [Op.or]: [
+          {
+            phoneNumber: {
+              [Op.eq]: query,
+            },
+          },
+          {
+            email: {
+              [Op.eq]: query,
+            },
+          },
+          {
+            cccd: {
+              [Op.eq]: query,
+            },
+          },
+        ],
+      },
+    });
+
+    return user;
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -297,4 +352,6 @@ module.exports = {
   handleForgotPassword,
   handleResetPassword,
   searchUserByName,
+  searchExactUser,
+  getAllCustomers,
 };

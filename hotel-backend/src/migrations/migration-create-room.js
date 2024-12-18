@@ -7,16 +7,16 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       status: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('1', '2', '3'),
       },
       typeId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
       createdAt: {
         allowNull: false,

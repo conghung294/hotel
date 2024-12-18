@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Button, Dropdown, Layout, Menu, theme, Tooltip } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaHotel } from 'react-icons/fa6';
 import ModalWaitConfirm from '../Modal/ModalWaitConfirm';
 import ModalInfo from '../Modal/ModalInfo';
 import ModalSetting from '../Modal/ModalSetting';
@@ -14,7 +13,9 @@ import {
   MdOutlineCleaningServices,
   MdOutlineMeetingRoom,
 } from 'react-icons/md';
+import { HiOutlineUsers } from 'react-icons/hi2';
 import { PiDeviceTablet } from 'react-icons/pi';
+import { IoIosLogOut } from 'react-icons/io';
 const { Header, Sider, Content } = Layout;
 const LayoutAdmin = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -35,12 +36,22 @@ const LayoutAdmin = ({ children }) => {
   const items = [
     {
       key: '1',
-      label: <div onClick={() => handleOpenModalInfo()}>Thông tin cá nhân</div>,
+      label: (
+        <div onClick={() => handleOpenModalInfo()} className="flex items-center gap-2">
+          <CiUser size={20} />
+          Thông tin cá nhân
+        </div>
+      ),
     },
 
     {
       key: '2',
-      label: <div onClick={() => handleLogout()}>Đăng xuất</div>,
+      label: (
+        <div onClick={() => handleLogout()} className="flex items-center gap-2">
+          <IoIosLogOut size={20} />
+          Đăng xuất
+        </div>
+      ),
     },
   ];
 
@@ -68,22 +79,22 @@ const LayoutAdmin = ({ children }) => {
   const selectedKey = location.pathname;
 
   useEffect(() => {
-    if (user?.roleId !== 'Quản lý' && user?.roleId !== 'Lễ tân') {
+    if (user?.role !== 'Quản lý' && user?.role !== 'Lễ tân') {
       nagivate('/');
     }
-  }, [user?.roleId, nagivate]);
+  }, [user?.role, nagivate]);
 
   return (
     <Layout className="h-[100vh]">
       <Sider trigger={null} collapsible collapsed={collapsed}>
         {!collapsed ? (
-          <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
-            <FaHotel size={28} color="white" />
-            <div className="text-white font-bold text-[26px]">GREEN HILL</div>
+          <div className={` flex gap-1 py-4 pb-14 items-center justify-center`}>
+            <div className="logo-admin"></div>
+            <div className="text-white font-bold text-[24px]">GREEN HILL</div>
           </div>
         ) : (
           <div className={` flex gap-2 py-4 pb-14 items-center justify-center`}>
-            <FaHotel size={30} color="white" />
+            <div className="logo-admin"></div>
           </div>
         )}
         <Menu
@@ -91,7 +102,7 @@ const LayoutAdmin = ({ children }) => {
           mode="inline"
           defaultSelectedKeys={[selectedKey]}
           items={
-            user?.roleId === 'Quản lý'
+            user?.role === 'Quản lý'
               ? [
                   {
                     key: '/admin',
@@ -122,7 +133,7 @@ const LayoutAdmin = ({ children }) => {
                   {
                     key: '/admin/manageUser',
                     icon: <CiUser size={20} />,
-                    label: <Link to="/admin/manageUser">Quản lý người dùng</Link>,
+                    label: <Link to="/admin/manageUser">Quản lý nhân viên</Link>,
                   },
                   {
                     key: '/admin/manageTyperoom',
@@ -138,6 +149,11 @@ const LayoutAdmin = ({ children }) => {
                     key: '/admin/manageService',
                     icon: <MdOutlineCleaningServices size={20} />,
                     label: <Link to="/admin/manageService">Quản lý dịch vụ</Link>,
+                  },
+                  {
+                    key: '/admin/manageCustomer',
+                    icon: <HiOutlineUsers size={20} />,
+                    label: <Link to="/admin/manageCustomer">Quản lý khách hàng</Link>,
                   },
                 ]
               : [
@@ -192,7 +208,7 @@ const LayoutAdmin = ({ children }) => {
               Chờ xác nhận
             </Badge>
 
-            {user?.roleId === 'Quản lý' && (
+            {user?.role === 'Quản lý' && (
               <div
                 className=" border-white-light bg-[#E3E8EF] dark:border-white-light/10 flex rounded-full p-2 cursor-pointer  hover:text-[#4361ee] border-r"
                 onMouseEnter={() => setIsHovered(true)}

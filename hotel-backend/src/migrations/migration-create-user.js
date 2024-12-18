@@ -7,34 +7,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       password: {
         type: Sequelize.STRING,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
 
       cccd: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(12),
       },
 
       address: {
         type: Sequelize.STRING,
       },
       gender: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
 
-      roleId: {
-        type: Sequelize.STRING,
+      role: {
+        type: Sequelize.STRING(50),
       },
       phoneNumber: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
       resetPasswordToken: {
         type: Sequelize.STRING,

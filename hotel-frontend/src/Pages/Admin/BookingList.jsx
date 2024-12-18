@@ -118,7 +118,9 @@ const BookingList = () => {
       align: 'center',
       render: (_, record) => (
         <div>
-          {record?.status === '3'
+          {record?.status === '4'
+            ? 'ĐÃ HỦY'
+            : record?.status === '3'
             ? 'ĐÃ THANH TOÁN'
             : record?.status === '2'
             ? 'ĐANG SỬ DỤNG'

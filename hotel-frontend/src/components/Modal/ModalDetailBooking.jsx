@@ -1,15 +1,22 @@
-import { Modal, Table } from 'antd';
+import { Button, Modal, Popconfirm, Table } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 import { formatCurrency } from '../../utils/CommonUtils';
-import { getBookingByIdService } from '../../service/bookingService';
+import { cancelBookingService, getBookingByIdService } from '../../service/bookingService';
+import { VscQuestion } from 'react-icons/vsc';
 
-const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
+const ModalDetailBooking = ({ modalOpen, setModalOpen, id, getBookingSchedule }) => {
   const [bookingDetails, setBookingDetails] = useState();
 
   const handleCancel = () => {
     setModalOpen(false);
+  };
+
+  const handleCancelBooking = async (record) => {
+    await cancelBookingService(record);
+    setModalOpen(false);
+    getBookingSchedule();
   };
 
   const columns = [
@@ -67,7 +74,7 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
       title: 'Dịch vụ',
       dataIndex: 'service',
       key: 'service',
-      width: '15%',
+      width: '14%',
       render: (_, record) => (
         <div>
           {record?.services?.length > 0 ? (
@@ -83,7 +90,7 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
       title: 'Tổng cộng',
       dataIndex: 'price',
       key: 'price',
-      width: '10%',
+      width: '8%',
       align: 'center',
       render: (_, record) => <div>{formatCurrency(record.price)}</div>,
     },
@@ -91,14 +98,14 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
       title: 'Đã trả',
       dataIndex: 'paid',
       key: 'paid',
-      width: '10%',
+      width: '8%',
       align: 'center',
       render: (_, record) => <div>{formatCurrency(record.paid)}</div>,
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      width: '10%',
+      width: '9%',
       align: 'center',
       render: (_, record) => (
         <div>
@@ -108,6 +115,31 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
             ? 'ĐANG SỬ DỤNG'
             : 'ĐẶT TRƯỚC'}
         </div>
+      ),
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      width: '7%',
+      align: 'center',
+      render: (_, record) => (
+        <Popconfirm
+          title="Hủy đơn đặt phòng"
+          description={`Bạn có chắc chắn muốn hủy đơn đặt phòng này không?`}
+          placement="topRight"
+          icon={
+            <div className="mt-[2px] pr-1">
+              <VscQuestion size={20} style={{ color: 'red' }} />
+            </div>
+          }
+          onConfirm={() => handleCancelBooking(record)}
+          okText="Hủy phòng"
+          cancelText="Không"
+        >
+          <Button type="primary" danger>
+            Hủy phòng
+          </Button>
+        </Popconfirm>
       ),
     },
   ];
@@ -124,6 +156,7 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id }) => {
       getBookingDetails();
     }
   }, [id]);
+  console.log(bookingDetails);
 
   return (
     <>

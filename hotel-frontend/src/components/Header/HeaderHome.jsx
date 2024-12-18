@@ -30,10 +30,6 @@ const HeaderHome = () => {
     nagivate('/login');
   };
 
-  // const handleOpenModalInfo = () => {
-  //   setOpenModalInfo(true);
-  // };
-
   const items = [
     {
       key: '1',
@@ -68,7 +64,10 @@ const HeaderHome = () => {
     <>
       <Header className="header z-20">
         <Link className="logo !text-[#4bff70]" to={'/'}>
-          HotelBooking
+          <div className={` flex gap-1  items-center justify-center w-[200px]`}>
+            <div className="logo-admin"></div>
+            <div className="font-bold text-[24px] !text-[#4bff70]">GREEN HILL</div>
+          </div>
         </Link>
 
         <div className="w-full px-[40px] text-white flex gap-8 items-center">

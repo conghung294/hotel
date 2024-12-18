@@ -70,11 +70,15 @@ const ModalInfo = ({ modalOpen, setModalOpen }) => {
           <Input />
         </Form.Item>
 
-        <Form.Item label="Địa chỉ" name="address">
+        <Form.Item label="Số điện thoại" name="phoneNumber">
           <Input />
         </Form.Item>
 
-        <Form.Item label="Số điện thoại" name="phoneNumber">
+        <Form.Item label="CCCD" name="cccd">
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Địa chỉ" name="address">
           <Input />
         </Form.Item>
 

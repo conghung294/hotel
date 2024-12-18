@@ -25,7 +25,8 @@ export const Bill = forwardRef((props, ref) => {
     <div ref={ref} className="flex justify-center items-center mt-20">
       <div className="w-[80%]">
         <div className="text-center font-bold text-lg mb-5">HÓA ĐƠN THANH TOÁN</div>
-        <p className="font-bold">1. Thông tin khách hàng</p>
+        <div className="mt-5">Ngày lập hóa đơn: {dayjs().format('HH:mm:ss DD/MM/YYYY')}</div>
+        <p className="font-bold mt-3">1. Thông tin khách hàng</p>
         <div className="flex">
           <div className="flex flex-col w-[400px]">
             <p>Họ tên khách hàng:</p>

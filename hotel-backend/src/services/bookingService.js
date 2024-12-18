@@ -1,7 +1,7 @@
 import db from '../models/index';
 import emailService from '../services/emailService';
 import { combineDateTimeNative } from '../utils/CommonUtils';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 import dayjs from 'dayjs';
 import sequelize from 'sequelize';
 
@@ -237,6 +237,12 @@ let getBookingSchedule = async () => {
       include: [
         {
           model: db.Booking,
+          required: false, // Sử dụng LEFT OUTER JOIN để lấy cả phòng không có booking
+          where: {
+            status: {
+              [Op.in]: ['1', '2', '3'], // Lọc các booking có trạng thái 1, 2, hoặc 3
+            },
+          },
           as: 'roomData',
           attributes: ['timeCome', 'timeGo', 'id'],
           include: [
@@ -281,10 +287,7 @@ const caculateDailyRoomUse = async (month, year) => {
     // Lấy tất cả phòng
     const totalRooms = await db.Room.count();
     if (totalRooms === 0) {
-      return res.status(200).json({
-        message: 'Không có phòng nào trong hệ thống.',
-        data: [],
-      });
+      return null;
     }
 
     // Khởi tạo kết quả
@@ -380,6 +383,40 @@ const caculateRevenue = async (month) => {
   }
 };
 
+let cancelBooking = async (data) => {
+  try {
+    if (!data.id) {
+      return {
+        errCode: 2,
+        errMessage: 'Missing parameter',
+      };
+    }
+    let booking = await db.Booking.findOne({
+      where: { id: data.id },
+      raw: false,
+    });
+    if (booking) {
+      booking.status = '4';
+      booking.paid = 0;
+
+      await booking.save();
+
+      // await emailService.sendSimpleEmail(data.data);
+      return {
+        errCode: 0,
+        message: 'Cancel successfully',
+      };
+    } else {
+      return {
+        errCode: 1,
+        errMessage: 'Booking not found',
+      };
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 module.exports = {
   createNewBooking,
   getBooking,
@@ -390,4 +427,5 @@ module.exports = {
   caculateDailyRoomUse,
   caculateRevenue,
   getBookingById,
+  cancelBooking,
 };

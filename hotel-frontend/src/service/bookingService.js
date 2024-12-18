@@ -44,6 +44,10 @@ const getRevenue = (month) => {
   });
 };
 
+const cancelBookingService = (inputData) => {
+  return axios.post('/api/cancel-booking', inputData);
+};
+
 export {
   createNewBookingService,
   getBookingService,
@@ -54,4 +58,5 @@ export {
   getDailyRoomUse,
   getRevenue,
   getBookingByIdService,
+  cancelBookingService,
 };

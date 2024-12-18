@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
 
       timeCome: {
@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.TIME,
       },
       prePayment: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(11),
       },
 
       createdAt: {

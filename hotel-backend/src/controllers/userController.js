@@ -38,6 +38,23 @@ let handleGetAllUsers = async (req, res) => {
   }
 };
 
+let handleGetAllCustomers = async (req, res) => {
+  try {
+    let users = await userService.getAllCustomers();
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: users,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 let handleCreateNewUser = async (req, res) => {
   let message = await userService.createNewUser(req.body);
 
@@ -107,6 +124,24 @@ let searchUserByName = async (req, res) => {
   }
 };
 
+let searchExactUser = async (req, res) => {
+  try {
+    let name = req.query.name;
+    let user = await userService.searchExactUser(name);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: 'OK',
+      data: user,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: 'Lỗi từ server',
+      data: '',
+    });
+  }
+};
+
 module.exports = {
   handleLogin,
   handleGetAllUsers,
@@ -116,4 +151,6 @@ module.exports = {
   handleForgotPassword,
   handleResetPassword,
   searchUserByName,
+  handleGetAllCustomers,
+  searchExactUser,
 };

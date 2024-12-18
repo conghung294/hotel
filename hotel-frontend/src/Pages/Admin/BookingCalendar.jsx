@@ -140,7 +140,12 @@ const BookingCalendar = () => {
         ))}
       </div>
 
-      <ModalDetailBooking modalOpen={modalOpen} setModalOpen={setModalOpen} id={idBooking} />
+      <ModalDetailBooking
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        id={idBooking}
+        getBookingSchedule={getBookingSchedule}
+      />
     </div>
   );
 };

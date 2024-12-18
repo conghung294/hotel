@@ -7,6 +7,11 @@ const handleLoginApi = (email, password) => {
 const getAllUsers = (id) => {
   return axios.get(`/api/get-all-user?id=${id}`);
 };
+
+const getAllCustomers = () => {
+  return axios.get(`/api/get-all-customer`);
+};
+
 const createNewUserService = (data) => {
   return axios.post('/api/create-new-user', data);
 };
@@ -35,6 +40,10 @@ const searchUserService = (name) => {
   return axios.get(`/api/search-user?name=${name}`);
 };
 
+const searchExactUserService = (name) => {
+  return axios.get(`/api/search-exact-user?name=${name}`);
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -44,4 +53,6 @@ export {
   handleForgotPassword,
   handleResetPassword,
   searchUserService,
+  getAllCustomers,
+  searchExactUserService,
 };

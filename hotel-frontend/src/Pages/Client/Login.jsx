@@ -25,9 +25,9 @@ const Login = () => {
     if (res?.errCode === 0) {
       setUser(res.user);
 
-      if (res?.user?.roleId === 'Quản lý') {
+      if (res?.user?.role === 'Quản lý') {
         navigate('/admin');
-      } else if (res?.user?.roleId === 'Lễ tân') {
+      } else if (res?.user?.role === 'Lễ tân') {
         navigate('/admin/bookingList');
       } else {
         navigate('/');

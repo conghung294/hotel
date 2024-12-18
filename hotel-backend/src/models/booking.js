@@ -44,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       roomId: DataTypes.INTEGER,
       timeCome: DataTypes.DATE,
       timeGo: DataTypes.DATE,
-      price: DataTypes.INTEGER,
+      price: DataTypes.DECIMAL(10, 2),
       status: DataTypes.STRING,
       sale: DataTypes.INTEGER,
-      paid: DataTypes.INTEGER,
+      paid: DataTypes.DECIMAL(10, 2),
     },
     {
       sequelize,

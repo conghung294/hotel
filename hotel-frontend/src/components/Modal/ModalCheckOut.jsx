@@ -103,7 +103,7 @@ const ModalCheckOut = ({ modalCheckOutOpen, setModalCheckOutOpen, room, getRoom 
   };
 
   useEffect(() => {
-    if (room?.status === 'ĐANG SỬ DỤNG' && modalCheckOutOpen === true) {
+    if (room?.status === '2' && modalCheckOutOpen === true) {
       getDataCheckIn();
     }
   }, [room, getDataCheckIn, modalCheckOutOpen]);

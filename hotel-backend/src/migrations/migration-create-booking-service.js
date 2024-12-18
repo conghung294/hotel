@@ -7,13 +7,13 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       bookingId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       serviceId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(20),
       },
       quantity: {
         type: Sequelize.INTEGER,

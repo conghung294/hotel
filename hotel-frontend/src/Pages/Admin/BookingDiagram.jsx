@@ -33,9 +33,9 @@ const BookingDiagram = () => {
 
   const handleClickRoom = (room) => {
     setChoiceRoom(room);
-    if (room?.status === 'ĐANG TRỐNG') {
+    if (room?.status === '1') {
       setModalCheckInOpen(true);
-    } else if (room?.status === 'SẮP ĐẾN') {
+    } else if (room?.status === '3') {
       setModalBookingCommingOpen(true);
     } else {
       setModalCheckOutOpen(true);
@@ -100,9 +100,9 @@ const BookingDiagram = () => {
             return (
               <div
                 className={`w-[calc(20%-16px)] h-[134px] p-[10px] pt-[16px] border rounded-md ${
-                  item?.status === 'ĐANG TRỐNG'
+                  item?.status === '1'
                     ? 'bg-[#F2F7F6] border-green-600'
-                    : item?.status === 'SẮP ĐẾN'
+                    : item?.status === '3'
                     ? 'bg-[#cddefb] border-blue-500'
                     : 'bg-[#fff2da] border-orange-600'
                 }  cursor-pointer hover:opacity-90`}
@@ -111,9 +111,9 @@ const BookingDiagram = () => {
               >
                 <span
                   className={`${
-                    item?.status === 'ĐANG TRỐNG'
+                    item?.status === '1'
                       ? 'bg-[#198352]'
-                      : item?.status === 'SẮP ĐẾN'
+                      : item?.status === '3'
                       ? 'bg-blue-500'
                       : 'bg-[#ffbf49]'
                   } rounded-md text-white px-2 py-2`}
@@ -122,7 +122,7 @@ const BookingDiagram = () => {
                 </span>
                 <div className="mt-3 font-bold truncate">{item?.roomtypeData.name}</div>
                 <div className="mt-3">{formatCurrency(item?.roomtypeData.price)} / ngày</div>
-                {item?.status === 'SẮP ĐẾN' && (
+                {item?.status === '3' && (
                   <div className="text-red-500 mt-2">
                     {calculateTimeDifference(item?.roomData[0]?.timeCome)}
                   </div>

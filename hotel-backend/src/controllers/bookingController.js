@@ -132,6 +132,12 @@ const handleCaculateRevenue = async (req, res) => {
   }
 };
 
+let handleCancelBooking = async (req, res) => {
+  let data = req.body;
+  let message = await BookingService.cancelBooking(data);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   handleCreateBooking,
   handleGetBooking,
@@ -142,4 +148,5 @@ module.exports = {
   handleGetBookingSchedule,
   handleCaculateDailyUse,
   handleCaculateRevenue,
+  handleCancelBooking,
 };

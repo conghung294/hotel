@@ -20,7 +20,7 @@ import BookingList from '../Pages/Admin/BookingList';
 import BookingCalendar from '../Pages/Admin/BookingCalendar';
 import BookingDiagram from '../Pages/Admin/BookingDiagram';
 import PersonalInfo from '../Pages/Client/PersonalInfo';
-import { BookingForm } from '../components/Print/BookingForm';
+import ManageCustomer from '../Pages/Admin/ManageCustomer';
 
 export const routes = [
   {
@@ -83,11 +83,11 @@ export const routes = [
     layout: 'auth',
   },
 
-  {
-    path: '/1',
-    element: <BookingForm />,
-    layout: 'auth',
-  },
+  // {
+  //   path: '/1',
+  //   element: <BookingForm />,
+  //   layout: 'auth',
+  // },
 
   {
     path: '/location',
@@ -132,6 +132,12 @@ export const routes = [
   {
     path: '/admin/bookingDiagram',
     element: <BookingDiagram />,
+    layout: 'admin',
+  },
+
+  {
+    path: '/admin/manageCustomer',
+    element: <ManageCustomer />,
     layout: 'admin',
   },
 ];

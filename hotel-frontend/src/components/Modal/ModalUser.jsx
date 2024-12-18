@@ -6,7 +6,7 @@ import 'yet-another-react-lightbox/styles.css';
 import './Modal.scss';
 import { createNewUserService, editUserService } from '../../service/userService';
 
-const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) => {
+const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser, role }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
 
@@ -24,7 +24,6 @@ const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) =>
 
       if (res.errCode === 0) {
         form.resetFields();
-
         setModalOpen(false);
         toast.success(action === 'CREATE' ? 'Thêm thành công!' : 'Cập nhật thành công!');
         getUser();
@@ -42,12 +41,13 @@ const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) =>
 
   const handleCancel = () => {
     setModalOpen(false);
-    form.resetFields();
   };
 
   useEffect(() => {
     if (currentUser) {
       form.setFieldsValue(currentUser);
+    } else {
+      form.resetFields();
     }
   }, [currentUser, form]);
 
@@ -99,6 +99,10 @@ const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) =>
           <Input />
         </Form.Item>
 
+        <Form.Item label="CCCD" name="cccd">
+          <Input />
+        </Form.Item>
+
         <Form.Item label="Địa chỉ" name="address">
           <Input />
         </Form.Item>
@@ -114,22 +118,24 @@ const ModalUser = ({ modalOpen, setModalOpen, getUser, action, currentUser }) =>
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="Chức vụ"
-          name="roleId"
-          rules={[
-            {
-              required: true,
+        {role !== 'customer' && (
+          <Form.Item
+            label="Chức vụ"
+            name="role"
+            rules={[
+              {
+                required: true,
 
-              message: 'Vui lòng chọn chức vụ!',
-            },
-          ]}
-        >
-          <Select placeholder="Chọn chức vụ">
-            <Option value="Quản lý">Quản lý</Option>
-            <Option value="Lễ tân">Lễ tân</Option>
-          </Select>
-        </Form.Item>
+                message: 'Vui lòng chọn chức vụ!',
+              },
+            ]}
+          >
+            <Select placeholder="Chọn chức vụ">
+              <Option value="Quản lý">Quản lý</Option>
+              <Option value="Lễ tân">Lễ tân</Option>
+            </Select>
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );
