@@ -219,7 +219,6 @@ function PersonalInfo() {
             columns={columns}
             dataSource={data}
             bordered
-            className=""
             pagination={false} // Tắt phân trang
             scroll={{ y: '66vh' }}
           />

@@ -30,8 +30,8 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
   const totalPrice = stayPrice + totalServicePrice;
 
   useEffect(() => {
-    setCustomerPay(totalPrice);
-  }, [totalPrice]);
+    setCustomerPay(totalPrice - data?.paid);
+  }, [data?.paid, totalPrice]);
 
   const handleAfterPrint = useCallback(() => {
     setModalOpen(false);
@@ -167,7 +167,7 @@ const ModalPayment = ({ modalOpen, setModalOpen, data, getRoom, setModalCheckOut
           <div className="flex justify-between mt-3 border-t pt-4 items-center">
             <div className="font-bold">Tiền thừa trả khách</div>
             <div className="text-[18px] text-green-600 font-bold">
-              {formatCurrency(customerPay - (totalPrice * (100 - sale)) / 100 - data?.paid)}
+              {formatCurrency(customerPay - ((totalPrice * (100 - sale)) / 100 - data?.paid))}
             </div>
           </div>
 

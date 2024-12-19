@@ -86,7 +86,7 @@ let getRoom = async (roomId) => {
               timeCome: {
                 [Op.between]: [currentTime, adjustedTime],
               },
-              status: 1,
+              status: '1',
             },
             include: [
               {

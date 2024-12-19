@@ -119,7 +119,7 @@ const Home = () => {
       <div className="px-20 flex mt-10">
         <div className="w-1/2">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.8283328437856!2d105.84772707508004!3d20.999517380642494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac730ff81323%3A0x9032c0dde07a324c!2zNDAwIFAuIELhuqFjaCBNYWksIELhuqFjaCBNYWksIEhhaSBCw6AgVHLGsG5nLCBIw6AgTuG7mWksIFZpZXRuYW0!5e0!3m2!1sen!2sus!4v1731160759327!5m2!1sen!2sus"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124928.54111687874!2d108.4507227!3d11.90391085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317112fef20988b1%3A0xad5f228b672bf930!2zVHAuIMSQw6AgTOG6oXQsIEzDom0gxJDhu5NuZw!5e0!3m2!1svi!2s!4v1734614278456!5m2!1svi!2s"
             width="100%"
             height="100%"
             loading="lazy"
@@ -131,9 +131,11 @@ const Home = () => {
           <div className="background-location flex items-center justify-center w-full h-full">
             <div className="w-[450px] h-[280px] bg-white z-10 flex items-center justify-center ">
               <div className="h-[calc(100%-8px)] w-[calc(100%-8px)] border border-gray-400 flex flex-col items-center  text-[#778788] justify-around">
-                <div className="text-[32px]  hover:opacity-80 cursor-pointer">PH Hotel Hoi An</div>
-                <div>Hotl ★★★★★</div>
-                <div>400 Bạch Mai, Hai bà Trưng, Hà Nội</div>
+                <div className="text-[32px]  hover:opacity-80 cursor-pointer">
+                  Green Hill Đà Lạt
+                </div>
+                <div>★★★★★</div>
+                <div>190 Nguyễn Chí Thanh, thành phố Đà Lạt</div>
                 <div>560000, Vietnam</div>
                 <div>Phone +84 235 123 7000</div>
                 <div>E-mail info@phuonghoa.com</div>

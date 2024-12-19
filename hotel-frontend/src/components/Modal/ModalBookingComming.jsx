@@ -1,14 +1,17 @@
 import { Form, Input, Modal, Select, Table } from 'antd';
 import { formatCurrency } from '../../utils/CommonUtils';
 import DatePickerCustom from '../DatePickerCustom';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import dayjs from 'dayjs';
 import { checkInService } from '../../service/roomService';
 import { toast } from 'react-toastify';
+import { BookingForm } from '../Print/BookingForm';
+import { useReactToPrint } from 'react-to-print';
 
 const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
+  const printRef = useRef(null);
   // Sử dụng useMemo để cập nhật columns khi timeCome hoặc timeGo thay đổi
   const columns = useMemo(
     () => [
@@ -100,13 +103,32 @@ const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
     });
 
     if (res.errCode === 0) {
-      toast.success('Nhận phòng thành công!');
-      setModalOpen(false);
-      getRoom();
+      handlePrint();
+      // toast.success('Nhận phòng thành công!');
+      // setModalOpen(false);
+      // getRoom();
     } else {
       toast.error('Thất bại!');
     }
   };
+
+  const handleAfterPrint = useCallback(() => {
+    form.resetFields();
+    setModalOpen(false);
+    toast.success('Nhận phòng thành công!');
+    getRoom();
+  }, [form, getRoom, setModalOpen]);
+
+  const handleBeforePrint = useCallback(() => {
+    return Promise.resolve();
+  }, []);
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: 'Phiếu Đặt Phòng',
+    onAfterPrint: handleAfterPrint,
+    onBeforePrint: handleBeforePrint,
+  });
 
   useEffect(() => {
     if (room) {
@@ -186,6 +208,12 @@ const ModalBookingComming = ({ modalOpen, setModalOpen, room, getRoom }) => {
           </div>
         </div>
       </Form>
+      <div className="hidden">
+        <BookingForm
+          ref={printRef}
+          data={{ ...room, ...room?.roomData[0], user: room?.roomData[0]?.bookingData }}
+        />
+      </div>
     </Modal>
   );
 };

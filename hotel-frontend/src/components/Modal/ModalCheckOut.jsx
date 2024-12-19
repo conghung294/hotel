@@ -89,6 +89,49 @@ const ModalCheckOut = ({ modalCheckOutOpen, setModalCheckOutOpen, room, getRoom 
     },
   ];
 
+  const columns2 = [
+    {
+      title: 'STT',
+      dataIndex: 'stt',
+      key: 'stt',
+      width: '5%',
+      align: 'center',
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: 'Tên dịch vụ',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
+      width: '15%',
+    },
+
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      width: '10%',
+      align: 'center',
+      render: (_, record) => <div>{formatCurrency(record?.price)}</div>,
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: ['BookingService', 'quantity'],
+      key: ['BookingService', 'quantity'],
+      width: '10%',
+      align: 'center',
+    },
+    {
+      title: 'Thành tiền',
+      key: 'total',
+      width: '15%',
+      align: 'center',
+      render: (_, record) => (
+        <div>{formatCurrency(record?.price * record?.BookingService?.quantity || 0)}</div>
+      ),
+    },
+  ];
+
   const getDataCheckIn = useCallback(async () => {
     const res = await getInfoCheckInByRoom(room?.id);
     if (res?.errCode === 0) {
@@ -148,72 +191,86 @@ const ModalCheckOut = ({ modalCheckOutOpen, setModalCheckOutOpen, room, getRoom 
         </Button>,
       ]}
     >
-      <Table columns={columns} dataSource={[dataCheckIn || room]} bordered pagination={false} />
-      <Form
-        name="formCheckOut"
-        labelCol={{
-          span: 5,
-        }}
-        form={form}
-        onFinish={onFinish}
-        autoComplete="off"
-        labelAlign="left"
-      >
-        <div className="flex px-10 mt-10 gap-10">
-          <div className="w-[50%]">
-            <Form.Item
-              label="Họ và tên"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập họ và tên!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Số điện thoại"
-              name="phoneNumber"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập số điện thoại!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="CCCD"
-              name="cccd"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập CCCD!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+      <div className="max-h-[80vh] overflow-y-auto">
+        <Table columns={columns} dataSource={[dataCheckIn || room]} bordered pagination={false} />
+
+        {dataCheckIn?.services?.length > 0 && (
+          <div className="mt-3">
+            <Table
+              columns={columns2}
+              dataSource={dataCheckIn?.services}
+              bordered
+              pagination={false}
+            />
           </div>
-          <div className="w-[50%]">
-            <Form.Item label="Email" name="email">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Địa chỉ" name="address">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Giới tính" name="gender">
-              <Select placeholder="Chọn giới tính">
-                <Option value="Nam">Nam</Option>
-                <Option value="Nữ">Nữ</Option>
-              </Select>
-            </Form.Item>
+        )}
+
+        <Form
+          name="formCheckOut"
+          labelCol={{
+            span: 5,
+          }}
+          form={form}
+          onFinish={onFinish}
+          autoComplete="off"
+          labelAlign="left"
+        >
+          <div className={`flex gap-10 ${dataCheckIn?.services?.length > 0 ? 'mt-5' : 'mt-10'}`}>
+            <div className="w-[50%]">
+              <Form.Item
+                label="Họ và tên"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập họ và tên!',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Số điện thoại"
+                name="phoneNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập số điện thoại!',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="CCCD"
+                name="cccd"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập CCCD!',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </div>
+            <div className="w-[50%]">
+              <Form.Item label="Email" name="email">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Địa chỉ" name="address">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Giới tính" name="gender">
+                <Select placeholder="Chọn giới tính">
+                  <Option value="Nam">Nam</Option>
+                  <Option value="Nữ">Nữ</Option>
+                </Select>
+              </Form.Item>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
 
       <ModalBookingService
         modalOpen={openModalService}

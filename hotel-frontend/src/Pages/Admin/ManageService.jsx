@@ -52,7 +52,7 @@ const ManageService = () => {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'status',
-      align: 'center',
+      // align: 'center',
       width: '30%',
       render: (_, record) => (
         <div className="text-ellipsis line-clamp-3">{record?.description}</div>
