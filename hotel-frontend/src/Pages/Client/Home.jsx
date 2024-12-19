@@ -21,19 +21,21 @@ const Home = () => {
       </Carousel>
 
       <div className="px-[27%] flex flex-col items-center mt-20 text-[#333333] text-[14px]">
-        <div>Nơi giao thoa giữa lòng hiếu khách lâu đời của Hội An và phong cách sống hiện đại</div>
+        <div>Điểm Dừng Chân Xanh Mát Giữa Lòng Đà Lạt</div>
         <div className="mt-6 text-[60px] text-[#778788] big-title relative whitespace-nowrap">
           Nơi Hội Tụ Mọi Tinh Hoa
         </div>
         <div className="mt-6 text-[#333333] leading-6 text-[14px] text-center">
-          Hòa mình vào nhịp sống sôi động tại khu nghỉ dưỡng mới nhất tại Hội An, một nơi nghỉ dưỡng
-          hiện đại mang đậm dấu ấn di sản, nơi giao thoa văn hóa quốc tế đáng tự hào trong quá khứ
-          hòa quyện với lòng hiếu khách nồng hậu ở thời điểm hiện tại.
+          Tọa lạc giữa đồi thông xanh mướt và không gian yên bình của thành phố ngàn hoa, Green Hill
+          Homestay mang đến cho bạn một chốn dừng chân lý tưởng để hòa mình vào thiên nhiên Đà Lạt.
+          Với kiến trúc mộc mạc, ấm cúng, từng góc nhỏ của Green Hill đều được chăm chút tỉ mỉ để
+          tạo cảm giác thoải mái như ở nhà.
         </div>
         <div className="mt-6 text-[#333333] leading-6 text-[14px] text-center">
-          Chỉ cách phố cổ Hội An – một di sản văn hóa thế giới được UNESCO công nhận – với 10 phút
-          đi bộ, Wafaifo Resort Hoi An chào đón bạn đến với không gian hiếu khách đậm chất Việt Nam,
-          hòa mình vào phong cách sống hiện đại ngày nay.
+          Từ ban công phòng, bạn có thể ngắm sương sớm vờn quanh thung lũng, thưởng thức tách cà phê
+          thơm nồng hay đơn giản là tận hưởng những phút giây lắng đọng giữa rừng thông xanh biếc.
+          Không chỉ là nơi nghỉ dưỡng, Green Hill còn là nơi lưu giữ những khoảnh khắc yên bình và
+          cảm xúc trong lành của Đà Lạt.
         </div>
       </div>
 
