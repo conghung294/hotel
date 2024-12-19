@@ -61,11 +61,11 @@ const Booking = () => {
       price: choiceRoom?.price * time + totalServicePrice,
       status: '-1',
       services: choiceServices,
-      paid: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100,
+      paid: (choiceRoom?.price * time * prePay) / 100,
     };
 
     const response = await axios.post('http://localhost:8080/vnpay/payment', {
-      amount: ((choiceRoom?.price * time + totalServicePrice) * prePay) / 100, // Số tiền thanh toán
+      amount: (choiceRoom?.price * time * prePay) / 100, // Số tiền thanh toán
       bankCode: '',
       language: 'vn',
       dataBooking,
@@ -137,7 +137,7 @@ const Booking = () => {
                 <div>
                   <hr className="my-3" />
                   <div className="mt-3 font-bold">Dịch vụ thêm</div>
-                  <div className="h-[200px] overflow-y-auto">
+                  <div className="max-h-[200px] overflow-y-auto">
                     {choiceServices.map((item) => {
                       return (
                         <div key={item.id}>
@@ -159,7 +159,8 @@ const Booking = () => {
                 </span>
               </div>
               <div className="mt-3 text-red-600">
-                Vui lòng thanh toán trước <span>{prePay}</span>% đơn đặt phòng!
+                Vui lòng thanh toán trước <span>{prePay}</span>% tiền phòng ! ({' '}
+                {formatCurrency((choiceRoom?.price * time * prePay) / 100)} )
               </div>
               <Button
                 type="primary"

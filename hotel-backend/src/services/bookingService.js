@@ -55,7 +55,7 @@ let getBooking = async (userId) => {
       bookings = await db.Booking.findAll({
         where: {
           status: {
-            [Op.ne]: '0', // Lấy các booking có status khác '0'
+            [Op.notIn]: ['0', '-1'], // Lấy các booking có status khác '0' và '-1'
           },
         },
         include: [
@@ -81,7 +81,13 @@ let getBooking = async (userId) => {
     }
     if (userId && userId !== 'ALL') {
       bookings = await db.Booking.findAll({
-        where: { userId: userId },
+        where: {
+          userId: userId,
+          status: {
+            [Op.ne]: '-1',
+          },
+        },
+
         include: [
           {
             model: db.User,

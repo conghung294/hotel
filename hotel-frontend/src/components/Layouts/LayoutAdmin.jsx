@@ -172,6 +172,11 @@ const LayoutAdmin = ({ children }) => {
                     icon: <CiViewTable size={20} />,
                     label: <Link to="/admin/bookingCalendar">Lịch đặt phòng</Link>,
                   },
+                  {
+                    key: '/admin/manageCustomer',
+                    icon: <HiOutlineUsers size={20} />,
+                    label: <Link to="/admin/manageCustomer">Quản lý khách hàng</Link>,
+                  },
                 ]
           }
         />

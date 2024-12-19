@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING(50),
       },
       password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(128),
       },
       name: {
         type: Sequelize.STRING(50),
@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.STRING(10),
       },
       resetPasswordToken: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(128),
       },
       resetPasswordExpires: {
         type: Sequelize.DATE,

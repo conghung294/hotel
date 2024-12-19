@@ -1,4 +1,4 @@
-import { ConfigProvider, DatePicker, Table } from 'antd';
+import { ConfigProvider, DatePicker, Table, Tag } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { formatCurrency } from '../../utils/CommonUtils';
 import { getBookingService } from '../../service/bookingService';
@@ -54,7 +54,7 @@ const BookingList = () => {
       render: (timeCome) => {
         return dayjs(timeCome).format('HH:mm:ss DD/MM/YYYY');
       },
-      sorter: (a, b) => dayjs(a.timeCome).valueOf() - dayjs(b.timeCome).valueOf(),
+      // sorter: (a, b) => dayjs(a.timeCome).valueOf() - dayjs(b.timeCome).valueOf(),
     },
     {
       title: 'Thời gian đi',
@@ -65,7 +65,7 @@ const BookingList = () => {
       render: (timeGo) => {
         return dayjs(timeGo).format('HH:mm:ss DD/MM/YYYY');
       },
-      sorter: (a, b) => dayjs(a.timeGo).valueOf() - dayjs(b.timeGo).valueOf(),
+      // sorter: (a, b) => dayjs(a.timeGo).valueOf() - dayjs(b.timeGo).valueOf(),
     },
     {
       title: 'Loại phòng',
@@ -81,19 +81,27 @@ const BookingList = () => {
       width: '10%',
       align: 'center',
     },
-    {
-      title: 'Dịch vụ',
-      dataIndex: 'service',
-      key: 'service',
-      width: '13%',
-      render: (_, record) => (
-        <div>
-          {record?.services?.map((item) => {
-            return <div key={item?.id}>-{item?.name}</div>;
-          })}
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Dịch vụ',
+    //   dataIndex: 'service',
+    //   key: 'service',
+    //   width: '13%',
+    //   render: (_, record) => (
+    //     <div>
+    //       {record?.services?.length > 0 ? (
+    //         record.services.map((item) => (
+    //           <div key={item?.id}>
+    //             <div className="flex items-center">
+    //               <LuDot size={20} /> {item?.name}
+    //             </div>
+    //           </div>
+    //         ))
+    //       ) : (
+    //         <div>Không có</div>
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Tổng cộng',
       dataIndex: 'price',
@@ -118,13 +126,15 @@ const BookingList = () => {
       align: 'center',
       render: (_, record) => (
         <div>
-          {record?.status === '4'
-            ? 'ĐÃ HỦY'
-            : record?.status === '3'
-            ? 'ĐÃ THANH TOÁN'
-            : record?.status === '2'
-            ? 'ĐANG SỬ DỤNG'
-            : 'ĐẶT TRƯỚC'}
+          {record?.status === '4' ? (
+            <Tag color="error">ĐÃ HỦY</Tag>
+          ) : record?.status === '3' ? (
+            <Tag color="success">ĐÃ THANH TOÁN</Tag>
+          ) : record?.status === '2' ? (
+            <Tag color="warning">ĐANG SỬ DỤNG</Tag>
+          ) : (
+            <Tag color="processing">ĐẶT TRƯỚC</Tag>
+          )}
         </div>
       ),
     },

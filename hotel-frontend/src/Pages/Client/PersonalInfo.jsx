@@ -1,4 +1,4 @@
-import { Form, Input, Select, Table, Tabs } from 'antd';
+import { Form, Input, Select, Table, Tabs, Tag } from 'antd';
 import { useUser } from '../../context/UserContext';
 import { editUserService, getAllUsers } from '../../service/userService';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { getBookingService } from '../../service/bookingService';
 import dayjs from 'dayjs';
 import { CiUser } from 'react-icons/ci';
 import { MdHistory } from 'react-icons/md';
+import { LuDot } from 'react-icons/lu';
 
 function PersonalInfo() {
   const { Option } = Select;
@@ -60,6 +61,9 @@ function PersonalInfo() {
       key: 'typeroom',
       width: '10%',
       align: 'center',
+      render: (_, record) => (
+        <div>{record?.roomData?.name ? record?.roomData?.name : 'Chưa có'}</div>
+      ),
     },
     {
       title: 'Dịch vụ',
@@ -68,9 +72,17 @@ function PersonalInfo() {
       width: '15%',
       render: (_, record) => (
         <div>
-          {record?.services?.map((item) => {
-            return <div key={item?.id}>-{item?.name}</div>;
-          })}
+          {record?.services?.length > 0 ? (
+            record.services.map((item) => (
+              <div key={item?.id}>
+                <div className="flex items-center">
+                  <LuDot size={20} /> {item?.name}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>Không có</div>
+          )}
         </div>
       ),
     },
@@ -96,16 +108,18 @@ function PersonalInfo() {
       width: '10%',
       align: 'center',
       render: (_, record) => (
-        <div>
-          {record?.status === '0'
-            ? 'CHỜ XÁC NHẬN'
-            : record?.status === '1'
-            ? 'ĐÃ XÁC NHẬN'
-            : record?.status === '2'
-            ? 'ĐANG SỬ DỤNG'
-            : record?.status === '3'
-            ? 'HOÀN THÀNH'
-            : ''}
+        <div className="flex-1">
+          {record?.status === '0' ? (
+            <Tag color="default">CHỜ XÁC NHẬN</Tag>
+          ) : record?.status === '1' ? (
+            <Tag color="processing">ĐÃ XÁC NHẬN</Tag>
+          ) : record?.status === '2' ? (
+            <Tag color="warning">ĐANG SỬ DỤNG</Tag>
+          ) : record?.status === '3' ? (
+            <Tag color="success">HOÀN THÀNH</Tag>
+          ) : (
+            <Tag color="error">ĐÃ HỦY</Tag>
+          )}
         </div>
       ),
     },

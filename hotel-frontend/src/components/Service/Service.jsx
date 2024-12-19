@@ -28,16 +28,16 @@ const Service = ({
     setChoiceService(updatedServices);
   };
   return (
-    <div className="border p-4 flex justify-between items-center bg-white rounded-lg shadow-lg h-[200px] w-full">
+    <div className="border p-4 flex justify-between items-center bg-white rounded-lg shadow-lg h-[210px] w-full">
       <div className="flex-shrink-0 w-[270px] h-[180px] rounded-lg overflow-hidden">
         <img src={image} alt="Room" className="w-full h-full object-cover" />
       </div>
 
-      <div className="flex-1 px-4 h-full flex flex-col justify-between ">
+      <div className="flex-1 px-4 h-full flex flex-col justify-between mt-2">
         <div>
           <h2 className="text-lg font-semibold">{name}</h2>
 
-          <p className="text-gray-600 mt-2">{description}</p>
+          <p className="text-gray-600 mt-2 leading-6 text-ellipsis line-clamp-6">{description}</p>
         </div>
         {/* <div className="text-blue-500 mt-6">Chi tiết →</div> */}
       </div>

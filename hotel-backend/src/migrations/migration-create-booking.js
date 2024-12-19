@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER(20),
       },
       orderCode: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
       userId: {
         type: Sequelize.INTEGER(20),
@@ -39,7 +39,7 @@ module.exports = {
       },
 
       status: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('-1', '0', '1', '2', '3', '4'),
       },
 
       createdAt: {
