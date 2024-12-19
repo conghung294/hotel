@@ -1,4 +1,4 @@
-import { Button, Modal, Popconfirm, Table } from 'antd';
+import { Button, Modal, Popconfirm, Table, Tag } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
@@ -108,12 +108,14 @@ const ModalDetailBooking = ({ modalOpen, setModalOpen, id, getBookingSchedule })
       width: '9%',
       align: 'center',
       render: (_, record) => (
-        <div>
-          {record?.status === '3'
-            ? 'ĐÃ THANH TOÁN'
-            : record?.status === '2'
-            ? 'ĐANG SỬ DỤNG'
-            : 'ĐẶT TRƯỚC'}
+        <div className="flex items-center">
+          {record?.status === '3' ? (
+            <Tag color="success">ĐÃ THANH TOÁN</Tag>
+          ) : record?.status === '2' ? (
+            <Tag color="warning">ĐANG SỬ DỤNG</Tag>
+          ) : (
+            <Tag color="processing">ĐẶT TRƯỚC</Tag>
+          )}
         </div>
       ),
     },

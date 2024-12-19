@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 import { combineDateTimeNative } from '../utils/CommonUtils';
 
 let createNewRoom = (data) => {
@@ -280,20 +280,33 @@ const checkInRoom = async (data) => {
         }
       );
     } else {
-      const user = await db.User.create(data.user);
+      let user = await db.User.findOne({
+        where: {
+          cccd: data?.user?.cccd,
+        },
+      });
+
       if (user) {
-        await db.Booking.create({
-          userId: user?.id,
-          roomId: data?.roomId,
-          typeroomId: data?.typeroomId,
-          timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
-          timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
-          price: data?.price,
-          status: '2',
-          paid: data?.paid || 0,
-          sale: data?.sale || 0,
+        await db.User.update(data?.user, {
+          where: {
+            id: user?.id,
+          },
         });
+      } else {
+        user = await db.User.create(data?.user);
       }
+
+      await db.Booking.create({
+        userId: user?.id,
+        roomId: data?.roomId,
+        typeroomId: data?.typeroomId,
+        timeCome: combineDateTimeNative(data.timeCome, time.timeCome),
+        timeGo: combineDateTimeNative(data.timeGo, time.timeGo),
+        price: data?.price,
+        status: '2',
+        paid: data?.paid || 0,
+        sale: data?.sale || 0,
+      });
     }
 
     let room = await db.Room.findOne({

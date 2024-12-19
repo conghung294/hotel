@@ -59,7 +59,7 @@ const Roomtype = () => {
                 ></div>
               </div>
               <div
-                className="w-1/2 flex flex-col items-center px-[10%] justify-around bg-[#F7F7F7] text-center py-3"
+                className="w-1/2 flex flex-col items-center  justify-around bg-[#F7F7F7] text-center py-3"
                 id="room-type"
               >
                 <div
@@ -68,10 +68,10 @@ const Roomtype = () => {
                 >
                   {item?.name}
                 </div>
-                <div className="text-[32px] text-[#778788] big-title relative">
+                <div className="text-[32px] text-[#778788] big-title relative px-[10%]">
                   {formatCurrency(item?.price)}
                 </div>
-                <div className="text-[#333333] leading-6 text-center text-[14px] line-clamp-[10] text-ellipsis mt-2">
+                <div className="text-[#333333] leading-6 text-center text-[14px] line-clamp-[10] text-ellipsis mt-2 px-[10%]">
                   {item?.description}
                 </div>
               </div>
